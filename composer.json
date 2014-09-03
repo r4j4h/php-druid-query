@@ -1,0 +1,13 @@
+{
+    "name": "r4j4h/php-druid-query",
+    "description": "Experimental PHP wrapper around querying druid",
+    "require": {
+        "php": ">=5.3.0",
+        "guzzle/guzzle": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "DruidFamiliar": "src/"
+        }
+    }
+}
