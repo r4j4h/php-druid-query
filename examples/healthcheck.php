@@ -25,6 +25,9 @@ try
 
     $r = $c->executeQuery($q);
 
+    echo "DruidFamiliar\n";
+    echo "Talking to $druidHost on port $druidPort.\n";
+
     if ( isset( $r['minTime'] ) ) {
         echo "Good to go!\n";
     } else {
