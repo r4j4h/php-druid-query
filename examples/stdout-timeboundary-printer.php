@@ -1,8 +1,6 @@
 <?php
 /**
- * DruidFamiliar Stdout Printer Example
- *
- * TODO Move the ip/port and dataSource to a example-config.php file that is pulled in each of these examples.
+ * DruidFamiliar Stdout TimeBoundary Printer Example
  *
  * Run this via the command line, e.g. `php stdout-printer.php`
  * and you should see nicely formatted time boundary data. :)
