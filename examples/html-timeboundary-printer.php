@@ -2,8 +2,7 @@
 /**
  * DruidFamiliar HTML TimeBoundary Printer Example
  *
- * Run this via the command line, e.g. `php stdout-printer.php`
- * and you should see nicely formatted time boundary data. :)
+ * Point your browser at this through a web server and you should see nicely formatted time boundary data. :)
  */
 
 require_once('../vendor/autoload.php');
