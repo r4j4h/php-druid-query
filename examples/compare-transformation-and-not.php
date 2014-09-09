@@ -1,10 +1,15 @@
 <?php
 
-require_once('vendor/autoload.php');
+require_once('../vendor/autoload.php');
+$examplesDir = dirname(__FILE__);
+$examplesConfig = require_once($examplesDir . '/_examples-config.php');
+
+$druidHost = $examplesConfig['druid-host'];
+$druidPort = $examplesConfig['druid-port'];
 
 date_default_timezone_set('America/Denver');
 
-$c = new \DruidFamiliar\DruidNodeConnection("192.168.10.103", '9003');
+$c = new \DruidFamiliar\DruidNodeConnection($druidHost, $druidPort);
 
 $q = new \DruidFamiliar\TimeBoundaryDruidQuery('referral-visit-test-data');
 
