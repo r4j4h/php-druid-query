@@ -6,9 +6,8 @@
         "guzzle/guzzle": "*"
     },
     "autoload": {
-        "psr-0": {
-            "DruidFamiliar\\": "src/",
-            "DruidFamiliar\\Test\\": "tests/"
+        "psr-4": {
+            "DruidFamiliar\\": [ "src/DruidFamiliar/", "tests/DruidFamiliar/" ]
         }
     }
 }
