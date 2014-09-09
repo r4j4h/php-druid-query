@@ -1,13 +1,27 @@
 {
     "name": "r4j4h/php-druid-query",
     "description": "Experimental PHP wrapper around querying druid",
+    "keywords": ["druid", "querying", "query", "parameterized query"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jasmine Hegman",
+            "email": "hegpetz@gmail.com",
+            "role": "Developer"
+        }
+    ],
     "require": {
         "php": ">=5.3.0",
         "guzzle/guzzle": "*"
     },
     "autoload": {
         "psr-4": {
-            "DruidFamiliar\\": [ "src/DruidFamiliar/", "tests/DruidFamiliar/" ]
+            "DruidFamiliar\\": "src/DruidFamiliar/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "DruidFamiliar\\": "tests/DruidFamiliar/"
         }
     }
 }
