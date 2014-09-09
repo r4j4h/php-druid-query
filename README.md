@@ -50,12 +50,6 @@ in a composer.json should be all you need to get started:
 ```json
 {
     "minimum-stability": "dev",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@github.com:r4j4h/php-druid-query"
-        }
-    ],
     "require": {
         "r4j4h/php-druid-query": "dev-master"
     }
