@@ -36,10 +36,50 @@ Implementation wise, this can look like:
 3. Run the `DruidNodeConnection`'s `executeQuery` function with the `SegmentMetadataDruidQuery`, getting the result.
 
 
+How to Install
+---------------
 
+Right now, there is no tagged version.
+
+- Stable branch: `dev-master`
+- Cutting edge: `dev-develop`
+
+To install, it is suggested to use (Composer)[getcomposer.org]. If you have it installed, then the following instructions
+in a composer.json should be all you need to get started:
+
+```json
+{
+    "minimum-stability": "dev",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:r4j4h/php-druid-query"
+        }
+    ],
+    "require": {
+        "r4j4h/php-druid-query": "dev-master"
+    }
+}
+
+Once that is in, `composer install` and `composer update` should work.
+
+Once those are run, require Composer's autoloader and you are off to the races, or tree circles as it were (bad Druid reference):
+
+1. require 'vendor/autoload.php';
+2. $yay = new \DruidFamiliar\TimeBoundaryDruidQuery('my-cool-data-source');
+3. Refer to the `Typical Use` section.
+
+
+
+How it Works & How to Extend
+---------------
 
 Please refer to this diagram for an overview of how this works underneath the hood.
 
 ![Sequence Diagram](docs/sequence-diagram.png)
 
 (From this [Dynamic LucidChart Source URL](https://www.lucidchart.com/publicSegments/view/540e3dcd-372c-4aa6-a52c-44d80a005fd1/image.png))
+
+In general, to add support for a new query all you need to do is create a new class wherever you want that implements `IDruidQuery`.
+
+By wherever you want, that could be in a fork of this repo, or outside of this repo using this repo's interfaces. That is up to you. :)
