@@ -30,22 +30,6 @@ interface IDruidQuery
     public function handleResponse($response = Array());
 
 
-
-    /**
-     * Get the represented JSON Druid Query POST object in PHP array form corresponding with json_(en/de)code()
-     * @return mixed
-     */
-    public function getQuery();
-
-    /**
-     * Set the query from a JSON Druid Query POST object in PHP array form corresponding with json_(en/de)code()
-     *
-     * @param {Array} $query
-     * @return void
-     */
-    public function setQuery($query);
-
-
     /**
      * Get the currently configured query params
      *
@@ -54,11 +38,18 @@ interface IDruidQuery
     public function getParams();
 
     /**
+     * Validate the given parameter values
+     *
+     * @return mixed
+     */
+    public function validateParams(Array $params);
+
+    /**
      * Set the query params
      *
      * @param {Array} $query
      * @return void
      */
-    public function setParams($query);
+    public function setParams(Array $query);
 
 }

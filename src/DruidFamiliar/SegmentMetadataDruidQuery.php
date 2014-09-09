@@ -2,17 +2,28 @@
 
 namespace DruidFamiliar;
 
-class TimeBoundaryDruidQuery implements IDruidQuery
+use DateTime;
+
+class SegmentMetadataDruidQuery implements IDruidQuery
 {
 
     private $params = Array();
 
-    public function __construct($dataSource) {
+    public function __construct($dataSource, $start = "1970-01-01 01:30:00", $end = "3030-01-01 01:30:00") {
+
+        $startDateTime = new DateTime($start);
+        $endDateTime = new DateTime($end);
+
+        $ISOstartDateTime = $startDateTime->format(DateTime::ISO8601);
+        $ISOendDateTime = $endDateTime->format(DateTime::ISO8601);
+
         $this->setParams(
             array(
-                'dataSource' => $dataSource
+                'dataSource' => $dataSource,
+                'intervals' => $ISOstartDateTime . '/' . $ISOendDateTime,
             )
         );
+
     }
 
     /**
@@ -39,8 +50,9 @@ class TimeBoundaryDruidQuery implements IDruidQuery
     {
 
         return array(
-            'queryType' => 'timeBoundary',
-            "dataSource" => $this->params['dataSource']
+            'queryType' => 'segmentMetadata',
+            "dataSource" => $this->params['dataSource'],
+            "intervals" => $this->params['intervals']
         );
 
     }

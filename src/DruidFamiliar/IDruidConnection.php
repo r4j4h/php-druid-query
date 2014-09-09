@@ -5,7 +5,7 @@ namespace DruidFamiliar;
 interface IDruidConnection
 {
 
-    public function connect($ip, $port);
+    public function __construct($ip, $port);
 
     public function executeQuery(IDruidQuery $query);
 

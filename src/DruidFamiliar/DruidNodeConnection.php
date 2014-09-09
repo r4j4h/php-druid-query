@@ -8,50 +8,52 @@ use DruidFamiliar\Exception;
 
 class DruidNodeConnection implements IDruidConnection
 {
+    private $ip;
+    private $port;
+    private $endpoint;
+
+    public function __construct($ip, $port, $endpoint = '/druid/v2/') {
+        $this->ip = $ip;
+        $this->port = $port;
+        $this->endpoint = $endpoint;
+    }
+
+    public function connect($ip, $port, $endpoint = '/druid/v2/') {
+        $this->ip = $ip;
+        $this->port = $port;
+        $this->endpoint = $endpoint;
+    }
 
     public function executeQuery(IDruidQuery $query)
     {
         $generatedQuery = $query->generateQuery();
 
-        // TODO Connect and Execute query
+        $client = new \Guzzle\Http\Client();
 
-        $response = Array();
+        $baseUrl = 'http://' . $this->ip . ':' . $this->port;
+        $url = $baseUrl . $this->endpoint;
 
-        $formattedResponse = $query->handleResponse($response);
+        // Create a tweet using POST
+        $request = $client->post($url, array("content-type" => "application/json"), json_encode($generatedQuery));
+
+        // Send the request and parse the JSON response into an array
+        try
+        {
+            $response = $request->send();
+
+        }
+        catch (\Guzzle\Http\Exception\CurlException $curlException)
+        {
+            // TODO could try again once in a second if druid was busy?
+
+            throw new $curlException;
+        }
+
+        $data = $response->json();
+
+        $formattedResponse = $query->handleResponse($data);
 
         return $formattedResponse;
-    }
-
-
-
-    private $connected = false;
-
-    public function connect($ip, $port) {
-        return $this->connectToNode($ip, $port);
-    }
-
-    private function connectToNode($ip, $port)
-    {
-        if (false) {
-            throw new DruidBusyException();
-        }
-        return "yesItWorks";
-    }
-
-    public function isConnected()
-    {
-        return $this->connected;
-    }
-
-    public function disconnect()
-    {
-        if ( !$this->connected ) {
-            return false;
-        }
-
-        // TODO Disconnect cleanly from server
-
-        return true;
     }
 
 }
