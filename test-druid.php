@@ -12,7 +12,7 @@ $r = $c->executeQuery($q);
 
 var_dump( $r );
 
-$q = new \DruidFamiliar\SegmentMetadataDruidQuery('referral-visit-test-data');
+$q = new \DruidFamiliar\TransformingTimeBoundaryDruidQuery('referral-visit-test-data');
 
 $r = $c->executeQuery($q);
 

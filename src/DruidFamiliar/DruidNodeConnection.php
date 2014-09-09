@@ -18,12 +18,6 @@ class DruidNodeConnection implements IDruidConnection
         $this->endpoint = $endpoint;
     }
 
-    public function connect($ip, $port, $endpoint = '/druid/v2/') {
-        $this->ip = $ip;
-        $this->port = $port;
-        $this->endpoint = $endpoint;
-    }
-
     public function executeQuery(IDruidQuery $query)
     {
         $generatedQuery = $query->generateQuery();
@@ -44,8 +38,6 @@ class DruidNodeConnection implements IDruidConnection
         }
         catch (\Guzzle\Http\Exception\CurlException $curlException)
         {
-            // TODO could try again once in a second if druid was busy?
-
             throw new $curlException;
         }
 
