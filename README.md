@@ -68,7 +68,7 @@ Once those are run, require Composer's autoloader and you are off to the races, 
 
 1. `require 'vendor/autoload.php';`
 2. `$yay = new \DruidFamiliar\TimeBoundaryDruidQuery('my-cool-data-source');`
-3. Refer to the `Typical Use` section.
+3. Refer to the `Typical Use` section above.
 
 
 
