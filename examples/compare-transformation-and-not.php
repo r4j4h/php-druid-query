@@ -6,12 +6,13 @@ $examplesConfig = require_once($examplesDir . '/_examples-config.php');
 
 $druidHost = $examplesConfig['druid-host'];
 $druidPort = $examplesConfig['druid-port'];
+$druidDataSource = $examplesConfig['druid-dataSource'];
 
 date_default_timezone_set('America/Denver');
 
 $c = new \DruidFamiliar\DruidNodeConnection($druidHost, $druidPort);
 
-$q = new \DruidFamiliar\TimeBoundaryDruidQuery('referral-visit-test-data');
+$q = new \DruidFamiliar\TimeBoundaryDruidQuery($druidDataSource);
 
 $r = $c->executeQuery($q);
 
@@ -33,7 +34,7 @@ var_dump( $r );
 //}
 
 
-$q = new \DruidFamiliar\TransformingTimeBoundaryDruidQuery('referral-visit-test-data');
+$q = new \DruidFamiliar\TransformingTimeBoundaryDruidQuery($druidDataSource);
 
 $r = $c->executeQuery($q);
 

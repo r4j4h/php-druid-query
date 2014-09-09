@@ -11,7 +11,7 @@ $examplesConfig = require_once($examplesDir . '/_examples-config.php');
 
 $druidHost = $examplesConfig['druid-host'];
 $druidPort = $examplesConfig['druid-port'];
-$druidDataSource = 'referral-visit-test-data';
+$druidDataSource = $examplesConfig['druid-dataSource'];
 
 date_default_timezone_set('America/Denver');
 
@@ -34,7 +34,7 @@ $startTime = new DateTime( $r['minTime'] );
 $endTime = new DateTime( $r['maxTime'] );
 
 $formattedStartTime = $startTime->format("F m, Y h:i:s A");
-$formattedEndTime = $startTime->format("F m, Y h:i:s A");
+$formattedEndTime = $endTime->format("F m, Y h:i:s A");
 
 echo <<<HTML_BODY
 <!doctype html>
