@@ -1,7 +1,7 @@
 php-druid-query
 ===============
 
-PHP wrapper around querying druid.
+PHP wrapper around querying [Druid](http://druid.io).
 
 Overview
 ---------------
@@ -44,7 +44,7 @@ Right now, there is no tagged version.
 - Stable branch: `dev-master`
 - Cutting edge: `dev-develop`
 
-To install, it is suggested to use (Composer)[getcomposer.org]. If you have it installed, then the following instructions
+To install, it is suggested to use [Composer](http://getcomposer.org). If you have it installed, then the following instructions
 in a composer.json should be all you need to get started:
 
 ```json
@@ -60,14 +60,15 @@ in a composer.json should be all you need to get started:
         "r4j4h/php-druid-query": "dev-master"
     }
 }
+```
 
 Once that is in, `composer install` and `composer update` should work.
 
 Once those are run, require Composer's autoloader and you are off to the races, or tree circles as it were (bad Druid reference):
 
-1. require 'vendor/autoload.php';
-2. $yay = new \DruidFamiliar\TimeBoundaryDruidQuery('my-cool-data-source');
-3. Refer to the `Typical Use` section.
+1. `require 'vendor/autoload.php';`
+2. `$yay = new \DruidFamiliar\TimeBoundaryDruidQuery('my-cool-data-source');`
+3. Refer to the `Typical Use` section above.
 
 
 
@@ -83,3 +84,13 @@ Please refer to this diagram for an overview of how this works underneath the ho
 In general, to add support for a new query all you need to do is create a new class wherever you want that implements `IDruidQuery`.
 
 By wherever you want, that could be in a fork of this repo, or outside of this repo using this repo's interfaces. That is up to you. :)
+
+
+
+
+References
+---------------
+
+- [Druid](http://druid.io)
+- [Composer](http://getcomposer.org)
+- [Guzzle](http://guzzle.readthedocs.org)
