@@ -71,6 +71,13 @@ Once those are run, require Composer's autoloader and you are off to the races, 
 3. Refer to the `Typical Use` section above.
 
 
+Examples
+---------------
+
+See the `\examples` folder. Right now they are all run via the CLI. They share connection information from
+`_examples-config.php`. Change that match your Druid instance's connection info.
+
+
 
 How it Works & How to Extend
 ---------------
