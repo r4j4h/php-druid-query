@@ -30,7 +30,6 @@ $r = $c->executeQuery($q);
 //   string(24) "2011-11-30T23:55:34.000Z"
 // }
 
-echo "";
 
 $startTime = new DateTime( $r['minTime'] );
 $endTime = new DateTime( $r['maxTime'] );
