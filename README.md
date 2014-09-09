@@ -1,7 +1,7 @@
 php-druid-query
 ===============
 
-PHP wrapper around querying [Druid](druid.io).
+PHP wrapper around querying [Druid](http://druid.io).
 
 Overview
 ---------------
@@ -44,7 +44,7 @@ Right now, there is no tagged version.
 - Stable branch: `dev-master`
 - Cutting edge: `dev-develop`
 
-To install, it is suggested to use [Composer](getcomposer.org). If you have it installed, then the following instructions
+To install, it is suggested to use [Composer](http://getcomposer.org). If you have it installed, then the following instructions
 in a composer.json should be all you need to get started:
 
 ```json
@@ -91,6 +91,6 @@ By wherever you want, that could be in a fork of this repo, or outside of this r
 References
 ---------------
 
-- [Druid](druid.io)
-- [Composer](getcomposer.org)
-- [Guzzle](guzzle.readthedocs.org)
+- [Druid](http://druid.io)
+- [Composer](http://getcomposer.org)
+- [Guzzle](http://guzzle.readthedocs.org)
