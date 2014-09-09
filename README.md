@@ -60,13 +60,14 @@ in a composer.json should be all you need to get started:
         "r4j4h/php-druid-query": "dev-master"
     }
 }
+```
 
 Once that is in, `composer install` and `composer update` should work.
 
 Once those are run, require Composer's autoloader and you are off to the races, or tree circles as it were (bad Druid reference):
 
-1. require 'vendor/autoload.php';
-2. $yay = new \DruidFamiliar\TimeBoundaryDruidQuery('my-cool-data-source');
+1. `require 'vendor/autoload.php';`
+2. `$yay = new \DruidFamiliar\TimeBoundaryDruidQuery('my-cool-data-source');`
 3. Refer to the `Typical Use` section.
 
 
