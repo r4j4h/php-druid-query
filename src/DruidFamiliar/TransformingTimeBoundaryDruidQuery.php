@@ -54,9 +54,11 @@ class TransformingTimeBoundaryDruidQuery implements IDruidQuery
     public function handleResponse($response = Array()) {
 
         if ( isset ( $response[0]['result'] ) ) {
-
             return $response[0]['result'];
+        }
 
+        if ( empty( $response ) ) {
+            throw new \Exception('Unknown data source');
         }
 
         throw new \Exception('Unexpected response format');
