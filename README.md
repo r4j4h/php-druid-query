@@ -1,7 +1,7 @@
 php-druid-query
 ===============
 
-PHP wrapper around querying druid.
+PHP wrapper around querying [Druid](druid.io).
 
 Overview
 ---------------
