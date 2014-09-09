@@ -74,8 +74,17 @@ Once those are run, require Composer's autoloader and you are off to the races, 
 Examples
 ---------------
 
-See the [\examples](examples) folder. Right now they are all run via the CLI. They share connection information from
-`_examples-config.php`. Change that match your Druid instance's connection info.
+Examples are located in the [\examples](examples) folder.
+
+They share connection information from `_examples-config.php`.
+Change that match your Druid instance's connection info.
+
+Right now most are designed to run via the CLI, but will work in a browser if a web server running php serves them.
+
+The HTML outputting ones should print the query results to HTML:
+
+![Example HTML TimeBoundary Output](docs/html-timeboundary-output.png)
+
 
 
 
