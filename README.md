@@ -104,3 +104,22 @@ References
 - [Druid](http://druid.io)
 - [Composer](http://getcomposer.org)
 - [Guzzle](http://guzzle.readthedocs.org)
+
+
+Appendix A. Composer.json example that does not rely on Packagist.org:
+---------------
+
+```json
+{
+    "minimum-stability": "dev",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:r4j4h/php-druid-query"
+        }
+    ],
+    "require": {
+        "r4j4h/php-druid-query": "dev-master"
+    }
+}
+```
