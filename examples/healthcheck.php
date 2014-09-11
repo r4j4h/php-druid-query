@@ -36,20 +36,31 @@ try
     }
 
 }
+catch ( Guzzle\Common\Exception\InvalidArgumentException $e ) {
+
+}
+catch ( Guzzle\Http\Exception\CurlException $e ) {
+    echo "Problem encountered :(\n";
+    echo "Am I really pointed at a Druid broker node?\n";
+}
 catch ( \Exception $e )
 {
-    echo "Problem encountered :(\n";
-
-    echo "\n";
-
     $message = $e->getMessage();
 
-    if ( $message === 'Unexpected response format' ) {
+    if ( $message === 'Unexpected response format' )
+    {
         echo "Problem encountered :(\n";
         echo "Does your Data Source exist?";
     }
+    else if ( $message === 'Unknown data source' )
+    {
+        echo "Should be okay, did you point to a non-existant data source?\n";
+    }
+    else
+    {
+        throw $e;
+    }
 
-    throw $e;
 }
 
 
