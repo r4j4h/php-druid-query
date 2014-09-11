@@ -6,5 +6,5 @@ return array(
 //    'druid-dataSource' => 'referral-visit-test-data',
     'druid-host' => 'devdruid.webpt.com',
     'druid-port' => '8080',
-    'druid-dataSource' => 'referral-visit-test-data-w-facility-ids'
+    'druid-dataSource' => 'referral-visit-old-format'
 );
