@@ -61,7 +61,7 @@ $groupByBodyRows = '';
 foreach ( $r2 as $index => $val)
 {
     /**
-     * @var /DruidFamiliar/ExampleResponseObjects/ExampleReferralByCompanyResponseObject
+     * @var \DruidFamiliar\ExampleResponseObjects\ExampleReferralByCompanyResponseObject $exampleReferralByCompanyResponseObject
      */
     $exampleReferralByCompanyResponseObject = $val;
 
@@ -69,6 +69,7 @@ foreach ( $r2 as $index => $val)
     $companyId = $exampleReferralByCompanyResponseObject->getCompanyId();
     $facilityId = $exampleReferralByCompanyResponseObject->getFacilityId();
     $referrals = $exampleReferralByCompanyResponseObject->getReferrals();
+
 
     $groupByBodyRows .= <<<TABLEROW
 <tr>
