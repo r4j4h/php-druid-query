@@ -3,6 +3,7 @@ php-druid-query
 
 PHP wrapper around querying [Druid](http://druid.io).
 
+
 Overview
 ---------------
 
@@ -12,6 +13,18 @@ Druid, and thus the name.
 
 It's kind of stupid. Feel free to suggest another. I think the repo name should reflect the namespace for clarity,
 it currently is `php-druid-query` while the namespace is `DruidFamiliar`. :/
+
+
+Recently Added
+---------------
+
+- [Abstract class BasicDruidQuery](src/DruidFamiliar/BasicDruidQuery.php)
+- [Group By Example](examples/html-query-printer-improved.php)
+
+
+Things I want to change: (major breaking changes coming soon)
+---------------
+One mistake I made is the generateQuery function should really return a raw JSON string ready for submission instead of a PHP array that the
 
 
 Typical Use

@@ -76,38 +76,38 @@ echo <<<HTML_BODY
 <html>
     <head>
         <style>
-            .timeboundary-table--table {
+            .basic-table--table {
                 border-collapse: collapse;
                 width: 100%;
 
             }
 
-            .timeboundary-table--table,
-             .timeboundary-table--table th,
-             .timeboundary-table--table td {
+            .basic-table--table,
+             .basic-table--table th,
+             .basic-table--table td {
                 border: 1px solid #C36182;
             }
 
 
-             .timeboundary-table--table th {
+             .basic-table--table th {
                 background-color: #C36182;
                 color: white;
                 padding: .5em 1em;
              }
 
-             .timeboundary-table--table td {
+             .basic-table--table td {
                 padding: .25em 1em;
              }
 
-             .timeboundary-table--table th:first-child,
-             .timeboundary-table--table td:first-child {
+             .basic-table--table th:first-child,
+             .basic-table--table td:first-child {
                 text-align: right;
              }
         </style>
     </head>
     <body>
-        <p class="timeboundary-table--table-header">TimeBoundary data for DataSource "<b>$druidDataSource</b>": </p>
-        <table class="timeboundary-table--table">
+        <h1>TimeBoundary data for DataSource "<b>$druidDataSource</b>": </h1>
+        <table class="basic-table--table">
             <thead>
                 <tr>
                     <th>DataSource</th>
@@ -125,7 +125,7 @@ echo <<<HTML_BODY
         </table>
         <div>
             <h1>Raw Group By Query Results</h1>
-            <table>
+            <table class="basic-table--table">
                 <thead>
                     <tr>
                         <th>timestamp</th>
