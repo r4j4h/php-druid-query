@@ -24,11 +24,9 @@ class ReferralsByCompanyGroupByWithResponseObject extends ReferralsByCompanyGrou
             $facilityId = $chunk['event']['facility_id'];
             $referrals = $chunk['event']['referral_count'];
 
-            $dto = new \DruidFamiliar\ExampleResponseObjects\ExampleReferralByCompanyResponseObject();
-            $dto->setCompanyId( $companyId );
-            $dto->setFacilityId( $facilityId );
-            $dto->setReferrals( $referrals );
-            $dto->setTimestamp( $timestamp );
+            $dto = new \DruidFamiliar\ExampleResponseObjects\ExampleReferralByCompanyResponseObject(
+                $companyId, $facilityId, $referrals, $timestamp
+            );
 
             $responseArray[] = $dto;
         }

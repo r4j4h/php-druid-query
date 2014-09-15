@@ -13,13 +13,12 @@ class ExampleReferralByCompanyResponseObject
 
     public $referrals;
 
-
-    /**
-     * @param mixed $companyId
-     */
-    public function setCompanyId($companyId)
+    function __construct($companyId, $facilityId, $referrals, $timestamp)
     {
         $this->companyId = $companyId;
+        $this->facilityId = $facilityId;
+        $this->referrals = $referrals;
+        $this->timestamp = $timestamp;
     }
 
     /**
@@ -30,15 +29,6 @@ class ExampleReferralByCompanyResponseObject
         return $this->companyId;
     }
 
-
-    /**
-     * @param mixed $facilityId
-     */
-    public function setFacilityId($facilityId)
-    {
-        $this->facilityId = $facilityId;
-    }
-
     /**
      * @return mixed
      */
@@ -47,30 +37,12 @@ class ExampleReferralByCompanyResponseObject
         return $this->facilityId;
     }
 
-
-    /**
-     * @param mixed $referrals
-     */
-    public function setReferrals($referrals)
-    {
-        $this->referrals = $referrals;
-    }
-
     /**
      * @return mixed
      */
     public function getReferrals()
     {
         return $this->referrals;
-    }
-
-
-    /**
-     * @param mixed $timestamp
-     */
-    public function setTimestamp($timestamp)
-    {
-        $this->timestamp = $timestamp;
     }
 
     /**
