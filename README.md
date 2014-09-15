@@ -15,18 +15,6 @@ It's kind of stupid. Feel free to suggest another. I think the repo name should 
 it currently is `php-druid-query` while the namespace is `DruidFamiliar`. :/
 
 
-Recently Added
----------------
-
-- [Abstract class BasicDruidQuery](src/DruidFamiliar/BasicDruidQuery.php)
-- [Group By Example](examples/html-query-printer-improved.php)
-
-
-Things I want to change: (major breaking changes coming soon)
----------------
-One mistake I made is the generateQuery function should really return a raw JSON string ready for submission instead of a PHP array that the
-
-
 Typical Use
 ---------------
 
@@ -91,6 +79,19 @@ Right now most are designed to run via the CLI, but will work in a browser if a 
 The HTML outputting ones should print the query results to HTML:
 
 ![Example HTML TimeBoundary Output](docs/html-timeboundary-output.png)
+
+
+
+Recently Added
+---------------
+
+- [Abstract class BasicDruidQuery](src/DruidFamiliar/BasicDruidQuery.php)
+- [Group By Example](examples/html-query-printer-improved.php)
+
+
+Things I want to change: (major breaking changes coming soon)
+---------------
+One mistake I made is the generateQuery function should really return a raw JSON string ready for submission instead of a PHP array that the
 
 
 
