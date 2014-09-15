@@ -14,7 +14,7 @@ interface IDruidQuery
     public function execute(IDruidConnection $conn, $params = Array());
 
     /**
-     * Generate a JSON Druid Query POST object in PHP array form
+     * Generate a JSON Druid Query POST object in PHP associative array form
      *
      * @param array $response
      * @return mixed
@@ -23,6 +23,8 @@ interface IDruidQuery
 
     /**
      * Hook function to handle response from server.
+     *
+     * This hook must return the response, whether changed or not, so that the rest of the system can continue with it.
      *
      * @param array $response
      * @return mixed
@@ -39,6 +41,8 @@ interface IDruidQuery
 
     /**
      * Validate the given parameter values
+     *
+     * This hook must return the response, whether changed or not, so that the rest of the system can continue with it.
      *
      * @return mixed
      */

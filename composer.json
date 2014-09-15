@@ -21,7 +21,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "DruidFamiliar\\": "tests/DruidFamiliar/"
+            "DruidFamiliar\\": ["tests/DruidFamiliar/", "examples/src/"]
         }
     }
 }
