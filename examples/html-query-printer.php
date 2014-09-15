@@ -46,8 +46,6 @@ $endTime = new DateTime( $r['maxTime'] );
 $formattedStartTime = $startTime->format("F m, Y h:i:s A");
 $formattedEndTime = $endTime->format("F m, Y h:i:s A");
 
-$text = print_r( $r2, true);
-
 $groupByHeadRows = <<<TABLEHEADROW
 <tr>
     <th>timestamp</th>

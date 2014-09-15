@@ -45,17 +45,6 @@ $endTime = new DateTime( $r['maxTime'] );
 $formattedStartTime = $startTime->format("F m, Y h:i:s A");
 $formattedEndTime = $endTime->format("F m, Y h:i:s A");
 
-$text = print_r( $r2, true);
-
-$groupByHeadRows = <<<TABLEHEADROW
-<tr>
-    <th>timestamp</th>
-    <th>companyId</th>
-    <th>facilityId</th>
-    <th>referrals</th>
-</tr>
-TABLEHEADROW;
-;
 $groupByBodyRows = '';
 
 foreach ( $r2 as $index => $val)
@@ -69,7 +58,6 @@ foreach ( $r2 as $index => $val)
     $companyId = $exampleReferralByCompanyResponseObject->getCompanyId();
     $facilityId = $exampleReferralByCompanyResponseObject->getFacilityId();
     $referrals = $exampleReferralByCompanyResponseObject->getReferrals();
-
 
     $groupByBodyRows .= <<<TABLEROW
 <tr>
@@ -139,7 +127,12 @@ echo <<<HTML_BODY
             <h1>Raw Group By Query Results</h1>
             <table>
                 <thead>
-                    $groupByHeadRows
+                    <tr>
+                        <th>timestamp</th>
+                        <th>companyId</th>
+                        <th>facilityId</th>
+                        <th>referrals</th>
+                    </tr>
                 </thead>
                 <tbody>
                     $groupByBodyRows

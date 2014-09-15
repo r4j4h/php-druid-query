@@ -39,9 +39,9 @@ QUERYTEMPLATE;
     {
         $query = $this->queryTemplate;
 
-        $query = str_replace('{DATASOURCE}',    'referral-visit-old-format',$query);
-        $query = str_replace('{STARTINTERVAL}', '2006-01-01T00:00',         $query);
-        $query = str_replace('{ENDINTERVAL}',   '2015-06-01T00:00',         $query);
+        $query = str_replace('{DATASOURCE}',    $this->params['dataSource'],    $query);
+        $query = str_replace('{STARTINTERVAL}', $this->params['startInterval'], $query);
+        $query = str_replace('{ENDINTERVAL}',   $this->params['endInterval'],   $query);
 
         $query = json_decode( $query );
 

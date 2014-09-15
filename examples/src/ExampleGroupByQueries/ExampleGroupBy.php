@@ -39,9 +39,9 @@ QUERYTEMPLATE;
     {
         $query = $this->queryTemplate;
 
-        $query = str_replace('{DATASOURCE}',    $params['dataSource'],    $query);
-        $query = str_replace('{STARTINTERVAL}', $params['startInterval'], $query);
-        $query = str_replace('{ENDINTERVAL}',   $params['endInterval'],   $query);
+        $query = str_replace('{DATASOURCE}',    $this->params['dataSource'],    $query);
+        $query = str_replace('{STARTINTERVAL}', $this->params['startInterval'], $query);
+        $query = str_replace('{ENDINTERVAL}',   $this->params['endInterval'],   $query);
 
         $query = json_decode( $query );
 
