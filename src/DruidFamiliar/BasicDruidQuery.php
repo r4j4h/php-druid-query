@@ -5,7 +5,7 @@ namespace DruidFamiliar;
 abstract class BasicDruidQuery implements IDruidQuery
 {
 
-    private $params = Array();
+    protected $params = Array();
 
 
     /**

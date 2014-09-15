@@ -21,7 +21,7 @@ $q = new \DruidFamiliar\TransformingTimeBoundaryDruidQuery($druidDataSource);
 
 $r = $c->executeQuery($q);
 
-$q2 = new \DruidFamiliar\ExampleGroupByQueries\ReferralsByCompanyGroupBy();
+$q2 = new \DruidFamiliar\ExampleGroupByQueries\ReferralsByCompanyGroupByWithResponseObject();
 $q2->setParams(array(
     'dataSource' => $druidDataSource,
     'startInterval' => '2006-01-01T00:00',
@@ -29,7 +29,6 @@ $q2->setParams(array(
 ));
 
 $r2 = $c->executeQuery($q2);
-
 
 // $r =
 // array(2) {
@@ -59,12 +58,17 @@ TABLEHEADROW;
 ;
 $groupByBodyRows = '';
 
-foreach ( $r2 as $index => $chunk)
+foreach ( $r2 as $index => $val)
 {
-    $timestamp = $chunk['timestamp'];
-    $companyId = $chunk['event']['company_id'];
-    $facilityId = $chunk['event']['facility_id'];
-    $referrals = $chunk['event']['referral_count'];
+    /**
+     * @var /DruidFamiliar/ExampleResponseObjects/ExampleReferralByCompanyResponseObject
+     */
+    $exampleReferralByCompanyResponseObject = $val;
+
+    $timestamp = $exampleReferralByCompanyResponseObject->getTimestamp();
+    $companyId = $exampleReferralByCompanyResponseObject->getCompanyId();
+    $facilityId = $exampleReferralByCompanyResponseObject->getFacilityId();
+    $referrals = $exampleReferralByCompanyResponseObject->getReferrals();
 
     $groupByBodyRows .= <<<TABLEROW
 <tr>

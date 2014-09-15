@@ -5,7 +5,7 @@ namespace DruidFamiliar\ExampleGroupByQueries;
 use DruidFamiliar\BasicDruidQuery;
 use DruidFamiliar\Exception;
 
-class ExampleGroupBy extends BasicDruidQuery
+class ReferralsByCompanyGroupBy extends BasicDruidQuery
 {
 
     /**
@@ -18,7 +18,7 @@ class ExampleGroupBy extends BasicDruidQuery
     "queryType": "groupBy",
     "dataSource": "{DATASOURCE}",
     "granularity": { "type": "period", "period": "P3M"},
-    "dimensions": ["referral_id", "company_id", "patient_id", "facility_id", "referral_count"],
+    "dimensions": ["company_id", "facility_id", "referral_count"],
     "aggregations": [
         {"type": "count", "name": "total_entries"},
         {"type": "longSum", "name": "total_referral_countb", "fieldName": "referral_count"}
@@ -39,9 +39,9 @@ QUERYTEMPLATE;
     {
         $query = $this->queryTemplate;
 
-        $query = str_replace('{DATASOURCE}',    $params['dataSource'],    $query);
-        $query = str_replace('{STARTINTERVAL}', $params['startInterval'], $query);
-        $query = str_replace('{ENDINTERVAL}',   $params['endInterval'],   $query);
+        $query = str_replace('{DATASOURCE}',    'referral-visit-old-format',$query);
+        $query = str_replace('{STARTINTERVAL}', '2006-01-01T00:00',         $query);
+        $query = str_replace('{ENDINTERVAL}',   '2015-06-01T00:00',         $query);
 
         $query = json_decode( $query );
 
@@ -80,6 +80,8 @@ QUERYTEMPLATE;
      */
     public function handleResponse($response = Array())
     {
+        // TODO: Implement handleResponse() method.
+
         return $response;
     }
 }
