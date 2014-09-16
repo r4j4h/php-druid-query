@@ -66,6 +66,13 @@ Once those are run, require Composer's autoloader and you are off to the races, 
 3. Refer to the `Typical Use` section above.
 
 
+How to Test
+-------------
+
+From the root directory, in a command terminal run: `php vendor/phpunit/phpunit/phpunit tests`.
+
+
+
 Examples
 ---------------
 
