@@ -7,6 +7,11 @@ use DruidFamiliar\Exception;
 class FakeDruidTimeBoundaryConnection implements IDruidConnection
 {
 
+    public function __construct($ip, $port)
+    {
+
+    }
+
     public function executeQuery(IDruidQuery $query)
     {
         $generatedQuery = $query->generateQuery();
