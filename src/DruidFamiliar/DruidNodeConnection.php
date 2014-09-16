@@ -11,30 +11,47 @@ class DruidNodeConnection implements IDruidConnection
     private $ip;
     private $port;
     private $endpoint;
+    private $protocol;
 
-    public function __construct($ip, $port, $endpoint = '/druid/v2/') {
+    public function __construct($ip, $port, $endpoint = '/druid/v2/', $protocol = 'http') {
         $this->ip = $ip;
         $this->port = $port;
         $this->endpoint = $endpoint;
+        $this->protocol = $protocol;
     }
+
+    public function getBaseUrl()
+    {
+        $baseUrl = $this->protocol . '://' . $this->ip . ':' . $this->port;
+        $url = $baseUrl . $this->endpoint;
+        return $url;
+    }
+
+    public function createRequest($query)
+    {
+        $client = new \Guzzle\Http\Client();
+
+        $request = $client->post(
+            $this->getBaseUrl(),
+            array("content-type" => "application/json"),
+            json_encode($query)
+        );
+
+        return $request;
+    }
+
 
     public function executeQuery(IDruidQuery $query)
     {
         $generatedQuery = $query->generateQuery();
 
-        $client = new \Guzzle\Http\Client();
-
-        $baseUrl = 'http://' . $this->ip . ':' . $this->port;
-        $url = $baseUrl . $this->endpoint;
-
-        // Create a tweet using POST
-        $request = $client->post($url, array("content-type" => "application/json"), json_encode($generatedQuery));
+        // Create a POST request
+        $request = $this->createRequest( $generatedQuery );
 
         // Send the request and parse the JSON response into an array
         try
         {
             $response = $request->send();
-
         }
         catch (\Guzzle\Http\Exception\CurlException $curlException)
         {
