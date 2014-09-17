@@ -48,11 +48,24 @@ Right now, there is no tagged version.
 To install, it is suggested to use [Composer](http://getcomposer.org). If you have it installed, then the following instructions
 in a composer.json should be all you need to get started:
 
+If you are using PHP 5.3, there is a bug and you will need to use an alternative branch.
+
+Up to date PHP:
+
 ```json
 {
-    "minimum-stability": "dev",
     "require": {
-        "r4j4h/php-druid-query": "dev-master"
+        "r4j4h/php-druid-query": "~1.0-dev"
+    }
+}
+```
+
+PHP 5.3 Compatibility:
+
+```json
+{
+    "require": {
+        "r4j4h/php-druid-query": "dev-php-53-compat"
     }
 }
 ```
@@ -132,7 +145,6 @@ Appendix A. Composer.json example that does not rely on Packagist.org:
 
 ```json
 {
-    "minimum-stability": "dev",
     "repositories": [
         {
             "type": "vcs",
@@ -140,7 +152,7 @@ Appendix A. Composer.json example that does not rely on Packagist.org:
         }
     ],
     "require": {
-        "r4j4h/php-druid-query": "dev-master"
+        "r4j4h/php-druid-query": "~1.0-dev"
     }
 }
 ```
