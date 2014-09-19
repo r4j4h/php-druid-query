@@ -2,7 +2,7 @@
 
 //require '../../vendor/autoload.php';
 
-namespace DruidFamiliar;
+namespace DruidFamiliar\QueryExecutor;
 
 use DruidFamiliar\Exception;
 use DruidFamiliar\Interfaces\IDruidQueryExecutor;

@@ -2,7 +2,7 @@
 
 namespace DruidFamiliar\Test;
 
-use DruidFamiliar\DruidNodeDruidQueryExecutor;
+use DruidFamiliar\QueryExecutor\DruidNodeDruidQueryExecutor;
 use DruidFamiliar\QueryGenerator\TimeBoundaryDruidQueryGenerator;
 use PHPUnit_Framework_TestCase;
 
@@ -74,7 +74,7 @@ class DruidNodeConnectionTest extends PHPUnit_Framework_TestCase
         /**
          * @var \DruidFamiliar\DruidNodeDruidQueryExecutor $mockConnection
          */
-        $mockConnection = $this->getMockBuilder('\DruidFamiliar\DruidNodeConnection')
+        $mockConnection = $this->getMockBuilder('\DruidFamiliar\QueryExecutor\DruidNodeDruidQueryExecutor')
             ->setConstructorArgs(array('1.2.3.4', '1234'))
             ->setMethods(array('createRequest'))
             ->getMock();
