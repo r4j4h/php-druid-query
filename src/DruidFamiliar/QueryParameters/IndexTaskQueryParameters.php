@@ -152,13 +152,6 @@ class IndexTaskQueryParameters extends AbstractTaskParameters implements IDruidQ
 
     }
 
-
-    public function isValid()
-    {
-        // TODO: Implement isValid() method.
-        throw new \Exception('need to implement'); // todo implement
-    }
-
     /**
      * @throws MissingParametersException
      */

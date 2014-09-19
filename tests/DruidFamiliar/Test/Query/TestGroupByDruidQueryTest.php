@@ -3,7 +3,7 @@
 namespace DruidFamiliar\Test;
 
 use DruidFamiliar\ExampleGroupByQueries\ReferralsByCompanyGroupByQueryParameters;
-use DruidFamiliar\QueryParameters\IndexTaskQueryParameters;
+use DruidFamiliar\QueryParameters\SimpleGroupByQueryParameters;
 use PHPUnit_Framework_TestCase;
 
 class TestGroupByDruidQueryTest extends PHPUnit_Framework_TestCase
@@ -12,7 +12,7 @@ class TestGroupByDruidQueryTest extends PHPUnit_Framework_TestCase
 
     public function getMockIndexTaskQueryParameters()
     {
-        $params = new IndexTaskQueryParameters();
+        $params = new SimpleGroupByQueryParameters();
 
         $params->intervalStart = '1981-01-01T4:20';
         $params->intervalEnd = '2012-03-01T3:00';
@@ -122,7 +122,7 @@ class TestGroupByDruidQueryTest extends PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('\DruidFamiliar\Exception\MissingParametersException');
 
-        $params = new IndexTaskQueryParameters();
+        $params = new SimpleGroupByQueryParameters();
 
         $q = new \DruidFamiliar\QueryGenerator\TestGroupByDruidQueryGenerator($params);
 

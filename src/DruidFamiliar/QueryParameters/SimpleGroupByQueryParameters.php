@@ -152,13 +152,6 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
 
     }
 
-
-    public function isValid()
-    {
-        // TODO: Implement isValid() method.
-        throw new \Exception('need to implement'); // todo implement
-    }
-
     /**
      * @throws MissingParametersException
      */

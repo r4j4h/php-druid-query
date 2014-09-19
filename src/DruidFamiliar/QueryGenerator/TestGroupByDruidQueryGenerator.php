@@ -7,7 +7,7 @@ use DruidFamiliar\Exception\MissingParametersException;
 use DruidFamiliar\Interfaces\IDruidQueryGenerator;
 use DruidFamiliar\Interfaces\IDruidQueryParameters;
 use DruidFamiliar\Interfaces\IDruidQueryResponseHandler;
-use DruidFamiliar\QueryParameters\IndexTaskQueryParameters;
+use DruidFamiliar\QueryParameters\SimpleGroupByQueryParameters;
 
 class TestGroupByDruidQueryGenerator implements IDruidQueryGenerator
 {
@@ -41,10 +41,10 @@ QUERYTEMPLATE;
     public function generateQuery(IDruidQueryParameters $params)
     {
         /**
-         * @var IndexTaskQueryParameters $params
+         * @var SimpleGroupByQueryParameters $params
          */
-        if ( !$params instanceof IndexTaskQueryParameters ) {
-            throw new \Exception('Expected $params to be instanceof IndexTaskQueryParameters');
+        if ( !$params instanceof SimpleGroupByQueryParameters ) {
+            throw new \Exception('Expected $params to be instanceof SimpleGroupByQueryParameters');
         }
 
         $query = $this->queryTemplate;
