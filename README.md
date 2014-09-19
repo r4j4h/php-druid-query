@@ -18,7 +18,7 @@ it currently is `php-druid-query` while the namespace is `DruidFamiliar`. :/
 Changelog
 -----------
 
-1.1 Major refactoring
+0.2.x Major refactoring
 
 - Query and Response Handling separated. All interfaces renamed and redesigned.
   - `IDruidConnection` is now `IDruidQueryExecutor`.
@@ -26,7 +26,7 @@ Changelog
   - `BaseQuery` is no longer needed, many similar classes were deprecated or removed.
   - `DruidNodeConnection` is now `DruidNodeDruidQueryExecutor`.
 
-1.0 Initial release
+0.1.0 Initial release
 
 Quick sketch for sharing early.
 
