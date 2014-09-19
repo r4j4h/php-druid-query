@@ -125,19 +125,6 @@ The HTML outputting ones should print the query results to HTML:
 
 
 
-Recently Added
----------------
-
-- [Abstract class BasicDruidQuery](src/DruidFamiliar/BasicDruidQuery.php)
-- [Group By Example](examples/html-query-printer-improved.php)
-
-
-Things I want to change: (major breaking changes coming soon)
----------------
-One mistake I made is the generateQuery function should really return a raw JSON string ready for submission instead of a PHP array that the
-
-
-
 
 How it Works & How to Extend
 ---------------
