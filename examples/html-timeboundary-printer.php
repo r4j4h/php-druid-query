@@ -5,6 +5,8 @@
  * Point your browser at this through a web server and you should see nicely formatted time boundary data. :)
  */
 
+use DruidFamiliar\Response\TimeBoundaryResponse;
+
 require_once('../vendor/autoload.php');
 $examplesDir = dirname(__FILE__);
 $examplesConfig = require_once($examplesDir . '/_examples-config.php');
@@ -17,21 +19,15 @@ date_default_timezone_set('America/Denver');
 
 $c = new \DruidFamiliar\DruidNodeConnection($druidHost, $druidPort);
 
-$q = new \DruidFamiliar\TransformingTimeBoundaryDruidQuery($druidDataSource);
+$q = new \DruidFamiliar\QueryGenerator\TimeBoundaryDruidQueryGenerator($druidDataSource);
+$p = new \DruidFamiliar\QueryParameters\TimeBoundaryQueryParameters($druidDataSource);
+/**
+ * @var TimeBoundaryResponse $r
+ */
+$r = $c->executeQuery($q, $p, new DruidFamiliar\ResponseHandler\TimeBoundaryResponseHandler());
 
-$r = $c->executeQuery($q);
-
-// $r =
-// array(2) {
-//     ["minTime"]=>
-//   string(24) "2011-06-01T00:00:11.000Z"
-//     ["maxTime"]=>
-//   string(24) "2011-11-30T23:55:34.000Z"
-// }
-
-
-$startTime = new DateTime( $r['minTime'] );
-$endTime = new DateTime( $r['maxTime'] );
+$startTime = new DateTime( $r->minTime );
+$endTime = new DateTime( $r->maxTime );
 
 $formattedStartTime = $startTime->format("F m, Y h:i:s A");
 $formattedEndTime = $endTime->format("F m, Y h:i:s A");

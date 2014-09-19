@@ -15,6 +15,26 @@ It's kind of stupid. Feel free to suggest another. I think the repo name should 
 it currently is `php-druid-query` while the namespace is `DruidFamiliar`. :/
 
 
+Coming Changes
+---------------
+
+The next changes are to integrate commonalities with php-druid-ingest.
+
+
+Changelog
+-----------
+
+1.1 Major refactoring
+
+- Query and Response Handling separated. All interfaces renamed and redesigned.
+  - `IDruidConnection` is now `IDruidQueryExecutor`.
+  - `IDruidQuery` is split into `IDruidQueryGenerator` and `IDruidQueryParameters` and `IDruidQueryResponseHandler`.
+  - `BaseQuery` is no longer needed, many similar classes were deprecated or removed.
+
+1.0 Initial release
+
+Quick sketch for sharing early.
+
 Typical Use
 ---------------
 
@@ -77,7 +97,7 @@ Once that is in, `composer install` and `composer update` should work.
 Once those are run, require Composer's autoloader and you are off to the races, or tree circles as it were (bad Druid reference):
 
 1. `require 'vendor/autoload.php';`
-2. `$yay = new \DruidFamiliar\TimeBoundaryDruidQuery('my-cool-data-source');`
+2. `$yay = new \DruidFamiliar\Query\TimeBoundaryDruidQuery('my-cool-data-source');`
 3. Refer to the `Typical Use` section above.
 
 

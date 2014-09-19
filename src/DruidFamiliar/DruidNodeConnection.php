@@ -5,8 +5,12 @@
 namespace DruidFamiliar;
 
 use DruidFamiliar\Exception;
+use DruidFamiliar\Interfaces\IDruidQueryExecutor;
+use DruidFamiliar\Interfaces\IDruidQueryGenerator;
+use DruidFamiliar\Interfaces\IDruidQueryParameters;
+use DruidFamiliar\Interfaces\IDruidQueryResponseHandler;
 
-class DruidNodeConnection implements IDruidConnection
+class DruidNodeConnection implements IDruidQueryExecutor
 {
     private $ip;
     private $port;
@@ -41,9 +45,9 @@ class DruidNodeConnection implements IDruidConnection
     }
 
 
-    public function executeQuery(IDruidQuery $query)
+    public function executeQuery(IDruidQueryGenerator $queryGenerator, IDruidQueryParameters $params, IDruidQueryResponseHandler $responseHandler)
     {
-        $generatedQuery = $query->generateQuery();
+        $generatedQuery = $queryGenerator->generateQuery($params);
 
         // Create a POST request
         $request = $this->createRequest( $generatedQuery );
@@ -60,7 +64,7 @@ class DruidNodeConnection implements IDruidConnection
 
         $data = $response->json();
 
-        $formattedResponse = $query->handleResponse($data);
+        $formattedResponse = $responseHandler->handleResponse($data);
 
         return $formattedResponse;
     }

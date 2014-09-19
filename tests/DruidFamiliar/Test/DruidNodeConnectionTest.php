@@ -3,7 +3,7 @@
 namespace DruidFamiliar\Test;
 
 use DruidFamiliar\DruidNodeConnection;
-use DruidFamiliar\TimeBoundaryDruidQuery;
+use DruidFamiliar\QueryGenerator\TimeBoundaryDruidQueryGenerator;
 use PHPUnit_Framework_TestCase;
 
 class DruidNodeConnectionTest extends PHPUnit_Framework_TestCase
@@ -39,7 +39,7 @@ class DruidNodeConnectionTest extends PHPUnit_Framework_TestCase
     public function testCreateRequest()
     {
         $c = new DruidNodeConnection('1.2.3.4', '1234', '/mypath/');
-        $query = new TimeBoundaryDruidQuery('some-datasource');
+        $query = new TimeBoundaryDruidQueryGenerator('some-datasource');
 
         $req = $c->createRequest( $query );
 
@@ -71,24 +71,41 @@ class DruidNodeConnectionTest extends PHPUnit_Framework_TestCase
             ->willReturn($mockResponse);
 
         // Create fake connection
-        $mockConnection = $this->getMockBuilder('DruidFamiliar\DruidNodeConnection')
-            ->setMethods(array('createRequest'))
+        /**
+         * @var \DruidFamiliar\DruidNodeConnection $mockConnection
+         */
+        $mockConnection = $this->getMockBuilder('\DruidFamiliar\DruidNodeConnection')
             ->setConstructorArgs(array('1.2.3.4', '1234'))
+            ->setMethods(array('createRequest'))
             ->getMock();
         $mockConnection->expects($this->once())
             ->method('createRequest')
             ->willReturn( $mockRequest );
 
-        // Create fake query to verify handleResponse is called
-        $mockQuery = $this->getMockBuilder('DruidFamiliar\TimeBoundaryDruidQuery')
-            ->setMethods(array('handleResponse'))
-            ->setConstructorArgs(array('my-datasource'))
+
+        // Create fake query params
+        $mockQueryParams = $this->getMockBuilder('DruidFamiliar\Interfaces\IDruidQueryParameters')
             ->getMock();
+
+        // Create fake query generator
+        $mockQuery = $this->getMockBuilder('DruidFamiliar\Interfaces\IDruidQueryGenerator')
+            ->setMethods(array('generateQuery'))
+            ->getMock();
+        // Expect it to be called with given query params and return the json body
         $mockQuery->expects($this->once())
+            ->method('generateQuery')
+            ->with($mockQueryParams)
+            ->willReturn($jsonData);
+
+        // Create fake response handler to verify it is called with the returned json body
+        $mockResponseHandler = $this->getMockBuilder('DruidFamiliar\Interfaces\IDruidQueryResponseHandler')
+            ->setMethods(array('handleResponse'))
+            ->getMock();
+        $mockResponseHandler->expects($this->once())
             ->method('handleResponse')
             ->with($jsonData);
 
-        $mockConnection->executeQuery( $mockQuery );
+        $mockConnection->executeQuery( $mockQuery, $mockQueryParams, $mockResponseHandler );
     }
 
 }

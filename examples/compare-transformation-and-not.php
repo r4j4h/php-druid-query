@@ -12,9 +12,9 @@ date_default_timezone_set('America/Denver');
 
 $c = new \DruidFamiliar\DruidNodeConnection($druidHost, $druidPort);
 
-$q = new \DruidFamiliar\TimeBoundaryDruidQuery($druidDataSource);
-
-$r = $c->executeQuery($q);
+$q = new \DruidFamiliar\QueryGenerator\TimeBoundaryDruidQueryGenerator();
+$p = new \DruidFamiliar\QueryParameters\TimeBoundaryQueryParameters($druidDataSource);
+$r = $c->executeQuery($q, $p, new DruidFamiliar\ResponseHandler\DoNothingResponseHandler());
 
 var_dump( $r );
 
@@ -34,15 +34,16 @@ var_dump( $r );
 //}
 
 
-$q = new \DruidFamiliar\TransformingTimeBoundaryDruidQuery($druidDataSource);
+$q = new \DruidFamiliar\QueryGenerator\TimeBoundaryDruidQueryGenerator($druidDataSource);
+$p = new \DruidFamiliar\QueryParameters\TimeBoundaryQueryParameters($druidDataSource);
+$r = $c->executeQuery($q, $p, new DruidFamiliar\ResponseHandler\TimeBoundaryResponseHandler());
 
-$r = $c->executeQuery($q);
 
 var_dump( $r );
 
-//array(2) {
-//    ["minTime"]=>
-//  string(24) "2011-06-01T00:00:11.000Z"
-//    ["maxTime"]=>
-//  string(24) "2011-11-30T23:55:34.000Z"
+//object(DruidFamiliar\Response\TimeBoundaryResponse)#11 (2) {
+//  ["minTime"]=>
+//  string(24) "2008-02-06T11:47:39.000Z"
+//  ["maxTime"]=>
+//  string(24) "2008-12-31T19:36:48.000Z"
 //}
