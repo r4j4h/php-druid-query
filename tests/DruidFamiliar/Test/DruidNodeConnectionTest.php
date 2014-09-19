@@ -2,7 +2,7 @@
 
 namespace DruidFamiliar\Test;
 
-use DruidFamiliar\DruidNodeConnection;
+use DruidFamiliar\DruidNodeDruidQueryExecutor;
 use DruidFamiliar\QueryGenerator\TimeBoundaryDruidQueryGenerator;
 use PHPUnit_Framework_TestCase;
 
@@ -11,7 +11,7 @@ class DruidNodeConnectionTest extends PHPUnit_Framework_TestCase
 
     public function testGetBaseUrlAssemblesCorrectEndpoint()
     {
-        $c = new DruidNodeConnection('1.2.3.4', '1234', '/home/', 'https');
+        $c = new DruidNodeDruidQueryExecutor('1.2.3.4', '1234', '/home/', 'https');
         $b = $c->getBaseUrl();
         $this->assertEquals( 'https://1.2.3.4:1234/home/', $b);
     }
@@ -21,7 +21,7 @@ class DruidNodeConnectionTest extends PHPUnit_Framework_TestCase
      */
     public function testDefaultsToDruidV2Endpoint()
     {
-        $c = new DruidNodeConnection('1.2.3.4', '1234');
+        $c = new DruidNodeDruidQueryExecutor('1.2.3.4', '1234');
         $b = $c->getBaseUrl();
         $this->assertEquals( 'http://1.2.3.4:1234/druid/v2/', $b);
     }
@@ -31,14 +31,14 @@ class DruidNodeConnectionTest extends PHPUnit_Framework_TestCase
      */
     public function testDefaultsToHttp()
     {
-        $c = new DruidNodeConnection('1.2.3.4', '1234', '/home/');
+        $c = new DruidNodeDruidQueryExecutor('1.2.3.4', '1234', '/home/');
         $b = $c->getBaseUrl();
         $this->assertEquals( 'http://1.2.3.4:1234/home/', $b);
     }
 
     public function testCreateRequest()
     {
-        $c = new DruidNodeConnection('1.2.3.4', '1234', '/mypath/');
+        $c = new DruidNodeDruidQueryExecutor('1.2.3.4', '1234', '/mypath/');
         $query = new TimeBoundaryDruidQueryGenerator('some-datasource');
 
         $req = $c->createRequest( $query );
@@ -72,7 +72,7 @@ class DruidNodeConnectionTest extends PHPUnit_Framework_TestCase
 
         // Create fake connection
         /**
-         * @var \DruidFamiliar\DruidNodeConnection $mockConnection
+         * @var \DruidFamiliar\DruidNodeDruidQueryExecutor $mockConnection
          */
         $mockConnection = $this->getMockBuilder('\DruidFamiliar\DruidNodeConnection')
             ->setConstructorArgs(array('1.2.3.4', '1234'))

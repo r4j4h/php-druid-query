@@ -10,7 +10,7 @@ use DruidFamiliar\Interfaces\IDruidQueryGenerator;
 use DruidFamiliar\Interfaces\IDruidQueryParameters;
 use DruidFamiliar\Interfaces\IDruidQueryResponseHandler;
 
-class DruidNodeConnection implements IDruidQueryExecutor
+class DruidNodeDruidQueryExecutor implements IDruidQueryExecutor
 {
     private $ip;
     private $port;

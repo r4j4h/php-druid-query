@@ -22,7 +22,7 @@ date_default_timezone_set('America/Denver');
 
 try
 {
-    $c = new \DruidFamiliar\DruidNodeConnection($druidHost, $druidPort);
+    $c = new \DruidFamiliar\DruidNodeDruidQueryExecutor($druidHost, $druidPort);
 
     $q = new \DruidFamiliar\QueryGenerator\TimeBoundaryDruidQueryGenerator();
 

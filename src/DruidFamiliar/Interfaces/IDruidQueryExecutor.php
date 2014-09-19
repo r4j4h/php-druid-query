@@ -11,6 +11,8 @@ interface IDruidQueryExecutor
     /**
      * Executes a Druid query using the provided query generator, parameters, and response payload handler.
      *
+     * See DruidFamiliar\ResponseHandler\DoNothingResponseHandler.
+     *
      * @param IDruidQueryGenerator $queryGenerator
      * @param IDruidQueryParameters $params
      * @param IDruidQueryResponseHandler $responseHandler

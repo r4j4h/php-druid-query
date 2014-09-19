@@ -17,7 +17,7 @@ $druidDataSource = $examplesConfig['druid-dataSource'];
 
 date_default_timezone_set('America/Denver');
 
-$c = new \DruidFamiliar\DruidNodeConnection($druidHost, $druidPort);
+$c = new \DruidFamiliar\DruidNodeDruidQueryExecutor($druidHost, $druidPort);
 
 $q = new \DruidFamiliar\QueryGenerator\TimeBoundaryDruidQueryGenerator($druidDataSource);
 $p = new \DruidFamiliar\QueryParameters\TimeBoundaryQueryParameters($druidDataSource);
