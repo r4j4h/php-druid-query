@@ -2,7 +2,6 @@
 
 namespace DruidFamiliar\Test;
 
-use DruidFamiliar\ExampleGroupByQueries\ReferralsByCompanyGroupByQueryParameters;
 use DruidFamiliar\QueryParameters\SimpleGroupByQueryParameters;
 use PHPUnit_Framework_TestCase;
 
@@ -11,7 +10,7 @@ class TestGroupByDruidQueryGeneratorTest extends PHPUnit_Framework_TestCase
 
     private $mockDataSourceName = 'my-datasource';
 
-    public function getMockIndexTaskQueryParameters()
+    public function getMockSimpleGroupByQueryParameters()
     {
         $params = new SimpleGroupByQueryParameters();
 
@@ -54,7 +53,7 @@ class TestGroupByDruidQueryGeneratorTest extends PHPUnit_Framework_TestCase
 
     public function testGenerateQueryReturnsJSONString()
     {
-        $params = $this->getMockIndexTaskQueryParameters();
+        $params = $this->getMockSimpleGroupByQueryParameters();
 
         $q = new \DruidFamiliar\QueryGenerator\TestGroupByDruidQueryGenerator();
 
@@ -140,7 +139,7 @@ class TestGroupByDruidQueryGeneratorTest extends PHPUnit_Framework_TestCase
     public function testGenerateQueryRequiresDataSource()
     {
         try {
-            $params = $this->getMockIndexTaskQueryParameters();
+            $params = $this->getMockSimpleGroupByQueryParameters();
             $params->dataSource = NULL;
 
             $q = new \DruidFamiliar\QueryGenerator\TestGroupByDruidQueryGenerator();
@@ -157,7 +156,7 @@ class TestGroupByDruidQueryGeneratorTest extends PHPUnit_Framework_TestCase
     public function testGenerateQueryRequiresQueryType()
     {
         try {
-            $params = $this->getMockIndexTaskQueryParameters();
+            $params = $this->getMockSimpleGroupByQueryParameters();
             $params->queryType = NULL;
 
             $q = new \DruidFamiliar\QueryGenerator\TestGroupByDruidQueryGenerator($params);
@@ -177,7 +176,7 @@ class TestGroupByDruidQueryGeneratorTest extends PHPUnit_Framework_TestCase
 
         $params = new SimpleGroupByQueryParameters();
 
-        $params = $this->getMockIndexTaskQueryParameters();
+        $params = $this->getMockSimpleGroupByQueryParameters();
         $params->intervalStart = NULL;
         $params->intervalEnd = NULL;
 
@@ -190,7 +189,7 @@ class TestGroupByDruidQueryGeneratorTest extends PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('\DruidFamiliar\Exception\MissingParametersException');
 
-        $params = $this->getMockIndexTaskQueryParameters();
+        $params = $this->getMockSimpleGroupByQueryParameters();
         $params->intervalStart = NULL;
 
         $q = new \DruidFamiliar\QueryGenerator\TestGroupByDruidQueryGenerator($params);
@@ -202,7 +201,7 @@ class TestGroupByDruidQueryGeneratorTest extends PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('\DruidFamiliar\Exception\MissingParametersException');
 
-        $params = $this->getMockIndexTaskQueryParameters();
+        $params = $this->getMockSimpleGroupByQueryParameters();
         $params->intervalEnd = NULL;
 
         $q = new \DruidFamiliar\QueryGenerator\TestGroupByDruidQueryGenerator($params);
@@ -212,7 +211,7 @@ class TestGroupByDruidQueryGeneratorTest extends PHPUnit_Framework_TestCase
 
     public function testGenerateQueryHandlesNotHavingAggregations()
     {
-        $params = $this->getMockIndexTaskQueryParameters();
+        $params = $this->getMockSimpleGroupByQueryParameters();
         $params->setAggregators(array());
 
         $q = new \DruidFamiliar\QueryGenerator\TestGroupByDruidQueryGenerator($params);
@@ -229,7 +228,7 @@ class TestGroupByDruidQueryGeneratorTest extends PHPUnit_Framework_TestCase
 
     public function testGenerateQueryHandlesNotHavingPostAggregations()
     {
-        $params = $this->getMockIndexTaskQueryParameters();
+        $params = $this->getMockSimpleGroupByQueryParameters();
         $params->setPostAggregators(array());
 
         $q = new \DruidFamiliar\QueryGenerator\TestGroupByDruidQueryGenerator($params);
