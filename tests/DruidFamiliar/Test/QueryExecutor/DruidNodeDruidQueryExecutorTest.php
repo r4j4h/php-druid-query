@@ -6,7 +6,7 @@ use DruidFamiliar\QueryExecutor\DruidNodeDruidQueryExecutor;
 use DruidFamiliar\QueryGenerator\TimeBoundaryDruidQueryGenerator;
 use PHPUnit_Framework_TestCase;
 
-class DruidNodeConnectionTest extends PHPUnit_Framework_TestCase
+class DruidNodeDruidQueryExecutorTest extends PHPUnit_Framework_TestCase
 {
 
     public function testGetBaseUrlAssemblesCorrectEndpoint()
@@ -72,7 +72,7 @@ class DruidNodeConnectionTest extends PHPUnit_Framework_TestCase
 
         // Create fake connection
         /**
-         * @var \DruidFamiliar\DruidNodeDruidQueryExecutor $mockConnection
+         * @var \DruidFamiliar\QueryExecutor\DruidNodeDruidQueryExecutor $mockConnection
          */
         $mockConnection = $this->getMockBuilder('\DruidFamiliar\QueryExecutor\DruidNodeDruidQueryExecutor')
             ->setConstructorArgs(array('1.2.3.4', '1234'))

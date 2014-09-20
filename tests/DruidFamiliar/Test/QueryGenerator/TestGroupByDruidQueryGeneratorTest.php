@@ -6,8 +6,9 @@ use DruidFamiliar\ExampleGroupByQueries\ReferralsByCompanyGroupByQueryParameters
 use DruidFamiliar\QueryParameters\SimpleGroupByQueryParameters;
 use PHPUnit_Framework_TestCase;
 
-class TestGroupByDruidQueryTest extends PHPUnit_Framework_TestCase
+class TestGroupByDruidQueryGeneratorTest extends PHPUnit_Framework_TestCase
 {
+
     private $mockDataSourceName = 'my-datasource';
 
     public function getMockIndexTaskQueryParameters()
@@ -50,18 +51,19 @@ class TestGroupByDruidQueryTest extends PHPUnit_Framework_TestCase
         return $params;
     }
 
+
     public function testGenerateQueryReturnsJSONString()
     {
         $params = $this->getMockIndexTaskQueryParameters();
 
         $q = new \DruidFamiliar\QueryGenerator\TestGroupByDruidQueryGenerator();
 
-        $params = new ReferralsByCompanyGroupByQueryParameters('test','2010-01-01','2010-02-01');
         $query = $q->generateQuery($params);
 
         $this->assertJson( $query );
         return $query;
     }
+
 
     /**
      * @depends testGenerateQueryReturnsJSONString
@@ -74,25 +76,72 @@ class TestGroupByDruidQueryTest extends PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('dataSource', $query, "Generated query must include required parameters.");
     }
 
+
+    /**
+     * @depends testGenerateQueryReturnsJSONString
+     */
+    public function testGenerateQueryIncludesAggregations($jsonString)
+    {
+
+        $query = json_decode( $jsonString, true );
+
+        $this->assertArrayHasKey('aggregations', $query);
+        $this->assertCount( 2, $query['aggregations'] );
+
+        $aggs = $query['aggregations'];
+
+        $firstAgg = $aggs[0];
+        $secondAgg = $aggs[1];
+
+        $this->assertEquals( "count",                   $firstAgg['type'] );
+        $this->assertEquals( "count",                   $firstAgg['name'] );
+        $this->assertEquals( "longSum",                 $secondAgg['type'] );
+        $this->assertEquals( "total_referral_count",    $secondAgg['name'] );
+        $this->assertEquals( "referral_count",       $secondAgg['fieldName'] );
+    }
+
     /**
      * @depends testGenerateQueryReturnsJSONString
      */
     public function testGenerateQueryIncludesPostAggregations($jsonString)
     {
+
         $query = json_decode( $jsonString, true );
 
         $this->assertArrayHasKey('postAggregations', $query);
         $this->assertCount( 2, $query['postAggregations'] );
 
-        $this->markTestIncomplete('need to test exact post aggs came through');
+        $postAggs = $query['postAggregations'];
+
+        $firstPostAgg = $postAggs[0];
+        $secondPostAgg = $postAggs[1];
+
+        $this->assertEquals( "arithmetic",          $firstPostAgg['type'] );
+        $this->assertEquals( "inactive_patients",   $firstPostAgg['name'] );
+        $this->assertEquals( "-",                   $firstPostAgg['fn'] );
+        $this->assertEquals( "fieldAccess",         $firstPostAgg['fields'][0]['type'] );
+        $this->assertEquals( "referral_count",      $firstPostAgg['fields'][0]['fieldName'] );
+        $this->assertEquals( "fieldAccess",         $firstPostAgg['fields'][1]['type'] );
+        $this->assertEquals( "active_patients",     $firstPostAgg['fields'][1]['fieldName'] );
+
+        $this->assertEquals( "javascript",          $secondPostAgg['type'] );
+        $this->assertEquals( "shrinkage",           $secondPostAgg['name'] );
+        $this->assertCount(  2,                     $secondPostAgg['fieldNames'] );
+        $this->assertEquals( "referral_count",      $secondPostAgg['fieldNames'][0] );
+        $this->assertEquals( "discharged_patients", $secondPostAgg['fieldNames'][1] );
+        $this->assertEquals(
+            "function(total, discharge) { return 100 * (total /w discharge); }",
+            $secondPostAgg['function']
+        );
+
     }
 
-    // TODO Stub out more tests
 
     public function testGenerateQueryRequiresDataSource()
     {
         try {
-            $params = new ReferralsByCompanyGroupByQueryParameters('test','2010-01-01','2010-02-01');
+            $params = $this->getMockIndexTaskQueryParameters();
+            $params->dataSource = NULL;
 
             $q = new \DruidFamiliar\QueryGenerator\TestGroupByDruidQueryGenerator();
             $query = $q->generateQuery($params);
@@ -104,10 +153,13 @@ class TestGroupByDruidQueryTest extends PHPUnit_Framework_TestCase
         $this->fail('An expected exception was not raised');
     }
 
+
     public function testGenerateQueryRequiresQueryType()
     {
         try {
-            $params = new ReferralsByCompanyGroupByQueryParameters('test','2010-01-01','2010-02-01');
+            $params = $this->getMockIndexTaskQueryParameters();
+            $params->queryType = NULL;
+
             $q = new \DruidFamiliar\QueryGenerator\TestGroupByDruidQueryGenerator($params);
             $query = $q->generateQuery($params);
         } catch (\DruidFamiliar\Exception\MissingParametersException $e) {
@@ -118,17 +170,43 @@ class TestGroupByDruidQueryTest extends PHPUnit_Framework_TestCase
         $this->fail('An expected exception was not raised');
     }
 
+
     public function testGenerateQueryRequiresIntervals()
     {
         $this->setExpectedException('\DruidFamiliar\Exception\MissingParametersException');
 
         $params = new SimpleGroupByQueryParameters();
 
+        $params = $this->getMockIndexTaskQueryParameters();
+        $params->intervalStart = NULL;
+        $params->intervalEnd = NULL;
+
         $q = new \DruidFamiliar\QueryGenerator\TestGroupByDruidQueryGenerator($params);
+        $q->generateQuery($params);
+    }
 
-        $params = new ReferralsByCompanyGroupByQueryParameters('test','2010-01-01','2010-02-01');
-        $query = $q->generateQuery($params);
 
+    public function testGenerateQueryRequiresIntervalStart()
+    {
+        $this->setExpectedException('\DruidFamiliar\Exception\MissingParametersException');
+
+        $params = $this->getMockIndexTaskQueryParameters();
+        $params->intervalStart = NULL;
+
+        $q = new \DruidFamiliar\QueryGenerator\TestGroupByDruidQueryGenerator($params);
+        $q->generateQuery($params);
+    }
+
+
+    public function testGenerateQueryRequiresIntervalEnd()
+    {
+        $this->setExpectedException('\DruidFamiliar\Exception\MissingParametersException');
+
+        $params = $this->getMockIndexTaskQueryParameters();
+        $params->intervalEnd = NULL;
+
+        $q = new \DruidFamiliar\QueryGenerator\TestGroupByDruidQueryGenerator($params);
+        $q->generateQuery($params);
     }
 
 
@@ -139,7 +217,6 @@ class TestGroupByDruidQueryTest extends PHPUnit_Framework_TestCase
 
         $q = new \DruidFamiliar\QueryGenerator\TestGroupByDruidQueryGenerator($params);
 
-        $params = new ReferralsByCompanyGroupByQueryParameters('test','2010-01-01','2010-02-01');
         $query = $q->generateQuery($params);
 
         $this->assertJson( $query );
@@ -149,6 +226,7 @@ class TestGroupByDruidQueryTest extends PHPUnit_Framework_TestCase
         $this->assertArrayNotHasKey('aggregations', $query);
     }
 
+
     public function testGenerateQueryHandlesNotHavingPostAggregations()
     {
         $params = $this->getMockIndexTaskQueryParameters();
@@ -156,7 +234,6 @@ class TestGroupByDruidQueryTest extends PHPUnit_Framework_TestCase
 
         $q = new \DruidFamiliar\QueryGenerator\TestGroupByDruidQueryGenerator($params);
 
-        $params = new ReferralsByCompanyGroupByQueryParameters('test','2010-01-01','2010-02-01');
         $query = $q->generateQuery($params);
 
         $this->assertJson( $query );
@@ -165,6 +242,5 @@ class TestGroupByDruidQueryTest extends PHPUnit_Framework_TestCase
 
         $this->assertArrayNotHasKey('postAggregations', $query);
     }
-
 
 }

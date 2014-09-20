@@ -22,7 +22,15 @@ class SegmentMetadataDruidQueryGenerator implements IDruidQueryGenerator
      */
     public function generateQuery(IDruidQueryParameters $params)
     {
-        // @var SegmentMetadataQueryParameters $params
+        /**
+         * @var SegmentMetadataQueryParameters $params
+         */
+        if ( !$params instanceof SegmentMetadataQueryParameters ) {
+            throw new \Exception('Expected $params to be instanceof SegmentMetadataQueryParameters');
+        }
+
+        $params->validate();
+
         return array(
             'queryType' => 'segmentMetadata',
             "dataSource" => $params->dataSource,

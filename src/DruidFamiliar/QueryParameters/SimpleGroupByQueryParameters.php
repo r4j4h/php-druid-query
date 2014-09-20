@@ -15,6 +15,13 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
 {
 
     /**
+     * Query Type
+     *
+     * @var string
+     */
+    public $queryType = "groupBy";
+
+    /**
      * ISO Time String of Batch Ingestion Window Start Time
      *
      * @var string
@@ -157,7 +164,10 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
      */
     public function validate()
     {
+        // Validate missing params
         $missingParams = array();
+
+        if ( !isset( $this->queryType       ) ) { $missingParams[] = 'queryType';       }
         if ( !isset( $this->dataSource      ) ) { $missingParams[] = 'dataSource';      }
         if ( !isset( $this->intervalStart   ) ) { $missingParams[] = 'intervalStart';   }
         if ( !isset( $this->intervalEnd     ) ) { $missingParams[] = 'intervalEnd';     }
@@ -169,5 +179,18 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
         if ( count($missingParams) > 0 ) {
             throw new \DruidFamiliar\Exception\MissingParametersException($missingParams);
         }
+
+
+
+        // Validate empty params
+        $emptyParams = array();
+
+        if ( $this->queryType === '' ) { $emptyParams[] = 'queryType'; }
+        if ( $this->dataSource === '' ) { $emptyParams[] = 'dataSource'; }
+
+        if ( count($emptyParams) > 0 ) {
+            throw new \DruidFamiliar\Exception\MissingParametersException($missingParams);
+        }
     }
+
 }

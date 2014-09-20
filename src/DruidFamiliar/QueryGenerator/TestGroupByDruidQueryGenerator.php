@@ -15,7 +15,6 @@ class TestGroupByDruidQueryGenerator implements IDruidQueryGenerator
     /**
      * As opposed to building the query body in PHP associative arrays, one could also template them.
      *
-     * TODO groupBy => "{INDEXTYPE}"
      * @var string
      */
     private $queryTemplate = <<<QUERYTEMPLATE
@@ -47,9 +46,33 @@ QUERYTEMPLATE;
             throw new \Exception('Expected $params to be instanceof SimpleGroupByQueryParameters');
         }
 
+        $params->validate();
+
         $query = $this->queryTemplate;
 
-        $query = str_replace('{QUERYTYPE}',             "groupBy",                                  $query);
+        // Assemble the query instead
+        $queryKeys = array();
+
+        // We always have these keys
+        $queryKeys[] =  '"queryType": "{QUERYTYPE}"';
+        $queryKeys[] =  '"dataSource": "{DATASOURCE}"';
+        $queryKeys[] =  '"granularity": "{GRANULARITYSPEC.GRAN}"';
+        $queryKeys[] =  '"dimensions": [ "{NON_TIME_DIMENSIONS}" ]';
+
+        if ( count( $params->aggregators ) > 0 ) {
+            $queryKeys[] =  '"aggregations": [{AGGREGATORS}]';
+        }
+
+        if ( count( $params->postAggregators ) > 0 ) {
+            $queryKeys[] =  '"postAggregations": [{POSTAGGREGATORS}]';
+        }
+
+        $queryKeys[] =  '"intervals": ["{STARTINTERVAL}/{ENDINTERVAL}"]';
+
+        $query = "{" . join(",\n", $queryKeys) . "}";
+
+
+        $query = str_replace('{QUERYTYPE}',             $params->queryType,                   $query);
 
         $query = str_replace('{DATASOURCE}',            $params->dataSource,                  $query);
         $query = str_replace('{STARTINTERVAL}',         $params->intervalStart,               $query);

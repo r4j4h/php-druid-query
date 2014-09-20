@@ -27,6 +27,8 @@ class TimeBoundaryDruidQueryGenerator implements IDruidQueryGenerator
             throw new \Exception('Expected $params to be instanceof TimeBoundaryQueryParameters');
         }
 
+        $params->validate();
+
         return array(
             'queryType' => 'timeBoundary',
             "dataSource" => $params->dataSource

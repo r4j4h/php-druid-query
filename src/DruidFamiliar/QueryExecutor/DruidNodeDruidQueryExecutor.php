@@ -47,6 +47,8 @@ class DruidNodeDruidQueryExecutor implements IDruidQueryExecutor
 
     public function executeQuery(IDruidQueryGenerator $queryGenerator, IDruidQueryParameters $params, IDruidQueryResponseHandler $responseHandler)
     {
+        $params->validate();
+
         $generatedQuery = $queryGenerator->generateQuery($params);
 
         // Create a POST request

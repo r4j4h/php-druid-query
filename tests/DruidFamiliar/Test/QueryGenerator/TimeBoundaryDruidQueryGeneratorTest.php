@@ -5,7 +5,7 @@ namespace DruidFamiliar\Test;
 use DruidFamiliar\QueryParameters\TimeBoundaryQueryParameters;
 use PHPUnit_Framework_TestCase;
 
-class TimeBoundaryDruidQueryTest extends PHPUnit_Framework_TestCase
+class TimeBoundaryDruidQueryGeneratorTest extends PHPUnit_Framework_TestCase
 {
 
     public function testGenerateQuery()

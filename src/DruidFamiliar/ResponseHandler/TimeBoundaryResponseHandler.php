@@ -24,7 +24,7 @@ class TimeBoundaryResponseHandler implements IDruidQueryResponseHandler
     public function handleResponse($response)
     {
         if ( empty( $response ) ) {
-            throw new \Exception('Unknown data source');
+            throw new \Exception('Unknown data source.');
         }
 
         if ( !isset ( $response[0]['result'] ) ) {
