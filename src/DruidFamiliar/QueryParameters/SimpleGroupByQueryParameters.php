@@ -7,7 +7,7 @@ use DruidFamiliar\Exception\MissingParametersException;
 use DruidFamiliar\Interfaces\IDruidQueryParameters;
 
 /**
- * Class IndexTaskParameters represents parameter values for an indexing task for Druid.
+ * Class SimpleGroupByQueryParameters represents parameter values for an indexing task for Druid.
  *
  * @package PhpDruidIngest
  */
