@@ -32,7 +32,7 @@ Quick sketch for sharing early.
 
 Typical Use
 ---------------
-// TODO Rewrite the typical use to demonstrate how things work now
+
 In general, this wrapper's purpose is to streamline the execution of queries by encapsulating the cruft from the `HTTP` nature of Druid and the analytical grammar in query configuration.
 
 1. Instantiate a connection, configured to hit a Druid endpoint.
