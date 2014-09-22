@@ -18,7 +18,7 @@ class MissingParametersException extends \Exception {
      */
     public function __construct(array $missingParameters, $message = null, \Exception $previous = null) {
         $this->missingParameters = $missingParameters;
-        parent::__construct("Missing parameters: " . join(",", $this->missingParameters), count($this->missingParameters), $previous);
+        parent::__construct("Missing parameters: " . join(", ", $this->missingParameters), count($this->missingParameters), $previous);
     }
 
 };
