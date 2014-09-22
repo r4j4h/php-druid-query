@@ -41,7 +41,7 @@ class TimeBoundaryResponseHandlerTest extends PHPUnit_Framework_TestCase
             }
         }
 
-        $this->fail('Did not hit an expected exception');
+        $this->fail('Did not hit an expected exception. Expected Exception with message "Unknown data source."');
 
     }
 
