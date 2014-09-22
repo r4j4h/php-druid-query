@@ -1,6 +1,6 @@
 <?php
 
-namespace DruidFamiliar\Test;
+namespace DruidFamiliar\Test\ResponseHandler;
 
 use DruidFamiliar\ResponseHandler\DoNothingResponseHandler;
 use PHPUnit_Framework_TestCase;

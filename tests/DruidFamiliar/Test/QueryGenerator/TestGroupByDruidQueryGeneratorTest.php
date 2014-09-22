@@ -1,6 +1,6 @@
 <?php
 
-namespace DruidFamiliar\Test;
+namespace DruidFamiliar\Test\QueryGenerator;
 
 use DruidFamiliar\QueryParameters\SimpleGroupByQueryParameters;
 use PHPUnit_Framework_TestCase;

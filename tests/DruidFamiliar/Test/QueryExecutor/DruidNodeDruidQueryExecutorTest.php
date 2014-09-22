@@ -1,6 +1,6 @@
 <?php
 
-namespace DruidFamiliar\Test;
+namespace DruidFamiliar\Test\QueryExecutor;
 
 use DruidFamiliar\QueryExecutor\DruidNodeDruidQueryExecutor;
 use DruidFamiliar\QueryGenerator\TimeBoundaryDruidQueryGenerator;

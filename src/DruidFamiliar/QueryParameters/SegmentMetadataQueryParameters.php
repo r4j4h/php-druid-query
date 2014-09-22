@@ -42,8 +42,24 @@ class SegmentMetadataQueryParameters extends AbstractTaskParameters implements I
         $this->intervals = $this->getIntervalsValue();
     }
 
+    /**
+     * @throws MissingParametersException
+     */
     public function getIntervalsValue()
     {
+        $missingParams = array();
+
+        if ( !isset( $this->intervalStart ) ) {
+            $missingParams[] = 'intervalStart';
+        }
+        if ( !isset( $this->intervalEnd ) ) {
+            $missingParams[] = 'intervalEnd';
+        }
+
+        if ( count( $missingParams ) > 0 ) {
+            throw new MissingParametersException($missingParams);
+        }
+
         return $this->intervalStart . '/' . $this->intervalEnd;
     }
 
