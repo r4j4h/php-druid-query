@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model xlink:href="/usr/share/php5/PEAR/data/phing/etc/phing-grammar.rng"
+        type="application/xml"
+        schematypens="http://relaxng.org/ns/structure/1.0" ?>
+
+<project name="php-druid-query" default="build">
+
+    <property name="package" value="php-druid-query" override="true" />
+
+
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+
+
+    <target name="prepare">
+        <mkdir dir="build/logs"/>
+        <mkdir dir="build/reports"/>
+    </target>
+
+
+    <target name="phpunit">
+
+        <phpunit printsummary="true" haltonfailure="false">
+            <formatter type="xml" todir="build/logs" outfile="phpunit-testsuites-logfile.xml"/>
+            <batchtest>
+                <fileset dir="./tests">
+                    <include name="**/*Test*.php"/>
+                </fileset>
+            </batchtest>
+        </phpunit>
+        <phpunitreport infile="build/logs/phpunit-testsuites-logfile.xml"
+                       styledir="vendor/phing/phing/etc"
+                       format="frames"
+                       todir="build/reports"/>
+
+    </target>
+
+
+    <target name="build" depends="clean,prepare,phpunit"/>
+
+</project>
