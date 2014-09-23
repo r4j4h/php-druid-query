@@ -5,7 +5,9 @@ namespace DruidFamiliar\QueryParameters;
 use DateTime;
 use DruidFamiliar\Abstracts\AbstractTaskParameters;
 use DruidFamiliar\Exception\MissingParametersException;
+use DruidFamiliar\Exception\UnexpectedTypeException;
 use DruidFamiliar\Interfaces\IDruidQueryParameters;
+use DruidFamiliar\Interval;
 
 class SegmentMetadataQueryParameters extends AbstractTaskParameters implements IDruidQueryParameters
 {
@@ -16,51 +18,15 @@ class SegmentMetadataQueryParameters extends AbstractTaskParameters implements I
     public $dataSource;
 
     /**
-     * ISO Time
-     * @var string
+     * @var Interval
      */
-    public $intervalStart;
-
-    /**
-     * ISO Time
-     * @var string
-     */
-    public $intervalEnd;
+    public $intervals;
 
 
     function __construct($dataSource, $intervalStart = "1970-01-01 01:30:00", $intervalEnd = "3030-01-01 01:30:00")
     {
-        $startDateTime = new DateTime($intervalStart);
-        $endDateTime = new DateTime($intervalEnd);
-
-        $ISOstartDateTime = $startDateTime->format(DateTime::ISO8601);
-        $ISOendDateTime = $endDateTime->format(DateTime::ISO8601);
-
         $this->dataSource = $dataSource;
-        $this->intervalStart = $intervalStart;
-        $this->intervalEnd = $intervalEnd;
-        $this->intervals = $this->getIntervalsValue();
-    }
-
-    /**
-     * @throws MissingParametersException
-     */
-    public function getIntervalsValue()
-    {
-        $missingParams = array();
-
-        if ( !isset( $this->intervalStart ) ) {
-            $missingParams[] = 'intervalStart';
-        }
-        if ( !isset( $this->intervalEnd ) ) {
-            $missingParams[] = 'intervalEnd';
-        }
-
-        if ( count( $missingParams ) > 0 ) {
-            throw new MissingParametersException($missingParams);
-        }
-
-        return $this->intervalStart . '/' . $this->intervalEnd;
+        $this->intervals = new Interval($intervalStart, $intervalEnd);
     }
 
 
@@ -74,15 +40,16 @@ class SegmentMetadataQueryParameters extends AbstractTaskParameters implements I
         if ( !isset( $this->dataSource ) ) {
             $missingParams[] = 'dataSource';
         }
-        if ( !isset( $this->intervalStart ) ) {
-            $missingParams[] = 'intervalStart';
-        }
-        if ( !isset( $this->intervalEnd ) ) {
-            $missingParams[] = 'intervalEnd';
+        if ( !isset( $this->intervals ) ) {
+            $missingParams[] = 'interval';
         }
 
         if ( count( $missingParams ) > 0 ) {
             throw new MissingParametersException($missingParams);
+        }
+
+        if ( !$this->intervals instanceof Interval ) {
+            throw new UnexpectedTypeException($this->intervals, 'DruidFamiliar\Interval', 'For parameter intervals.');
         }
 
         return true;

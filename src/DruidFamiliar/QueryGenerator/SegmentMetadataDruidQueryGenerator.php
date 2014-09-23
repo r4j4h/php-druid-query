@@ -34,7 +34,7 @@ class SegmentMetadataDruidQueryGenerator implements IDruidQueryGenerator
         return array(
             'queryType' => 'segmentMetadata',
             "dataSource" => $params->dataSource,
-            "intervals" => $params->getIntervalsValue()
+            "intervals" => $params->intervals
         );
 
     }

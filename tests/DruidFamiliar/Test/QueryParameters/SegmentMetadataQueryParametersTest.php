@@ -12,22 +12,29 @@ class SegmentMetadataQueryParametersTest extends PHPUnit_Framework_TestCase
     public $mockStartTimeString = '2014-01-01T16:00';
     public $mockEndTimeString = '2015-01-01';
 
+    public $expectedIntervalString = '';
+    public $parametersInstance;
     
     public function setUp()
     {
-        date_default_timezone_set('America/Denver');
+        date_default_timezone_set('UTC');
+        $this->expectedIntervalString = $this->mockStartTimeString . ':00Z/' . $this->mockEndTimeString . 'T00:00:00Z';
+        
+        $this->parametersInstance = new SegmentMetadataQueryParameters($this->mockDataSource, $this->mockStartTimeString, $this->mockEndTimeString );
     }
 
 
     public function testValidate()
     {
-        $parametersInstance = new SegmentMetadataQueryParameters($this->mockDataSource, $this->mockStartTimeString, $this->mockEndTimeString );
+        /**
+         * @var SegmentMetadataQueryParameters $parametersInstance
+         */
+        $parametersInstance = $this->parametersInstance;
 
         $parametersInstance->validate();
 
         $this->assertEquals($this->mockDataSource, $parametersInstance->dataSource);
-        $this->assertEquals($this->mockStartTimeString, $parametersInstance->intervalStart);
-        $this->assertEquals($this->mockEndTimeString, $parametersInstance->intervalEnd);
+        $this->assertEquals($this->expectedIntervalString, $parametersInstance->intervals);
 
         return $parametersInstance;
     }
@@ -37,32 +44,18 @@ class SegmentMetadataQueryParametersTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testValidate
      */
-    public function testGetIntervalsValue()
+    public function testIntervalsValue()
     {
-        $parametersInstance = new SegmentMetadataQueryParameters($this->mockDataSource, $this->mockStartTimeString, $this->mockEndTimeString );
+        /**
+         * @var SegmentMetadataQueryParameters $parametersInstance
+         */
+        $parametersInstance = $this->parametersInstance;
 
-        $intervalsValue = $parametersInstance->getIntervalsValue();
-        $expectedIntervalsValue = $this->mockStartTimeString . '/' . $this->mockEndTimeString;
-
-        $this->assertEquals( $expectedIntervalsValue, $intervalsValue );
+        $this->assertInstanceOf('DruidFamiliar\Interval', $parametersInstance->intervals);
+        $this->assertEquals( $this->expectedIntervalString, $parametersInstance->intervals );
 
         return $parametersInstance;
     }
-
-    /**
-     * @depends testGetIntervalsValue
-     */
-    public function testGetIntervalsRequiresStartAndEndTimes()
-    {
-        $parametersInstance = new SegmentMetadataQueryParameters($this->mockDataSource, $this->mockStartTimeString, $this->mockEndTimeString );
-
-        $parametersInstance->intervalEnd = null;
-
-        $this->setExpectedException('DruidFamiliar\Exception\MissingParametersException');
-
-        $i = $parametersInstance->getIntervalsValue();
-    }
-
 
 
     /**
@@ -70,7 +63,10 @@ class SegmentMetadataQueryParametersTest extends PHPUnit_Framework_TestCase
      */
     public function testValidateWithMissingDataSource()
     {
-        $parametersInstance = new SegmentMetadataQueryParameters($this->mockDataSource, $this->mockStartTimeString, $this->mockEndTimeString );
+        /**
+         * @var SegmentMetadataQueryParameters $parametersInstance
+         */
+        $parametersInstance = $this->parametersInstance;
 
         $parametersInstance->dataSource = null;
 
@@ -78,29 +74,37 @@ class SegmentMetadataQueryParametersTest extends PHPUnit_Framework_TestCase
 
         $parametersInstance->validate();
     }
+
     /**
      * @depends testValidate
      */
-    public function testValidateWithMissingStartInterval()
+    public function testValidateWithMissingInterval()
     {
-        $parametersInstance = new SegmentMetadataQueryParameters($this->mockDataSource, $this->mockStartTimeString, $this->mockEndTimeString );
+        /**
+         * @var SegmentMetadataQueryParameters $parametersInstance
+         */
+        $parametersInstance = $this->parametersInstance;
 
-        $parametersInstance->intervalStart = null;
+        $parametersInstance->intervals = null;
 
         $this->setExpectedException('DruidFamiliar\Exception\MissingParametersException');
 
         $parametersInstance->validate();
     }
+
     /**
      * @depends testValidate
      */
-    public function testValidateWithMissingEndInterval()
+    public function testValidateWithMalformedInterval()
     {
-        $parametersInstance = new SegmentMetadataQueryParameters($this->mockDataSource, $this->mockStartTimeString, $this->mockEndTimeString );
+        /**
+         * @var SegmentMetadataQueryParameters $parametersInstance
+         */
+        $parametersInstance = $this->parametersInstance;
 
-        $parametersInstance->intervalEnd = null;
+        $parametersInstance->intervals = 1;
 
-        $this->setExpectedException('DruidFamiliar\Exception\MissingParametersException');
+        $this->setExpectedException('DruidFamiliar\Exception\UnexpectedTypeException');
 
         $parametersInstance->validate();
     }
