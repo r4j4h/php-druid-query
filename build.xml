@@ -21,7 +21,7 @@
 
     <target name="phpunit">
 
-        <phpunit printsummary="true" haltonfailure="false">
+        <phpunit printsummary="true" haltonfailure="true" haltonerror="true">
             <formatter type="xml" todir="build/logs" outfile="phpunit-testsuites-logfile.xml"/>
             <batchtest>
                 <fileset dir="./tests">
