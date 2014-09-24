@@ -5,37 +5,130 @@
 
 <project name="php-druid-query" default="build">
 
-    <autoloader autoloaderpath="vendor/autoload.php"/>
-
-    <target name="clean">
+    <target name="clean" description="Clean project from build artifacts">
         <delete dir="build"/>
     </target>
 
 
-    <target name="prepare">
+    <target name="prepare" description="Prepare artifact folders">
         <mkdir dir="build/logs"/>
+        <mkdir dir="build/logs/phpunit"/>
+        <mkdir dir="build/logs/phpmd"/>
+        <mkdir dir="build/logs/phploc"/>
         <mkdir dir="build/reports"/>
+        <mkdir dir="build/reports/phpunit"/>
+        <mkdir dir="build/reports/phpmd"/>
     </target>
 
 
-    <target name="phpunit">
+    <target name="phpunit" description="Run PHPUnit on the project">
 
-        <phpunit printsummary="true" haltonfailure="true" haltonerror="true">
-            <formatter type="xml" todir="build/logs" outfile="phpunit-testsuites-logfile.xml"/>
+        <phpunit printsummary="true"
+                 haltonfailure="true"
+                 haltonerror="true">
+
+            <formatter type="plain"
+                       todir="build/logs/phpunit"
+                       outfile="phpunit-testsuites-logfile.txt"/>
+
+            <formatter type="xml"
+                       todir="build/logs/phpunit"
+                       outfile="phpunit-testsuites-logfile.xml"/>
+
             <batchtest>
                 <fileset dir="./tests">
                     <include name="**/*Test*.php"/>
                 </fileset>
             </batchtest>
+
         </phpunit>
-        <phpunitreport infile="build/logs/phpunit-testsuites-logfile.xml"
+
+        <phpunitreport infile="build/logs/phpunit/phpunit-testsuites-logfile.xml"
                        styledir="vendor/phing/phing/etc"
                        format="frames"
-                       todir="build/reports"/>
+                       todir="build/reports/phpunit"/>
 
     </target>
 
 
+    <target name="phpmd" description="Run PHPMessDetector on the project">
+
+        <phpmd>
+            <fileset dir="./src">
+                <include name="**/*.php" />
+            </fileset>
+            <formatter type="xml" outfile="build/logs/phpmd/phpmessdetector-report.xml"/>
+            <formatter type="text" outfile="build/logs/phpmd/phpmessdetector-report.txt"/>
+            <formatter type="html" outfile="build/reports/phpmd/index.html"/>
+        </phpmd>
+
+    </target>
+
+
+    <target name="phploc" description="Measures and logs the size of the project">
+
+        <!-- Source only (text) -->
+        <phploc reportType="txt"
+                reportName="phploc-src-report"
+                reportDirectory="build/logs/phploc">
+            <fileset dir="src">
+                <include name="**/*.php" />
+            </fileset>
+            <fileset dir=".">
+                <include name="*.php" />
+            </fileset>
+        </phploc>
+
+        <!-- Source only (xml) -->
+        <phploc reportType="xml"
+                reportName="phploc-src-report"
+                reportDirectory="build/logs/phploc">
+            <fileset dir="src">
+                <include name="**/*.php" />
+            </fileset>
+            <fileset dir=".">
+                <include name="*.php" />
+            </fileset>
+        </phploc>
+
+        <!-- Source and Tests (text) -->
+        <phploc reportType="txt"
+                reportName="phploc-src-and-test-report"
+                reportDirectory="build/logs/phploc">
+            <fileset dir="src">
+                <include name="**/*.php" />
+            </fileset>
+            <fileset dir="tests">
+                <include name="**/*.php" />
+            </fileset>
+            <fileset dir=".">
+                <include name="*.php" />
+            </fileset>
+        </phploc>
+
+        <!-- Source and Tests (xml) -->
+        <phploc reportType="xml"
+                reportName="phploc-src-and-test-report"
+                reportDirectory="build/logs/phploc">
+            <fileset dir="src">
+                <include name="**/*.php" />
+            </fileset>
+            <fileset dir="tests">
+                <include name="**/*.php" />
+            </fileset>
+            <fileset dir=".">
+                <include name="*.php" />
+            </fileset>
+        </phploc>
+
+    </target>
+
+
+
     <target name="build" depends="clean,prepare,phpunit"/>
+
+    <target name="report" depends="clean,prepare,phpmd,phploc"/>
+
+    <target name="all" depends="build,report"/>
 
 </project>
