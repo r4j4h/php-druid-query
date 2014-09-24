@@ -5,8 +5,7 @@
 
 <project name="php-druid-query" default="build">
 
-    <property name="package" value="php-druid-query" override="true" />
-
+    <autoloader autoloaderpath="vendor/autoload.php"/>
 
     <target name="clean">
         <delete dir="build"/>
