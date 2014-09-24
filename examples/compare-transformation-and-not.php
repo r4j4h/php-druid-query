@@ -14,7 +14,7 @@ $c = new \DruidFamiliar\QueryExecutor\DruidNodeDruidQueryExecutor($druidHost, $d
 
 $q = new \DruidFamiliar\QueryGenerator\TimeBoundaryDruidQueryGenerator();
 $p = new \DruidFamiliar\QueryParameters\TimeBoundaryQueryParameters($druidDataSource);
-$r = $c->executeQuery($q, $p, new DruidFamiliar\ResponseHandler\DoNothingResponseHandler());
+$r = $c->executeQuery($q, $p, new DruidFamiliar\ResponseHandler\JsonFormattingResponseHandler());
 
 var_dump( $r );
 

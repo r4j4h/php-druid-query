@@ -3,17 +3,30 @@
 namespace DruidFamiliar\Test\ResponseHandler;
 
 use DruidFamiliar\ResponseHandler\TimeBoundaryResponseHandler;
+use Guzzle\Http\Message\Response;
 use PHPUnit_Framework_TestCase;
 
 class TimeBoundaryResponseHandlerTest extends PHPUnit_Framework_TestCase
 {
 
+    /** @var TimeBoundaryResponseHandler The response object to test */
+    protected $responseHandler;
+
+    public function setup()
+    {
+        $this->responseHandler = new TimeBoundaryResponseHandler();
+    }
+
+    public function tearDown()
+    {
+        unset($this->responseHandler);
+    }
+
     public function testHandlesNonDruidResponse()
     {
         try {
-            $responseHandler = new TimeBoundaryResponseHandler();
-            $mockedResponse = 1;
-            $handledResponse = $responseHandler->handleResponse($mockedResponse);
+            $mockedResponse = new Response(200, array(), '1');
+            $handledResponse = $this->responseHandler->handleResponse($mockedResponse);
             $this->assertEquals($mockedResponse, $handledResponse);
         }
         catch (\Exception $e) {
@@ -30,9 +43,8 @@ class TimeBoundaryResponseHandlerTest extends PHPUnit_Framework_TestCase
     {
 
         try {
-            $responseHandler = new TimeBoundaryResponseHandler();
-            $mockedResponse = "";
-            $handledResponse = $responseHandler->handleResponse($mockedResponse);
+            $mockedResponse = new Response(200);
+            $handledResponse = $this->responseHandler->handleResponse($mockedResponse);
             $this->assertEquals($mockedResponse, $handledResponse);
         }
         catch (\Exception $e) {
@@ -58,9 +70,8 @@ class TimeBoundaryResponseHandlerTest extends PHPUnit_Framework_TestCase
 } ]
 JSONMOCK;
 
-        $responseHandler = new TimeBoundaryResponseHandler();
-        $mockedResponse = json_decode($jsonResponse, true);
-        $handledResponse = $responseHandler->handleResponse($mockedResponse);
+        $mockedResponse = new Response( 200, array(), $jsonResponse );
+        $handledResponse = $this->responseHandler->handleResponse($mockedResponse);
 
         $this->assertInstanceOf('DruidFamiliar\Response\TimeBoundaryResponse', $handledResponse);
         $this->assertEquals("2013-05-09T18:24:00.000Z", $handledResponse->minTime);

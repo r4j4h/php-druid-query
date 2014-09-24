@@ -1,6 +1,7 @@
 <?php
 
 namespace DruidFamiliar\Interfaces;
+use Guzzle\Http\Message\Response;
 
 /**
  * Interface IDruidQueryResponseHandler handles reception of Druid's response to an executed Druid query.
@@ -15,7 +16,7 @@ interface IDruidQueryResponseHandler
      *
      * This hook must return the response, whether changed or not, so that the rest of the system can continue with it.
      *
-     * @param array $response
+     * @param Response $response
      * @return mixed
      */
     public function handleResponse( $response );

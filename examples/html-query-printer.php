@@ -30,7 +30,7 @@ $r = $c->executeQuery($q, $p, new DruidFamiliar\ResponseHandler\TimeBoundaryResp
 
 $q2 = new \DruidFamiliar\ExampleGroupByQueries\ReferralsByCompanyGroupByQueryGenerator();
 $p2 = new ReferralsByCompanyGroupByQueryParameters( $druidDataSource, '2006-01-01T00:00', '2015-01-01T00' );
-$r2 = $c->executeQuery($q2, $p2, new \DruidFamiliar\ResponseHandler\DoNothingResponseHandler());
+$r2 = $c->executeQuery($q2, $p2, new \DruidFamiliar\ResponseHandler\JsonFormattingResponseHandler());
 
 
 $startTime = new DateTime( $r->minTime );

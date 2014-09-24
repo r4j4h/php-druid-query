@@ -11,7 +11,11 @@ use DruidFamiliar\Interfaces\IDruidQueryParameters;
 use DruidFamiliar\Interfaces\IDruidQueryResponseHandler;
 use Guzzle\Http\Message\Response;
 
-class DruidNodeDruidQueryExecutor implements IDruidQueryExecutor
+/**
+ * Class JSONDruidNodeDruidQueryExecutor
+ * @package DruidFamiliar\QueryExecutor
+ */
+class JSONDruidNodeDruidQueryExecutor implements IDruidQueryExecutor
 {
     private $ip;
     private $port;
@@ -65,7 +69,20 @@ class DruidNodeDruidQueryExecutor implements IDruidQueryExecutor
             throw new $curlException;
         }
 
-        $formattedResponse = $responseHandler->handleResponse($response);
+        $data = $this->parseResponse($response);
+
+        $formattedResponse = $responseHandler->handleResponse($data);
+
+        return $formattedResponse;
+    }
+
+    /**
+     * @param Response $rawResponse
+     * @return mixed
+     */
+    protected function parseResponse($rawResponse)
+    {
+        $formattedResponse = $rawResponse->json();
 
         return $formattedResponse;
     }
