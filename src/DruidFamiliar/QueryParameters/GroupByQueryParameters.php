@@ -2,8 +2,8 @@
 
 namespace DruidFamiliar\QueryParameters;
 
-
 use DruidFamiliar\Abstracts\AbstractTaskParameters;
+use DruidFamiliar\Exception\EmptyParametersException;
 use DruidFamiliar\Exception\MissingParametersException;
 use DruidFamiliar\Interfaces\IDruidQueryParameters;
 use stdClass;
@@ -16,7 +16,8 @@ use stdClass;
  * @category  WebPT
  * @copyright Copyright (c) 2014 WebPT, Inc.
  */
-class GroupByQueryParameters extends AbstractTaskParameters implements IDruidQueryParameters {
+class GroupByQueryParameters extends AbstractTaskParameters implements IDruidQueryParameters
+{
     /**
      * This String should always be "groupBy"; this is the first thing Druid looks at to figure out how to interpret the query
      * @access protected
@@ -37,7 +38,7 @@ class GroupByQueryParameters extends AbstractTaskParameters implements IDruidQue
     protected $dimensions;
     /**
      * Provides the functionality to sort and limit the set of results from a groupBy query
-     * @see http://druid.io/docs/0.6.154/LimitSpec.html
+     * @see    http://druid.io/docs/0.6.154/LimitSpec.html
      * @access protected
      * @var stdClass
      */
@@ -89,7 +90,7 @@ class GroupByQueryParameters extends AbstractTaskParameters implements IDruidQue
      * @access protected
      * @var array
      */
-    protected $requiredParams = array('queryType','dataSource','dimensions','granularity','aggregations','intervals');
+    protected $requiredParams = array('queryType', 'dataSource', 'dimensions', 'granularity', 'aggregations', 'intervals');
     /**
      * Stores the missing parameters
      * @access protected
@@ -106,14 +107,16 @@ class GroupByQueryParameters extends AbstractTaskParameters implements IDruidQue
     /**
      * Class initializer
      */
-    protected function initialize(){
+    protected function initialize()
+    {
         $this->queryType = 'groupBy';
     }
 
     /**
      * Class constructor
      */
-    public function __construct(){
+    public function __construct()
+    {
         $this->initialize();
     }
 
@@ -125,24 +128,30 @@ class GroupByQueryParameters extends AbstractTaskParameters implements IDruidQue
     public function validate()
     {
         $flag = true;
-        foreach($this->requiredParams as $param){
-            if(!isset($this->$param)){
+        foreach($this->requiredParams as $param)
+        {
+            if(!isset($this->$param))
+            {
                 $this->missingParameters[] = $param;
-                $flag = false;
+                $flag                      = false;
             }
-            else{
+            else
+            {
                 $val = trim($this->$param);
-                if(empty($val)){
+                if(empty($val))
+                {
                     $this->emptyParameters[] = $param;
-                    $flag = false;
+                    $flag                    = false;
                 }
             }
         }
-        if(count($this->missingParameters) > 0) {
+        if(count($this->missingParameters) > 0)
+        {
             throw new MissingParametersException($this->missingParameters);
         }
-        if(count($this->emptyParameters) > 0) {
-            throw new MissingParametersException($this->emptyParameters);
+        if(count($this->emptyParameters) > 0)
+        {
+            throw new EmptyParametersException($this->emptyParameters);
         }
         return $flag;
     }
@@ -166,7 +175,8 @@ class GroupByQueryParameters extends AbstractTaskParameters implements IDruidQue
      */
     public function setAggregations(array $aggregations)
     {
-        foreach($aggregations as $aggregator){
+        foreach($aggregations as $aggregator)
+        {
             $this->addAggregator($aggregator);
         }
         return $this;
@@ -174,11 +184,13 @@ class GroupByQueryParameters extends AbstractTaskParameters implements IDruidQue
 
     /**
      * Adds a new aggregator to the aggregators array
+     *
      * @param stdClass $aggregator
      *
      * @return $this
      */
-    public function addAggregator($aggregator){
+    public function addAggregator($aggregator)
+    {
         if(is_object($aggregator))
         {
             $this->aggregations[] = $aggregator;
@@ -205,7 +217,8 @@ class GroupByQueryParameters extends AbstractTaskParameters implements IDruidQue
      */
     public function setContext(array $contexts)
     {
-        foreach($contexts as $context){
+        foreach($contexts as $context)
+        {
             $this->addContext($context);
         }
         return $this;
@@ -213,11 +226,13 @@ class GroupByQueryParameters extends AbstractTaskParameters implements IDruidQue
 
     /**
      * Adds a new context to the contexts array
+     *
      * @param string $context
      *
      * @return $this
      */
-    public function addContext($context){
+    public function addContext($context)
+    {
         $this->context[] = $context;
         return $this;
     }
@@ -270,11 +285,13 @@ class GroupByQueryParameters extends AbstractTaskParameters implements IDruidQue
 
     /**
      * Adds a new dimension to the dimensions array
+     *
      * @param string $dimension
      *
      * @return $this
      */
-    public function addDimension($dimension){
+    public function addDimension($dimension)
+    {
         $this->dimensions[] = $dimension;
         return $this;
     }
@@ -373,7 +390,8 @@ class GroupByQueryParameters extends AbstractTaskParameters implements IDruidQue
      */
     public function setIntervals(array $intervals)
     {
-        foreach($intervals as $interval){
+        foreach($intervals as $interval)
+        {
             $this->addInterval($interval);
         }
         return $this;
@@ -381,11 +399,13 @@ class GroupByQueryParameters extends AbstractTaskParameters implements IDruidQue
 
     /**
      * Adds a new interval to the intervals array
+     *
      * @param string $interval
      *
      * @return $this
      */
-    public function addInterval($interval){
+    public function addInterval($interval)
+    {
         $this->aggregations[] = $interval;
         return $this;
     }
@@ -432,7 +452,8 @@ class GroupByQueryParameters extends AbstractTaskParameters implements IDruidQue
      */
     public function setPostAggregations(array $postAggregations)
     {
-        foreach($postAggregations as $aggregator){
+        foreach($postAggregations as $aggregator)
+        {
             $this->addPostAggregator($aggregator);
         }
         return $this;
@@ -440,11 +461,13 @@ class GroupByQueryParameters extends AbstractTaskParameters implements IDruidQue
 
     /**
      * Adds a new postaggregator to the postaggregators array
+     *
      * @param stdClass $aggregator
      *
      * @return $this
      */
-    public function addPostAggregator($aggregator){
+    public function addPostAggregator($aggregator)
+    {
         if(is_object($aggregator))
         {
             $this->postAggregations[] = $aggregator;
