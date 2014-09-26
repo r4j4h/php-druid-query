@@ -16,10 +16,10 @@ class EmptyParametersException extends Exception
 {
     /**
      * Array of missing parameter keys
-     *
+     * @access protected
      * @var array
      */
-    public $emptyParameters = array();
+    protected $emptyParameters = array();
 
     /**
      * Class constructor
@@ -29,7 +29,7 @@ class EmptyParametersException extends Exception
      */
     public function __construct(array $emptyParameters, $message = NULL, Exception $previous = NULL)
     {
-        $this->missingParameters = $emptyParameters;
+        $this->emptyParameters = $emptyParameters;
         parent::__construct("Empty parameters: " . join(", ", $this->emptyParameters), count($this->emptyParameters), $previous);
     }
 }

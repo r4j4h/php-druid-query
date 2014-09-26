@@ -3,8 +3,6 @@
 namespace DruidFamiliar\Test\QueryParameters;
 
 use DruidFamiliar\QueryParameters\GroupByQueryParameters;
-use DruidFamiliar\Exception\MissingParametersException;
-use DruidFamiliar\Exception\EmptyParametersException;
 use PHPUnit_Framework_TestCase;
 use stdClass;
 
@@ -43,13 +41,17 @@ class GroupByQueryParametersTest extends PHPUnit_Framework_TestCase{
     /**
      * Missing a required parameter (filter)
      *
-     * @expectedException MissingParametersException
+     * @expectedException \DruidFamiliar\Exception\MissingParametersException
      */
     public function testMissingParametersException(){
         $parametersInstance = new GroupByQueryParameters();
         $parametersInstance->setDataSource('referral-visit-old-format');
-        $parametersInstance->setGranularity('all');
         $parametersInstance->setDimensions(array('facility_id','referral_id','group'));
+        $filter = new stdClass();
+        $filter->type = 'selector';
+        $filter->dimension = 'company_id';
+        $filter->value = 1;
+        $parametersInstance->setFilter($filter);
         $anAggregation = new stdClass();
         $anAggregation->type = 'longSum';
         $anAggregation->name = 'quantity';
@@ -62,7 +64,7 @@ class GroupByQueryParametersTest extends PHPUnit_Framework_TestCase{
     /**
      * A non empty parameter (granularity)
      *
-     * @expectedException EmptyParametersException
+     * @expectedException \DruidFamiliar\Exception\EmptyParametersException
      */
     public function testEmptyParametersException(){
         $parametersInstance = new GroupByQueryParameters();

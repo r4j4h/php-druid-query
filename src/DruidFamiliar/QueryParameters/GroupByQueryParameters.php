@@ -137,7 +137,10 @@ class GroupByQueryParameters extends AbstractTaskParameters implements IDruidQue
             }
             else
             {
-                $val = trim($this->$param);
+                $val = $this->$param;
+                if(!is_array($val)){
+                    $val = trim($val);
+                }
                 if(empty($val))
                 {
                     $this->emptyParameters[] = $param;
@@ -406,7 +409,7 @@ class GroupByQueryParameters extends AbstractTaskParameters implements IDruidQue
      */
     public function addInterval($interval)
     {
-        $this->aggregations[] = $interval;
+        $this->intervals[] = $interval;
         return $this;
     }
 
