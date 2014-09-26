@@ -20,7 +20,9 @@ class TimeBoundaryResponseHandler implements IDruidQueryResponseHandler
      * This hook must return the response, whether changed or not, so that the rest of the system can continue with it.
      *
      * @param Response $response
-     * @return TimeBoundaryResponse
+     *
+     * @return TimeBoundaryResponse|mixed
+     * @throws \Exception
      */
     public function handleResponse($response)
     {
