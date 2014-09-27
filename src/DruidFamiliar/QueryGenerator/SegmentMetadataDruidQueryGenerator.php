@@ -38,12 +38,15 @@ class SegmentMetadataDruidQueryGenerator implements IDruidQueryGenerator
 
         $params->validate();
 
-        return array(
+        $responseObj = array(
             'queryType' => 'segmentMetadata',
             "dataSource" => $params->dataSource,
-            "intervals" => $params->intervals
+            "intervals" => $params->intervals->__toString()
         );
 
+        $responseString = json_encode( $responseObj );
+
+        return $responseString;
     }
 
 }
