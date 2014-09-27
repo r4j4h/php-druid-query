@@ -9,7 +9,7 @@ use DruidFamiliar\Interfaces\IDruidQueryParameters;
 use DruidFamiliar\Interfaces\IDruidQueryResponseHandler;
 use DruidFamiliar\QueryParameters\SimpleGroupByQueryParameters;
 
-class TestGroupByDruidQueryGenerator implements IDruidQueryGenerator
+class SimpleGroupByDruidQueryGenerator implements IDruidQueryGenerator
 {
 
     /**
@@ -25,7 +25,7 @@ class TestGroupByDruidQueryGenerator implements IDruidQueryGenerator
     "dimensions": [ "{NON_TIME_DIMENSIONS}" ],
     "aggregations": [{AGGREGATORS}],
     "postAggregations": [{POSTAGGREGATORS}],
-    "intervals": ["{STARTINTERVAL}/{ENDINTERVAL}"]
+    "intervals": ["{INTERVALS}"]
 }
 QUERYTEMPLATE;
 
@@ -75,8 +75,7 @@ QUERYTEMPLATE;
         $query = str_replace('{QUERYTYPE}',             $params->queryType,                   $query);
 
         $query = str_replace('{DATASOURCE}',            $params->dataSource,                  $query);
-        $query = str_replace('{STARTINTERVAL}',         $params->intervalStart,               $query);
-        $query = str_replace('{ENDINTERVAL}',           $params->intervalEnd,                 $query);
+        $query = str_replace('{INTERVALS}',             $params->intervals,                   $query);
 
 
         $query = str_replace('{GRANULARITYSPEC.GRAN}',  $params->granularity,                 $query);

@@ -5,7 +5,7 @@ namespace DruidFamiliar\Test\QueryGenerator;
 use DruidFamiliar\QueryParameters\SimpleGroupByQueryParameters;
 use PHPUnit_Framework_TestCase;
 
-class TestGroupByDruidQueryGeneratorTest extends PHPUnit_Framework_TestCase
+class SimpleGroupByDruidQueryGeneratorTest extends PHPUnit_Framework_TestCase
 {
 
     private $mockDataSourceName = 'my-datasource';
@@ -14,8 +14,7 @@ class TestGroupByDruidQueryGeneratorTest extends PHPUnit_Framework_TestCase
     {
         $params = new SimpleGroupByQueryParameters();
 
-        $params->intervalStart = '1981-01-01T4:20';
-        $params->intervalEnd = '2012-03-01T3:00';
+        $params->setIntervalByStartAndEnd('1981-01-01T4:20', '2012-03-01T3:00');
         $params->granularityType = 'uniform';
         $params->granularity = 'DAY';
         $params->dataSource = $this->mockDataSourceName;
@@ -55,7 +54,7 @@ class TestGroupByDruidQueryGeneratorTest extends PHPUnit_Framework_TestCase
     {
         $params = $this->getMockSimpleGroupByQueryParameters();
 
-        $q = new \DruidFamiliar\QueryGenerator\TestGroupByDruidQueryGenerator();
+        $q = new \DruidFamiliar\QueryGenerator\SimpleGroupByDruidQueryGenerator();
 
         $query = $q->generateQuery($params);
 
@@ -142,7 +141,7 @@ class TestGroupByDruidQueryGeneratorTest extends PHPUnit_Framework_TestCase
             $params = $this->getMockSimpleGroupByQueryParameters();
             $params->dataSource = NULL;
 
-            $q = new \DruidFamiliar\QueryGenerator\TestGroupByDruidQueryGenerator();
+            $q = new \DruidFamiliar\QueryGenerator\SimpleGroupByDruidQueryGenerator();
             $query = $q->generateQuery($params);
         } catch (\DruidFamiliar\Exception\MissingParametersException $e) {
             $this->assertContains('dataSource', $e->missingParameters, "Returned missing parameters: " . join(',', $e->missingParameters));
@@ -159,7 +158,7 @@ class TestGroupByDruidQueryGeneratorTest extends PHPUnit_Framework_TestCase
             $params = $this->getMockSimpleGroupByQueryParameters();
             $params->queryType = NULL;
 
-            $q = new \DruidFamiliar\QueryGenerator\TestGroupByDruidQueryGenerator($params);
+            $q = new \DruidFamiliar\QueryGenerator\SimpleGroupByDruidQueryGenerator($params);
             $query = $q->generateQuery($params);
         } catch (\DruidFamiliar\Exception\MissingParametersException $e) {
             $this->assertContains('queryType', $e->missingParameters);
@@ -177,34 +176,9 @@ class TestGroupByDruidQueryGeneratorTest extends PHPUnit_Framework_TestCase
         $params = new SimpleGroupByQueryParameters();
 
         $params = $this->getMockSimpleGroupByQueryParameters();
-        $params->intervalStart = NULL;
-        $params->intervalEnd = NULL;
+        $params->intervals = NULL;
 
-        $q = new \DruidFamiliar\QueryGenerator\TestGroupByDruidQueryGenerator($params);
-        $q->generateQuery($params);
-    }
-
-
-    public function testGenerateQueryRequiresIntervalStart()
-    {
-        $this->setExpectedException('\DruidFamiliar\Exception\MissingParametersException');
-
-        $params = $this->getMockSimpleGroupByQueryParameters();
-        $params->intervalStart = NULL;
-
-        $q = new \DruidFamiliar\QueryGenerator\TestGroupByDruidQueryGenerator($params);
-        $q->generateQuery($params);
-    }
-
-
-    public function testGenerateQueryRequiresIntervalEnd()
-    {
-        $this->setExpectedException('\DruidFamiliar\Exception\MissingParametersException');
-
-        $params = $this->getMockSimpleGroupByQueryParameters();
-        $params->intervalEnd = NULL;
-
-        $q = new \DruidFamiliar\QueryGenerator\TestGroupByDruidQueryGenerator($params);
+        $q = new \DruidFamiliar\QueryGenerator\SimpleGroupByDruidQueryGenerator($params);
         $q->generateQuery($params);
     }
 
@@ -214,7 +188,7 @@ class TestGroupByDruidQueryGeneratorTest extends PHPUnit_Framework_TestCase
         $params = $this->getMockSimpleGroupByQueryParameters();
         $params->setAggregators(array());
 
-        $q = new \DruidFamiliar\QueryGenerator\TestGroupByDruidQueryGenerator($params);
+        $q = new \DruidFamiliar\QueryGenerator\SimpleGroupByDruidQueryGenerator($params);
 
         $query = $q->generateQuery($params);
 
@@ -231,7 +205,7 @@ class TestGroupByDruidQueryGeneratorTest extends PHPUnit_Framework_TestCase
         $params = $this->getMockSimpleGroupByQueryParameters();
         $params->setPostAggregators(array());
 
-        $q = new \DruidFamiliar\QueryGenerator\TestGroupByDruidQueryGenerator($params);
+        $q = new \DruidFamiliar\QueryGenerator\SimpleGroupByDruidQueryGenerator($params);
 
         $query = $q->generateQuery($params);
 

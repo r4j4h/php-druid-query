@@ -5,6 +5,7 @@ namespace DruidFamiliar\QueryParameters;
 use DruidFamiliar\Abstracts\AbstractTaskParameters;
 use DruidFamiliar\Exception\MissingParametersException;
 use DruidFamiliar\Interfaces\IDruidQueryParameters;
+use DruidFamiliar\Interval;
 
 /**
  * Class SimpleGroupByQueryParameters represents parameter values for an indexing task for Druid.
@@ -22,19 +23,9 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
     public $queryType = "groupBy";
 
     /**
-     * ISO Time String of Batch Ingestion Window Start Time
-     *
-     * @var string
+     * @var Interval
      */
-    public $intervalStart;
-
-
-    /**
-     * ISO Time String of Batch Ingestion Window End Time
-     *
-     * @var string
-     */
-    public $intervalEnd;
+    public $intervals;
 
 
     /**
@@ -169,8 +160,8 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
 
         if ( !isset( $this->queryType       ) ) { $missingParams[] = 'queryType';       }
         if ( !isset( $this->dataSource      ) ) { $missingParams[] = 'dataSource';      }
-        if ( !isset( $this->intervalStart   ) ) { $missingParams[] = 'intervalStart';   }
-        if ( !isset( $this->intervalEnd     ) ) { $missingParams[] = 'intervalEnd';     }
+        if ( !isset( $this->intervals       ) ) { $missingParams[] = 'intervals';       }
+
         if ( !isset( $this->granularity     ) ) { $missingParams[] = 'granularity';     }
         if ( !isset( $this->dimensions      ) ) { $missingParams[] = 'dimensions';      }
         if ( !isset( $this->aggregators     ) ) { $missingParams[] = 'aggregators';     }
@@ -191,6 +182,30 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
         if ( count($emptyParams) > 0 ) {
             throw new \DruidFamiliar\Exception\MissingParametersException($missingParams);
         }
+    }
+
+    /**
+     * @return Interval
+     */
+    public function getIntervals()
+    {
+        return $this->intervals;
+    }
+
+    /**
+     * @param Interval $intervals
+     */
+    public function setIntervals(Interval $intervals)
+    {
+        $this->intervals = $intervals;
+    }
+
+    /**
+     * @param Interval $intervals
+     */
+    public function setIntervalByStartAndEnd($intervalStart, $intervalEnd)
+    {
+        $this->intervals = new Interval($intervalStart, $intervalEnd);
     }
 
 }
