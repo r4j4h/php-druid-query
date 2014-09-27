@@ -86,6 +86,12 @@ class GroupByQueryParameters extends AbstractTaskParameters implements IDruidQue
      */
     protected $context;
     /**
+     * List of all parameters. Needed to create the JSON string
+     * @access protected
+     * @var array
+     */
+    protected $allParameters = array('queryType', 'dataSource', 'dimensions', 'limitSpecs', 'having', 'granularity', 'filter', 'aggregations', 'postAggregations', 'intervals', 'context');
+    /**
      * Array of required params
      * @access protected
      * @var array
@@ -157,6 +163,23 @@ class GroupByQueryParameters extends AbstractTaskParameters implements IDruidQue
             throw new EmptyParametersException($this->emptyParameters);
         }
         return $flag;
+    }
+
+    /**
+     * Converts the current object into a JSON representation to be used as a query
+     * @return mixed|string
+     */
+    public function getJSONString(){
+        $retString = '{[DATA]}';
+        $buffStringArray = array();
+        foreach($this->allParameters as $param) {
+            if(isset($this->$param)) {
+                $buffStringArray[] = "\"{$param}\":" . json_encode($this->$param);
+            }
+        }
+        $buffString = implode(',',$buffStringArray);
+        $retString = str_replace('[DATA]',$buffString,$retString);
+        return $retString;
     }
 
     /**

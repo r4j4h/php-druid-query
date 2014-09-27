@@ -33,7 +33,7 @@ class GroupByQueryGenerator implements IDruidQueryGenerator
         }
 
         $params->validate();
-        $query = json_encode($params);
+        $query = $params->getJSONString();
         return $query;
     }
 }
