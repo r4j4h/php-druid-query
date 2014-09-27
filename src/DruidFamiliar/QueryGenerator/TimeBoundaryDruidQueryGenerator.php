@@ -29,11 +29,14 @@ class TimeBoundaryDruidQueryGenerator implements IDruidQueryGenerator
 
         $params->validate();
 
-        return array(
+        $responseObj = array(
             'queryType' => 'timeBoundary',
             "dataSource" => $params->dataSource
         );
 
+        $responseString = json_encode( $responseObj );
+
+        return $responseString;
     }
 
 }

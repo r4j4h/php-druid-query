@@ -10,6 +10,13 @@ use DruidFamiliar\Interfaces\IDruidQueryParameters;
 use DruidFamiliar\Interfaces\IDruidQueryResponseHandler;
 use DruidFamiliar\QueryParameters\SegmentMetadataQueryParameters;
 
+/**
+ * Class SegmentMetadataDruidQueryGenerator generates Segment Metadata queries intended for use with Druid.
+ *
+ * TODO Handle optional bounds parameter
+ *
+ * @package DruidFamiliar\QueryGenerator
+ */
 class SegmentMetadataDruidQueryGenerator implements IDruidQueryGenerator
 {
 
