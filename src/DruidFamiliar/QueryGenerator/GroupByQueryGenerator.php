@@ -29,7 +29,7 @@ class GroupByQueryGenerator implements IDruidQueryGenerator
     {
         if(!$params instanceof GroupByQueryParameters)
         {
-            throw new Exception('Expected $params to be instanceof SimpleGroupByQueryParameters');
+            throw new Exception('Expected $params to be instanceof GroupByQueryParameters');
         }
 
         $params->validate();
