@@ -144,7 +144,8 @@ class GroupByQueryParameters extends AbstractTaskParameters implements IDruidQue
             else
             {
                 $val = $this->$param;
-                if(!is_array($val)){
+                if(!is_array($val))
+                {
                     $val = trim($val);
                 }
                 if(empty($val))
@@ -169,16 +170,19 @@ class GroupByQueryParameters extends AbstractTaskParameters implements IDruidQue
      * Converts the current object into a JSON representation to be used as a query
      * @return mixed|string
      */
-    public function getJSONString(){
-        $retString = '{[DATA]}';
+    public function getJSONString()
+    {
+        $retString       = '{[DATA]}';
         $buffStringArray = array();
-        foreach($this->allParameters as $param) {
-            if(isset($this->$param)) {
+        foreach($this->allParameters as $param)
+        {
+            if(isset($this->$param))
+            {
                 $buffStringArray[] = "\"{$param}\":" . json_encode($this->$param);
             }
         }
-        $buffString = implode(',',$buffStringArray);
-        $retString = str_replace('[DATA]',$buffString,$retString);
+        $buffString = implode(',', $buffStringArray);
+        $retString  = str_replace('[DATA]', $buffString, $retString);
         return $retString;
     }
 

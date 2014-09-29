@@ -13,7 +13,8 @@ use PHPUnit_Framework_TestCase;
  * @category  WebPT
  * @copyright Copyright (c) 2014 WebPT, Inc.
  */
-class EmptyParametersExceptionTest extends PHPUnit_Framework_TestCase{
+class EmptyParametersExceptionTest extends PHPUnit_Framework_TestCase
+{
     /**
      * Tests the empty parameters exception
      */

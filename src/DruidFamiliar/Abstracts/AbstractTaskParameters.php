@@ -1,5 +1,6 @@
 <?php
 namespace DruidFamiliar\Abstracts;
+
 use DruidFamiliar\Exception\MissingParametersException;
 use DruidFamiliar\Interfaces\IDruidQueryParameters;
 
@@ -28,6 +29,5 @@ abstract class AbstractTaskParameters implements IDruidQueryParameters
 
         return true;
     }
-
 
 }

@@ -12,7 +12,8 @@ use stdClass;
  * @category  WebPT
  * @copyright Copyright (c) 2014 WebPT, Inc.
  */
-class GroupByResponse {
+class GroupByResponse
+{
     /**
      * Stores the response data as an array
      * @access protected
@@ -23,7 +24,7 @@ class GroupByResponse {
      * required properties to be present in each of the elements within the data array
      * @var array
      */
-    protected $requiredObjectFields = array('version','timestamp','event');
+    protected $requiredObjectFields = array('version', 'timestamp', 'event');
 
     /**
      * Returns the data
@@ -44,7 +45,8 @@ class GroupByResponse {
      */
     public function setData(array $data)
     {
-        foreach($data as $anObject){
+        foreach($data as $anObject)
+        {
             $this->addData($anObject);
         }
         return $this;
@@ -52,33 +54,46 @@ class GroupByResponse {
 
     /**
      * Adds an element to the data array
+     *
      * @param stdClass $data
      *
      * @return $this
      */
-    public function addData($data){
-        if(is_object($data)){
+    public function addData($data)
+    {
+        if(is_object($data))
+        {
             $complete = true;
-            foreach($this->requiredObjectFields as $property) {
-                if(!isset($data->$property)){
+            foreach($this->requiredObjectFields as $property)
+            {
+                if(!isset($data->$property))
+                {
                     $complete = false;
                     break;
                 }
             }
-            if($complete){
+            if($complete)
+            {
                 $this->data[] = $data;
             }
         }
-        else if(is_array($data)){
-            $complete = true;
-            foreach($this->requiredObjectFields as $property) {
-                if(!isset($data[$property])){
-                    $complete = false;
-                    break;
+        else
+        {
+            if(is_array($data))
+            {
+                $complete = true;
+                foreach($this->requiredObjectFields as $property)
+                {
+                    if(!isset($data[$property]))
+                    {
+                        $complete = false;
+                        break;
+                    }
                 }
-            }
-            if($complete){
-                $this->data[] = $data;
+                if($complete)
+                {
+                    $this->data[] = $data;
+                }
             }
         }
         return $this;

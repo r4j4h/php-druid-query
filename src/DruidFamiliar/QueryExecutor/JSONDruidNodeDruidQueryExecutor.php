@@ -1,7 +1,5 @@
 <?php
 
-//require '../../vendor/autoload.php';
-
 namespace DruidFamiliar\QueryExecutor;
 
 use DruidFamiliar\Exception;
@@ -10,6 +8,8 @@ use DruidFamiliar\Interfaces\IDruidQueryGenerator;
 use DruidFamiliar\Interfaces\IDruidQueryParameters;
 use DruidFamiliar\Interfaces\IDruidQueryResponseHandler;
 use Guzzle\Http\Message\Response;
+use Guzzle\Http\Client;
+use Guzzle\Http\Exception\CurlException;
 
 /**
  * Class JSONDruidNodeDruidQueryExecutor
@@ -22,9 +22,10 @@ class JSONDruidNodeDruidQueryExecutor implements IDruidQueryExecutor
     private $endpoint;
     private $protocol;
 
-    public function __construct($ip, $port, $endpoint = '/druid/v2/', $protocol = 'http') {
-        $this->ip = $ip;
-        $this->port = $port;
+    public function __construct($ip, $port, $endpoint = '/druid/v2/', $protocol = 'http')
+    {
+        $this->ip       = $ip;
+        $this->port     = $port;
         $this->endpoint = $endpoint;
         $this->protocol = $protocol;
     }
@@ -32,19 +33,15 @@ class JSONDruidNodeDruidQueryExecutor implements IDruidQueryExecutor
     public function getBaseUrl()
     {
         $baseUrl = $this->protocol . '://' . $this->ip . ':' . $this->port;
-        $url = $baseUrl . $this->endpoint;
+        $url     = $baseUrl . $this->endpoint;
         return $url;
     }
 
     public function createRequest($query)
     {
-        $client = new \Guzzle\Http\Client();
+        $client = new Client();
 
-        $request = $client->post(
-            $this->getBaseUrl(),
-            array("content-type" => "application/json"),
-            json_encode($query)
-        );
+        $request = $client->post($this->getBaseUrl(), array("content-type" => "application/json"), json_encode($query));
 
         return $request;
     }
@@ -57,14 +54,14 @@ class JSONDruidNodeDruidQueryExecutor implements IDruidQueryExecutor
         $generatedQuery = $queryGenerator->generateQuery($params);
 
         // Create a POST request
-        $request = $this->createRequest( $generatedQuery );
+        $request = $this->createRequest($generatedQuery);
 
         // Send the request and parse the JSON response into an array
         try
         {
             $response = $request->send();
         }
-        catch (\Guzzle\Http\Exception\CurlException $curlException)
+        catch(CurlException $curlException)
         {
             throw new $curlException;
         }
@@ -78,6 +75,7 @@ class JSONDruidNodeDruidQueryExecutor implements IDruidQueryExecutor
 
     /**
      * @param Response $rawResponse
+     *
      * @return mixed
      */
     protected function parseResponse($rawResponse)
@@ -86,5 +84,4 @@ class JSONDruidNodeDruidQueryExecutor implements IDruidQueryExecutor
 
         return $formattedResponse;
     }
-
 }

@@ -23,6 +23,7 @@ class MissingParametersException extends Exception
 
     /**
      * Class constructor
+     *
      * @param array      $missingParameters Array of strings representing the missing parameters
      * @param string     $message           [optional] Override the default exception message to throw.
      * @param \Exception $previous          [optional] The previous exception used for the exception chaining. Since 5.3.0

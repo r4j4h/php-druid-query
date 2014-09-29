@@ -11,15 +11,18 @@
 
 namespace DruidFamiliar\Exception;
 
-class UnexpectedTypeException extends \Exception
+use Exception;
+
+class UnexpectedTypeException extends Exception
 {
-    public function __construct($value, $expectedType, $extraMessage = "", $previous = null)
+    public function __construct($value, $expectedType, $extraMessage = "", $previous = NULL)
     {
         $message = sprintf('Expected argument of type "%s", "%s" given.', $expectedType, is_object($value) ? get_class($value) : gettype($value));
 
-        if ( $extraMessage ) {
+        if($extraMessage)
+        {
             $message .= " " . $extraMessage;
         }
-        parent::__construct( $message );
+        parent::__construct($message);
     }
 }

@@ -14,7 +14,8 @@ class TimeBoundaryQueryParameters extends AbstractTaskParameters implements IDru
      */
     public $dataSource;
 
-    public function __construct($dataSource) {
+    public function __construct($dataSource)
+    {
         $this->dataSource = $dataSource;
     }
 
@@ -25,11 +26,13 @@ class TimeBoundaryQueryParameters extends AbstractTaskParameters implements IDru
     {
         $missingParams = array();
 
-        if ( !isset( $this->dataSource ) ) {
+        if(!isset($this->dataSource))
+        {
             $missingParams[] = 'dataSource';
         }
 
-        if ( count( $missingParams ) > 0 ) {
+        if(count($missingParams) > 0)
+        {
             throw new MissingParametersException($missingParams);
         }
 

@@ -8,7 +8,6 @@ use PHPUnit_Framework_TestCase;
 
 class TimeBoundaryQueryParametersTest extends PHPUnit_Framework_TestCase
 {
-
     public $mockDataSource = 'mydataSource';
 
     public function setUp()
@@ -27,8 +26,6 @@ class TimeBoundaryQueryParametersTest extends PHPUnit_Framework_TestCase
         return $parametersInstance;
     }
 
-
-
     /**
      * @depends testValidate
      */
@@ -36,12 +33,10 @@ class TimeBoundaryQueryParametersTest extends PHPUnit_Framework_TestCase
     {
         $parametersInstance = new TimeBoundaryQueryParameters($this->mockDataSource);
 
-        $parametersInstance->dataSource = null;
+        $parametersInstance->dataSource = NULL;
 
         $this->setExpectedException('DruidFamiliar\Exception\MissingParametersException');
 
         $parametersInstance->validate();
     }
-
-
 }

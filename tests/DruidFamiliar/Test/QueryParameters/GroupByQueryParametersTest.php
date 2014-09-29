@@ -14,23 +14,25 @@ use stdClass;
  * @category  WebPT
  * @copyright Copyright (c) 2014 WebPT, Inc.
  */
-class GroupByQueryParametersTest extends PHPUnit_Framework_TestCase{
+class GroupByQueryParametersTest extends PHPUnit_Framework_TestCase
+{
     /**
      * Tests the parameters validation
      */
-    public function testValidate(){
+    public function testValidate()
+    {
         $parametersInstance = new GroupByQueryParameters();
         $parametersInstance->setDataSource('referral-visit-old-format');
         $parametersInstance->setGranularity('all');
-        $parametersInstance->setDimensions(array('facility_id','referral_id','group'));
-        $filter = new stdClass();
-        $filter->type = 'selector';
+        $parametersInstance->setDimensions(array('facility_id', 'referral_id', 'group'));
+        $filter            = new stdClass();
+        $filter->type      = 'selector';
         $filter->dimension = 'company_id';
-        $filter->value = 1;
+        $filter->value     = 1;
         $parametersInstance->setFilter($filter);
-        $anAggregation = new stdClass();
-        $anAggregation->type = 'longSum';
-        $anAggregation->name = 'quantity';
+        $anAggregation            = new stdClass();
+        $anAggregation->type      = 'longSum';
+        $anAggregation->name      = 'quantity';
         $anAggregation->fieldName = 'count';
         $parametersInstance->setAggregations(array($anAggregation));
         $parametersInstance->setIntervals(array('2008-01-01T00:00:00.000/2012-01-03T00:00:00.000'));
@@ -43,18 +45,19 @@ class GroupByQueryParametersTest extends PHPUnit_Framework_TestCase{
      *
      * @expectedException \DruidFamiliar\Exception\MissingParametersException
      */
-    public function testMissingParametersException(){
+    public function testMissingParametersException()
+    {
         $parametersInstance = new GroupByQueryParameters();
         $parametersInstance->setDataSource('referral-visit-old-format');
-        $parametersInstance->setDimensions(array('facility_id','referral_id','group'));
-        $filter = new stdClass();
-        $filter->type = 'selector';
+        $parametersInstance->setDimensions(array('facility_id', 'referral_id', 'group'));
+        $filter            = new stdClass();
+        $filter->type      = 'selector';
         $filter->dimension = 'company_id';
-        $filter->value = 1;
+        $filter->value     = 1;
         $parametersInstance->setFilter($filter);
-        $anAggregation = new stdClass();
-        $anAggregation->type = 'longSum';
-        $anAggregation->name = 'quantity';
+        $anAggregation            = new stdClass();
+        $anAggregation->type      = 'longSum';
+        $anAggregation->name      = 'quantity';
         $anAggregation->fieldName = 'count';
         $parametersInstance->setAggregations(array($anAggregation));
         $parametersInstance->setIntervals(array('2008-01-01T00:00:00.000/2012-01-03T00:00:00.000'));
@@ -66,19 +69,20 @@ class GroupByQueryParametersTest extends PHPUnit_Framework_TestCase{
      *
      * @expectedException \DruidFamiliar\Exception\EmptyParametersException
      */
-    public function testEmptyParametersException(){
+    public function testEmptyParametersException()
+    {
         $parametersInstance = new GroupByQueryParameters();
         $parametersInstance->setDataSource('referral-visit-old-format');
         $parametersInstance->setGranularity('');
-        $parametersInstance->setDimensions(array('facility_id','referral_id','group'));
-        $filter = new stdClass();
-        $filter->type = 'selector';
+        $parametersInstance->setDimensions(array('facility_id', 'referral_id', 'group'));
+        $filter            = new stdClass();
+        $filter->type      = 'selector';
         $filter->dimension = 'company_id';
-        $filter->value = 1;
+        $filter->value     = 1;
         $parametersInstance->setFilter($filter);
-        $anAggregation = new stdClass();
-        $anAggregation->type = 'longSum';
-        $anAggregation->name = 'quantity';
+        $anAggregation            = new stdClass();
+        $anAggregation->type      = 'longSum';
+        $anAggregation->name      = 'quantity';
         $anAggregation->fieldName = 'count';
         $parametersInstance->setAggregations(array($anAggregation));
         $parametersInstance->setIntervals(array('2008-01-01T00:00:00.000/2012-01-03T00:00:00.000'));

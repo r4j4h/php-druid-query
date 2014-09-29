@@ -2,4 +2,8 @@
 
 namespace DruidFamiliar\Exception;
 
-class MalformedQueryException extends \Exception {};
+use Exception;
+
+class MalformedQueryException extends Exception
+{
+}

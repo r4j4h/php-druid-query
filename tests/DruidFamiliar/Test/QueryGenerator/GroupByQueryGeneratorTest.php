@@ -2,7 +2,6 @@
 
 namespace DruidFamiliar\Test\QueryGenerator;
 
-
 use DruidFamiliar\QueryGenerator\GroupByQueryGenerator;
 use DruidFamiliar\QueryParameters\GroupByQueryParameters;
 use PHPUnit_Framework_TestCase;
@@ -17,8 +16,8 @@ use \stdClass;
  * @category  WebPT
  * @copyright Copyright (c) 2014 WebPT, Inc.
  */
-class GroupByQueryGeneratorTest extends PHPUnit_Framework_TestCase {
-    
+class GroupByQueryGeneratorTest extends PHPUnit_Framework_TestCase
+{
     /**
      * Test the query generation, "happy path"
      */
@@ -27,17 +26,17 @@ class GroupByQueryGeneratorTest extends PHPUnit_Framework_TestCase {
         $parametersInstance = new GroupByQueryParameters();
         $parametersInstance->setDataSource('referral-visit-old-format');
         $parametersInstance->setGranularity('all');
-        $parametersInstance->setDimensions(array('facility_id','referral_id','group'));
+        $parametersInstance->setDimensions(array('facility_id', 'referral_id', 'group'));
 
-        $filter = new stdClass();
-        $filter->type = 'selector';
+        $filter            = new stdClass();
+        $filter->type      = 'selector';
         $filter->dimension = 'company_id';
-        $filter->value = 1;
+        $filter->value     = 1;
         $parametersInstance->setFilter($filter);
 
-        $anAggregation = new stdClass();
-        $anAggregation->type = 'longSum';
-        $anAggregation->name = 'quantity';
+        $anAggregation            = new stdClass();
+        $anAggregation->type      = 'longSum';
+        $anAggregation->name      = 'quantity';
         $anAggregation->fieldName = 'count';
 
         $parametersInstance->setAggregations(array($anAggregation));

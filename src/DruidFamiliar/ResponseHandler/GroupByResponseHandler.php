@@ -2,7 +2,6 @@
 
 namespace DruidFamiliar\ResponseHandler;
 
-
 use DruidFamiliar\Interfaces\IDruidQueryResponseHandler;
 use DruidFamiliar\Response\GroupByResponse;
 use Guzzle\Http\Message\Response;
@@ -15,8 +14,8 @@ use Guzzle\Http\Message\Response;
  * @category  WebPT
  * @copyright Copyright (c) 2014 WebPT, Inc.
  */
-class GroupByResponseHandler implements IDruidQueryResponseHandler {
-
+class GroupByResponseHandler implements IDruidQueryResponseHandler
+{
     /**
      * Hook function to handle response from server.
      *

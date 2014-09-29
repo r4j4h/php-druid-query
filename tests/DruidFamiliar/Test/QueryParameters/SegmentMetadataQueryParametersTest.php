@@ -7,22 +7,19 @@ use PHPUnit_Framework_TestCase;
 
 class SegmentMetadataQueryParametersTest extends PHPUnit_Framework_TestCase
 {
-
     public $mockDataSource = 'mydataSource';
     public $mockStartTimeString = '2014-01-01T16:00';
     public $mockEndTimeString = '2015-01-01';
-
     public $expectedIntervalString = '';
     public $parametersInstance;
-    
+
     public function setUp()
     {
         date_default_timezone_set('UTC');
         $this->expectedIntervalString = $this->mockStartTimeString . ':00Z/' . $this->mockEndTimeString . 'T00:00:00Z';
-        
-        $this->parametersInstance = new SegmentMetadataQueryParameters($this->mockDataSource, $this->mockStartTimeString, $this->mockEndTimeString );
-    }
 
+        $this->parametersInstance = new SegmentMetadataQueryParameters($this->mockDataSource, $this->mockStartTimeString, $this->mockEndTimeString);
+    }
 
     public function testValidate()
     {
@@ -39,8 +36,6 @@ class SegmentMetadataQueryParametersTest extends PHPUnit_Framework_TestCase
         return $parametersInstance;
     }
 
-
-
     /**
      * @depends testValidate
      */
@@ -52,11 +47,10 @@ class SegmentMetadataQueryParametersTest extends PHPUnit_Framework_TestCase
         $parametersInstance = $this->parametersInstance;
 
         $this->assertInstanceOf('DruidFamiliar\Interval', $parametersInstance->intervals);
-        $this->assertEquals( $this->expectedIntervalString, $parametersInstance->intervals );
+        $this->assertEquals($this->expectedIntervalString, $parametersInstance->intervals);
 
         return $parametersInstance;
     }
-
 
     /**
      * @depends testValidate
@@ -68,7 +62,7 @@ class SegmentMetadataQueryParametersTest extends PHPUnit_Framework_TestCase
          */
         $parametersInstance = $this->parametersInstance;
 
-        $parametersInstance->dataSource = null;
+        $parametersInstance->dataSource = NULL;
 
         $this->setExpectedException('DruidFamiliar\Exception\MissingParametersException');
 
@@ -85,7 +79,7 @@ class SegmentMetadataQueryParametersTest extends PHPUnit_Framework_TestCase
          */
         $parametersInstance = $this->parametersInstance;
 
-        $parametersInstance->intervals = null;
+        $parametersInstance->intervals = NULL;
 
         $this->setExpectedException('DruidFamiliar\Exception\MissingParametersException');
 
@@ -108,6 +102,4 @@ class SegmentMetadataQueryParametersTest extends PHPUnit_Framework_TestCase
 
         $parametersInstance->validate();
     }
-
-
 }

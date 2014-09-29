@@ -8,22 +8,17 @@ use PHPUnit_Framework_TestCase;
 
 class AbstractTaskParametersTest extends PHPUnit_Framework_TestCase
 {
-
     public function testIsValid()
     {
         /**
          * @var AbstractTaskParameters $stub
          */
         $stub = $this->getMockForAbstractClass('DruidFamiliar\Abstracts\AbstractTaskParameters');
-        $stub->expects($this->once())
-            ->method('validate')
-            ->will($this->returnValue(TRUE));
-
+        $stub->expects($this->once())->method('validate')->will($this->returnValue(true));
 
         $isValid = $stub->isValid();
 
-        $this->assertTrue( $isValid );
-
+        $this->assertTrue($isValid);
     }
 
     public function testIsNotValid()
@@ -32,15 +27,12 @@ class AbstractTaskParametersTest extends PHPUnit_Framework_TestCase
          * @var AbstractTaskParameters $stub
          */
         $stub = $this->getMockForAbstractClass('DruidFamiliar\Abstracts\AbstractTaskParameters');
-        $stub->expects($this->once())
-            ->method('validate')
-            ->will($this->throwException(new MissingParametersException(array('a_missing_parameter_name'))));
+        $stub->expects($this->once())->method('validate')->will($this->throwException(new MissingParametersException(array('a_missing_parameter_name'))));
 
         $isValid = $stub->isValid();
 
-        $this->assertFalse( $isValid );
+        $this->assertFalse($isValid);
     }
-
 }
 
 
