@@ -69,6 +69,18 @@ class GroupByResponse {
                 $this->data[] = $data;
             }
         }
+        else if(is_array($data)){
+            $complete = true;
+            foreach($this->requiredObjectFields as $property) {
+                if(!isset($data[$property])){
+                    $complete = false;
+                    break;
+                }
+            }
+            if($complete){
+                $this->data[] = $data;
+            }
+        }
         return $this;
     }
 } 
