@@ -24,7 +24,7 @@ class SegmentMetadataDruidQueryGenerator implements IDruidQueryGenerator
      * Take parameters and return a valid Druid Query.
      *
      * @param SegmentMetadataQueryParameters $params
-     * @return array Druid JSON POST Body in PHP Array form
+     * @return string Query payload in JSON
      * @throws \DruidFamiliar\Exception\MissingParametersException
      */
     public function generateQuery(IDruidQueryParameters $params)

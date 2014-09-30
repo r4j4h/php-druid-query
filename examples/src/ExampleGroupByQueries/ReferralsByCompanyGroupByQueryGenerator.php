@@ -34,7 +34,7 @@ QUERYTEMPLATE;
      * Take parameters and return a valid Druid Query.
      *
      * @param ReferralsByCompanyGroupByQueryParameters $params
-     * @return array Druid JSON POST Body in PHP Array form
+     * @return string Query payload in JSON
      */
     public function generateQuery(IDruidQueryParameters $params)
     {
@@ -44,8 +44,6 @@ QUERYTEMPLATE;
         $query = str_replace('{DATASOURCE}',    $params->dataSource,    $query);
         $query = str_replace('{STARTINTERVAL}', $params->startInterval, $query);
         $query = str_replace('{ENDINTERVAL}',   $params->endInterval,   $query);
-
-        $query = json_decode( $query );
 
         return $query;
     }

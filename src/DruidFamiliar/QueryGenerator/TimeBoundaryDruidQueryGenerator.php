@@ -16,7 +16,7 @@ class TimeBoundaryDruidQueryGenerator implements IDruidQueryGenerator
      * Take parameters and return a valid Druid Query.
      *
      * @param TimeBoundaryQueryParameters $params
-     * @return array Druid JSON POST Body in PHP Array form
+     * @return string Query payload in JSON
      */
     public function generateQuery(IDruidQueryParameters $params)
     {
