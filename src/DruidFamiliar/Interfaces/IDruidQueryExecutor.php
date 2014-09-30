@@ -9,7 +9,7 @@ namespace DruidFamiliar\Interfaces;
 interface IDruidQueryExecutor
 {
     /**
-     * Executes a Druid query using the provided query generator, parameters, and response payload handler.
+     * Execute a Druid query using the provided query generator, parameters, and response payload handler.
      *
      * See DruidFamiliar\ResponseHandler\DoNothingResponseHandler.
      *

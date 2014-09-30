@@ -5,8 +5,17 @@ namespace DruidFamiliar\QueryGenerator;
 use DruidFamiliar\Interfaces\IDruidQueryGenerator;
 use DruidFamiliar\Interfaces\IDruidQueryParameters;
 use DruidFamiliar\QueryParameters\SimpleGroupByQueryParameters;
+use Exception;
 
-class TestGroupByDruidQueryGenerator implements IDruidQueryGenerator
+/**
+ * Class SimpleGroupByDruidQueryGenerator
+ * @package   DruidFamiliar\QueryGenerator
+ * @author    Jasmine Hegman
+ * @version   1.0
+ * @category  WebPT
+ * @copyright Copyright (c) 2014 WebPT, Inc.
+ */
+class SimpleGroupByDruidQueryGenerator implements IDruidQueryGenerator
 {
     /**
      * Take parameters and return a valid Druid Query.
@@ -23,7 +32,7 @@ class TestGroupByDruidQueryGenerator implements IDruidQueryGenerator
          */
         if(!$params instanceof SimpleGroupByQueryParameters)
         {
-            throw new \Exception('Expected $params to be instanceof SimpleGroupByQueryParameters');
+            throw new Exception('Expected $params to be instanceof SimpleGroupByQueryParameters');
         }
 
         $params->validate();
@@ -57,10 +66,14 @@ class TestGroupByDruidQueryGenerator implements IDruidQueryGenerator
         $query = str_replace('{STARTINTERVAL}', $params->intervalStart, $query);
         $query = str_replace('{ENDINTERVAL}', $params->intervalEnd, $query);
 
-        $query = str_replace('{GRANULARITYSPEC.GRAN}', $params->granularity, $query);
-        $query = str_replace('{NON_TIME_DIMENSIONS}', join(",", $params->dimensions), $query);
-        $query = str_replace('{AGGREGATORS}', join(",", $params->aggregators), $query);
-        $query = str_replace('{POSTAGGREGATORS}', join(",", $params->postAggregators), $query);
+        $query = str_replace('{DATASOURCE}',            $params->dataSource,                  $query);
+        $query = str_replace('{INTERVALS}',             $params->intervals,                   $query);
+
+
+        $query = str_replace('{GRANULARITYSPEC.GRAN}',  $params->granularity,                 $query);
+        $query = str_replace('{NON_TIME_DIMENSIONS}',   join(",", $params->dimensions),       $query);
+        $query = str_replace('{AGGREGATORS}',           join(",", $params->aggregators),      $query);
+        $query = str_replace('{POSTAGGREGATORS}',       join(",", $params->postAggregators),  $query);
 
         return $query;
     }

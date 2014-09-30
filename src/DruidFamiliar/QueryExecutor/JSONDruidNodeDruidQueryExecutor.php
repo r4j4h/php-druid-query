@@ -13,15 +13,46 @@ use Guzzle\Http\Exception\CurlException;
 
 /**
  * Class JSONDruidNodeDruidQueryExecutor
- * @package DruidFamiliar\QueryExecutor
+ * @package   DruidFamiliar\QueryExecutor
+ * @author    Jasmine Hegman
+ * @version   1.0
+ * @category  WebPT
+ * @copyright Copyright (c) 2014 WebPT, Inc.
  */
 class JSONDruidNodeDruidQueryExecutor implements IDruidQueryExecutor
 {
+    /**
+     * An IP address
+     * @access private
+     * @var string
+     */
     private $ip;
+    /**
+     * A host port
+     * @access private
+     * @var int
+     */
     private $port;
+    /**
+     * The endpoint (host)
+     * @access private
+     * @var string
+     */
     private $endpoint;
+    /**
+     * The protocol to be used
+     * @access private
+     * @var string
+     */
     private $protocol;
 
+    /**
+     * Class constructor
+     * @param string $ip
+     * @param int    $port
+     * @param string $endpoint
+     * @param string $protocol
+     */
     public function __construct($ip, $port, $endpoint = '/druid/v2/', $protocol = 'http')
     {
         $this->ip       = $ip;
@@ -30,6 +61,9 @@ class JSONDruidNodeDruidQueryExecutor implements IDruidQueryExecutor
         $this->protocol = $protocol;
     }
 
+    /**
+     * @return string
+     */
     public function getBaseUrl()
     {
         $baseUrl = $this->protocol . '://' . $this->ip . ':' . $this->port;
@@ -37,6 +71,11 @@ class JSONDruidNodeDruidQueryExecutor implements IDruidQueryExecutor
         return $url;
     }
 
+    /**
+     * @param $query
+     *
+     * @return \Guzzle\Http\Message\RequestInterface
+     */
     public function createRequest($query)
     {
         $client = new Client();

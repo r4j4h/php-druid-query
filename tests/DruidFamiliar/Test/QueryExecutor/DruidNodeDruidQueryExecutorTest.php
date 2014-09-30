@@ -4,9 +4,18 @@ namespace DruidFamiliar\Test\QueryExecutor;
 
 use DruidFamiliar\QueryExecutor\DruidNodeDruidQueryExecutor;
 use DruidFamiliar\QueryGenerator\TimeBoundaryDruidQueryGenerator;
+use DruidFamiliar\QueryParameters\TimeBoundaryQueryParameters;
 use Guzzle\Http\Message\Response;
 use PHPUnit_Framework_TestCase;
 
+/**
+ * Class DruidNodeDruidQueryExecutorTest
+ * @package   DruidFamiliar\Test\QueryExecutor
+ * @author    Jasmine Hegman
+ * @version   1.0
+ * @category  WebPT
+ * @copyright Copyright (c) 2014 WebPT, Inc.
+ */
 class DruidNodeDruidQueryExecutorTest extends PHPUnit_Framework_TestCase
 {
     public function testGetBaseUrlAssemblesCorrectEndpoint()
@@ -38,8 +47,10 @@ class DruidNodeDruidQueryExecutorTest extends PHPUnit_Framework_TestCase
 
     public function testCreateRequest()
     {
-        $c     = new DruidNodeDruidQueryExecutor('1.2.3.4', '1234', '/mypath/');
-        $query = new TimeBoundaryDruidQueryGenerator('some-datasource');
+        $c = new DruidNodeDruidQueryExecutor('1.2.3.4', '1234', '/mypath/');
+        $queryGenerator = new TimeBoundaryDruidQueryGenerator();
+        $params = new TimeBoundaryQueryParameters('some-datasource');
+        $query = $queryGenerator->generateQuery($params);
 
         $req = $c->createRequest($query);
 
@@ -79,6 +90,100 @@ class DruidNodeDruidQueryExecutorTest extends PHPUnit_Framework_TestCase
         $mockResponseHandler->expects($this->once())->method('handleResponse')->with($mockResponse);
 
         $mockDruidQueryExecutor->executeQuery($mockQueryGenerator, $mockQueryParams, $mockResponseHandler);
+    }
+
+    public function testDefaultsToPostMethod()
+    {
+        $a = new DruidNodeDruidQueryExecutor('1.2.3.4', '1234');
+        $this->assertEquals('POST', $a->getHttpMethod());
+    }
+
+    public function testSendingUsingPostMethod()
+    {
+        $a = new DruidNodeDruidQueryExecutor('1.2.3.4', '1234');
+        $a->setHttpMethod('POST');
+        $request = $a->createRequest('{"hey":123}');
+        $this->assertEquals( 'POST', $request->getMethod() );
+    }
+
+    public function testSendingUsingPostMethodIsCaseInsensitive()
+    {
+        $a = new DruidNodeDruidQueryExecutor('1.2.3.4', '1234');
+        $a->setHttpMethod('post');
+        $request = $a->createRequest('{"hey":123}');
+        $this->assertEquals( 'POST', $request->getMethod() );
+    }
+
+    public function testProvidesBodyWhenPosting()
+    {
+        $a = new DruidNodeDruidQueryExecutor('1.2.3.4', '1234');
+        $a->setHttpMethod('POST');
+        $request = $a->createRequest('{"hey":123}');
+        $this->assertEquals( 'POST', $request->getMethod() );
+
+        $this->assertContains( 'hey', $request->getBody()->__toString() );
+        $this->assertContains( '123', $request->getBody()->__toString() );
+    }
+
+    public function testSendingUsingGetMethod()
+    {
+        $a = new DruidNodeDruidQueryExecutor('1.2.3.4', '1234');
+        $a->setHttpMethod('GET');
+        $request = $a->createRequest('{"hey":123}');
+        $this->assertEquals( 'GET', $request->getMethod() );
+    }
+
+    public function testSendingUsingGetMethodIsCaseInsensitive()
+    {
+        $a = new DruidNodeDruidQueryExecutor('1.2.3.4', '1234');
+        $a->setHttpMethod('get');
+        $request = $a->createRequest('{"hey":123}');
+        $this->assertEquals( 'GET', $request->getMethod() );
+
+    }
+
+    public function testSendingUsingGetMethodPutsRequestInQueryParameters()
+    {
+        $a = new DruidNodeDruidQueryExecutor('1.2.3.4', '1234');
+        $a->setHttpMethod('GET');
+        $a->setEndPoint('/somewhere/some/place');
+        $request = $a->createRequest('{"hey":123}');
+
+        $query = $request->getQuery()->getAll();
+        $this->assertArrayHasKey('hey', $query );
+        $this->assertEquals( '123', $query['hey'] );
+    }
+
+    public function testSendingUsingGetMethodMaintainsQueryParameters()
+    {
+        $a = new DruidNodeDruidQueryExecutor('1.2.3.4', '1234');
+        $a->setHttpMethod('GET');
+        $a->setEndPoint('/somewhere/some/place?query=test&stuff=works');
+        $request = $a->createRequest('{"hey":123}');
+
+        $query = $request->getQuery()->getAll();
+        $this->assertArrayHasKey('query', $query );
+        $this->assertEquals( 'test', $query['query'] );
+        $this->assertArrayHasKey('stuff', $query );
+        $this->assertEquals( 'works', $query['stuff'] );
+
+        // Does not stomp the query params from request
+        $this->assertArrayHasKey('hey', $query );
+        $this->assertEquals( '123', $query['hey'] );
+    }
+
+    public function testSendingUsingGetMethodPrefersRequestOverQueryParameters()
+    {
+        $a = new DruidNodeDruidQueryExecutor('1.2.3.4', '1234');
+        $a->setHttpMethod('GET');
+        $a->setEndPoint('/somewhere/some/place?hey=abc');
+        $request = $a->createRequest('{"hey":123}');
+
+        $query = $request->getQuery()->getAll();
+        // Does not stomp the query params from request
+        $this->assertArrayHasKey('hey', $query );
+        $this->assertEquals( '123', $query['hey'] );
+        $this->assertNotEquals( 'abc', $query['hey'] );
     }
 }
 

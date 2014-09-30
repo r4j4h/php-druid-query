@@ -2,21 +2,27 @@
 
 namespace DruidFamiliar\QueryGenerator;
 
-use DruidFamiliar\Abstracts\AbstractTaskParameters;
 use DruidFamiliar\Exception\MissingParametersException;
 use DruidFamiliar\Interfaces\IDruidQueryGenerator;
 use DruidFamiliar\Interfaces\IDruidQueryParameters;
-use DruidFamiliar\Interfaces\IDruidQueryResponseHandler;
 use DruidFamiliar\QueryParameters\TimeBoundaryQueryParameters;
 use Exception;
 
+/**
+ * Class TimeBoundaryDruidQueryGenerator
+ * @package   DruidFamiliar\QueryGenerator
+ * @author    Jsamine Hegman
+ * @version   1.0
+ * @category  WebPT
+ * @copyright Copyright (c) 2014 WebPT, Inc.
+ */
 class TimeBoundaryDruidQueryGenerator implements IDruidQueryGenerator
 {
     /**
      * Take parameters and return a valid Druid Query.
      * @param IDruidQueryParameters $params
      *
-     * @return array|string
+     * @return string
      * @throws Exception
      * @throws MissingParametersException
      */
@@ -32,6 +38,13 @@ class TimeBoundaryDruidQueryGenerator implements IDruidQueryGenerator
 
         $params->validate();
 
-        return array('queryType' => 'timeBoundary', "dataSource" => $params->dataSource);
+        $responseObj = array(
+            'queryType' => 'timeBoundary',
+            "dataSource" => $params->dataSource
+        );
+
+        $responseString = json_encode( $responseObj );
+
+        return $responseString;
     }
 }
