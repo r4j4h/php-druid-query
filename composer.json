@@ -1,5 +1,5 @@
 {
-    "name": "r4j4h/php-druid-query",
+    "name": "druid/php-druid-query",
     "description": "Experimental PHP wrapper around querying druid",
     "keywords": ["druid", "querying", "query", "parameterized query"],
     "license": "MIT",
