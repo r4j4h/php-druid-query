@@ -17,13 +17,13 @@ class Interval
 
     /**
      * ISO Time
-     * @var DateTime
+     * @var DruidTime
      */
     public $intervalStart;
 
     /**
      * ISO Time
-     * @var DateTime
+     * @var DruidTime
      */
     public $intervalEnd;
 
@@ -42,14 +42,14 @@ class Interval
 
     public function setStart($intervalStart = "1970-01-01 01:30:00")
     {
-        $startDateTime = new DateTime($intervalStart);
-        $this->intervalStart = $startDateTime;
+        $startDruidTime = new DruidTime( new DateTime($intervalStart) );
+        $this->intervalStart = $startDruidTime;
     }
 
     public function setEnd($intervalEnd = "3030-01-01 01:30:00")
     {
-        $endDateTime = new DateTime($intervalEnd);
-        $this->intervalEnd = $endDateTime;
+        $endDruidTime =  new DruidTime( new DateTime($intervalEnd) );
+        $this->intervalEnd = $endDruidTime;
     }
 
 
@@ -67,26 +67,26 @@ class Interval
         if ( count( $missingParams ) > 0 ) { throw new MissingParametersException($missingParams); }
 
         // Invalid params
-        if ( !$this->intervalStart instanceof DateTime ) {
-            throw new UnexpectedTypeException($this->intervalStart, 'DateTime', 'For parameter intervalStart.');
+        if ( !$this->intervalStart instanceof DruidTime ) {
+            throw new UnexpectedTypeException($this->intervalStart, 'DruidTime', 'For parameter intervalStart.');
         }
-        if ( !$this->intervalEnd instanceof DateTime ) {
-            throw new UnexpectedTypeException($this->intervalEnd, 'DateTime', 'For parameter intervalEnd.');
+        if ( !$this->intervalEnd instanceof DruidTime ) {
+            throw new UnexpectedTypeException($this->intervalEnd, 'DruidTime', 'For parameter intervalEnd.');
         }
 
         // Format
-        return $this->intervalStart->format("Y-m-d\TH:i:s\Z") . '/' . $this->intervalEnd->format("Y-m-d\TH:i:s\Z");
+        return $this->intervalStart . '/' . $this->intervalEnd;
     }
 
 
     public function getStart()
     {
-        return $this->intervalStart->format("Y-m-d\TH:i:s\Z");
+        return $this->intervalStart;
     }
 
     public function getEnd()
     {
-        return $this->intervalEnd->format("Y-m-d\TH:i:s\Z");
+        return $this->intervalEnd;
     }
 
 }
