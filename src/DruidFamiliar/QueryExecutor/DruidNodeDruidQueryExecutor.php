@@ -77,16 +77,18 @@ class DruidNodeDruidQueryExecutor implements IDruidQueryExecutor
 
         if ( $method === 'POST' )
         {
-            $postBody = json_encode( $query );
+            $postBody = $query;
             $request = $client->createRequest( $method, $uri, $headers, $postBody, $options );
         }
         else if ( $method === 'GET' )
         {
             $request = $client->createRequest( $method, $uri, $headers, null, $options );
-            $queryObject = json_decode( $query, true );
-            $query = $request->getQuery();
-            foreach( $queryObject as $key => $val ) {
-                $query->set($key, $val);
+            if ( $query ) {
+                $queryObject = json_decode($query, true);
+                $query = $request->getQuery();
+                foreach ($queryObject as $key => $val) {
+                    $query->set($key, $val);
+                }
             }
         }
         else
@@ -114,7 +116,7 @@ class DruidNodeDruidQueryExecutor implements IDruidQueryExecutor
 
         $generatedQuery = $queryGenerator->generateQuery($params);
 
-        // Create a POST request
+        // Create a request
         $request = $this->createRequest( $generatedQuery );
 
         // Send the request and parse the JSON response into an array
