@@ -1,7 +1,8 @@
 php-druid-query
 ===============
 
-PHP wrapper around querying [Druid](http://druid.io).
+PHP wrapper around executing HTTP requests to [Druid](http://druid.io). Usually this will be for queries, but can be
+used for other purposes (such as [ingestion](php-druid-ingest)).
 
 
 Overview
@@ -11,14 +12,19 @@ The wrapper lives in the namespace `DruidFamiliar`. Druid itself was named in th
 character could have a familiar - a spiritually linked animal companion. This wrapper in a sense lives as a companion to
 Druid, and thus the name.
 
-It's kind of stupid. Feel free to suggest another. I think the repo name should reflect the namespace for clarity,
-it currently is `php-druid-query` while the namespace is `DruidFamiliar`. :/
+I think the repo name should reflect the namespace for clarity, it currently is `php-druid-query` while
+the namespace is `DruidFamiliar`. This would be pretty breaking change and will be saved for the future. If you have
+other suggestions for naming of project or namespaces, feel free to suggest before then.
 
 
 Changelog
 -----------
 
-0.2.x Major refactoring
+0.2.1
+
+- DruidTime/Interval classes added to make it easier to work with varieties of time inputs to Druid compatible time output.
+
+0.2.0 Major refactoring
 
 - Query and Response Handling separated. All interfaces renamed and redesigned.
   - `IDruidConnection` is now `IDruidQueryExecutor`.
@@ -28,7 +34,8 @@ Changelog
 
 0.1.0 Initial release
 
-Quick sketch for sharing early.
+- Quick sketch for sharing early.
+
 
 Typical Use
 ---------------
@@ -90,8 +97,19 @@ Once those are run, require Composer's autoloader and you are off to the races, 
 How to Test
 -------------
 
-From the root directory, in a command terminal run: `php vendor/phpunit/phpunit/phpunit tests`.
+Once `composer install` has finished, from the root directory in a command terminal run:
 
+`vendor/bin/phing`
+
+or
+
+`vendor/bin/phpunit tests`
+
+
+Generate Documentation
+-------------
+
+From the root directory, in a command terminal run: `php vendor/bin/phing docs`.
 
 
 Examples
