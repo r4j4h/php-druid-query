@@ -46,7 +46,7 @@ In general, this wrapper's purpose is to streamline the execution of queries by 
 2. Instantiate a query generator object for the desired query.
 3. Instantiate a query parameters object, configured with desired query parameters.
 4. Instantiate a result handler to format the results (otherwise use `DoNothingResponseHandler`)
-5. Combine the connection, query, parameters, and response handler to execute it, getting the result.
+5. Combine the connection, query, parameters, and response handler to execute it, getting the result from the result handler.
 
 Interface wise, this looks like:
 
@@ -54,7 +54,7 @@ Interface wise, this looks like:
 2. Instantiate a `IDruidQueryGenerator`.
 3. Instantiate a `IDruidQueryParameters`, configured with parameters.
 4. Instantiate a `IDruidQueryResponseHandler`.
-5. Run the `IDruidQueryExecutor`'s `executeQuery` function with the `IDruidQuery`, getting the result.
+5. Run the `IDruidQueryExecutor`'s `executeQuery` function with the `IDruidQueryGenerator`, `IDruidQueryParameters`, and the `IDruidQueryResponseHandler`, getting the result from the `IDruidQueryResponseHandler`.
 
 Implementation wise, this can look like:
 
@@ -62,7 +62,7 @@ Implementation wise, this can look like:
 2. Instantiate a `SegmentMetadataDruidQuery`.
 3. Instantiate a `SegmentMetadataDruidQueryParameters`, configured with parameters.
 4. Instantiate a `SegmentMetadataResponseHandler`.
-5. Run the `DruidNodeDruidQueryExecutor`'s `executeQuery` function with the classes spawned in the previous steps, getting the result.
+5. Run the `DruidNodeDruidQueryExecutor`'s `executeQuery` function with the classes spawned in the previous steps, getting the result from `SegmentMetadataResponseHandler`.
 
 
 How to Install
