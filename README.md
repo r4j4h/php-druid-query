@@ -136,7 +136,7 @@ Please refer to this diagram for an overview of how this works underneath the ho
 
 ![Sequence Diagram](docs/sequence-diagram.png)
 
-(From this [Dynamic LucidChart Source URL](https://www.lucidchart.com/publicSegments/view/540e3dcd-372c-4aa6-a52c-44d80a005fd1/image.png))
+(From this [Dynamic LucidChart Source URL](https://www.lucidchart.com/publicSegments/view/542c92a6-f14c-4520-b004-04920a00caaf/image.png))
 
 In general, to add support for a new query all you need to do is create a new class wherever you want that implements `IDruidQuery`.
 
