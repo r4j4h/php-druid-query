@@ -22,7 +22,7 @@ Changelog
 
 0.2.1
 
-- DruidTime/Interval classes added to make it easier to work with varieties of time inputs to Druid compatible time output.
+- `DruidTime`/`Interval` classes added to make it easier to work with varieties of time inputs to Druid compatible time output.
 
 0.2.0 Major refactoring
 
@@ -91,7 +91,7 @@ Once those are run, require Composer's autoloader and you are off to the races, 
 
 1. `require 'vendor/autoload.php';`
 2. `$yay = new \DruidFamiliar\Query\TimeBoundaryDruidQuery('my-cool-data-source');`
-3. Refer to the `Typical Use` section above.
+3. Refer to the [Typical Use](#typical-use) section above.
 
 
 How to Test
