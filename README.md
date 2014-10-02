@@ -2,7 +2,7 @@ php-druid-query
 ===============
 
 PHP wrapper around executing HTTP requests to [Druid](http://druid.io). Usually this will be for queries, but can be
-used for other purposes (such as [ingestion](php-druid-ingest)).
+used for other purposes (such as [ingestion](https://github.com/r4j4h/php-druid-ingest)).
 
 
 Overview
