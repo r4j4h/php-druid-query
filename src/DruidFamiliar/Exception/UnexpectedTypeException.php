@@ -20,6 +20,6 @@ class UnexpectedTypeException extends \Exception
         if ( $extraMessage ) {
             $message .= " " . $extraMessage;
         }
-        parent::__construct( $message );
+        parent::__construct( $message, 0, $previous );
     }
 }
