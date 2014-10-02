@@ -160,6 +160,9 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
         $this->validateForEmptyParameters();
     }
 
+    /**
+     * @throws MissingParametersException
+     */
     protected function validateForMissingParameters()
     {
         // Validate missing params
@@ -186,6 +189,9 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
         }
     }
 
+    /**
+     * @throws MissingParametersException
+     */
     protected function validateForEmptyParameters()
     {
         // Validate empty params
