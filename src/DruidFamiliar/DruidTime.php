@@ -5,6 +5,7 @@ namespace DruidFamiliar;
 use DateTime;
 use DruidFamiliar\Exception\MissingParametersException;
 use DruidFamiliar\Exception\UnexpectedTypeException;
+use RuntimeException;
 
 
 /**
@@ -21,7 +22,10 @@ class DruidTime
      */
     protected $time;
 
-    public function __construct(DateTime $time)
+    /**
+     * @param string|DateTime $time
+     */
+    public function __construct($time)
     {
         $this->setTime($time);
     }
@@ -48,9 +52,27 @@ class DruidTime
         return $this->time->format("Y-m-d\TH:i:s\Z");
     }
 
-    public function setTime(DateTime $time)
+    /**
+     * @param string|DateTime $time
+     * @throws RuntimeException
+     */
+    public function setTime($time)
     {
-        $this->time = $time;
+
+        if ( is_string($time ) )
+        {
+            $time = new DateTime( $time );
+        }
+
+        if ( is_a($time, 'DateTime') )
+        {
+            $this->time = $time;
+        }
+        else
+        {
+            throw new RuntimeException('Encountered unexpected time. Expected either string or DateTime.');
+        }
+
     }
 
     public function getTime()

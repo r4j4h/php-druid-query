@@ -5,6 +5,7 @@ namespace DruidFamiliar;
 use DateTime;
 use DruidFamiliar\Exception\MissingParametersException;
 use DruidFamiliar\Exception\UnexpectedTypeException;
+use RuntimeException;
 
 
 /**
@@ -28,36 +29,92 @@ class Interval
     public $intervalEnd;
 
 
+    /**
+     * @param string|DateTime|DruidTime $intervalStart
+     * @param string|DateTime|DruidTime $intervalEnd
+     */
     function __construct($intervalStart = "1970-01-01 01:30:00", $intervalEnd = "3030-01-01 01:30:00")
     {
         $this->setInterval($intervalStart, $intervalEnd);
     }
 
 
+    /**
+     * @param string|DateTime|DruidTime $intervalStart
+     * @param string|DateTime|DruidTime $intervalEnd
+     */
     public function setInterval($intervalStart = "1970-01-01 01:30:00", $intervalEnd = "3030-01-01 01:30:00")
     {
         $this->setStart($intervalStart);
         $this->setEnd($intervalEnd);
     }
 
+    /**
+     * @param string|DateTime|DruidTime $intervalStart
+     */
     public function setStart($intervalStart = "1970-01-01 01:30:00")
     {
-        $startDruidTime = new DruidTime( new DateTime($intervalStart) );
-        $this->intervalStart = $startDruidTime;
+        if ( is_string($intervalStart ) )
+        {
+            $intervalStart = new DateTime( $intervalStart );
+        }
+
+        if ( is_a($intervalStart, 'DateTime') )
+        {
+            $intervalStart = new DruidTime( $intervalStart );
+        }
+
+        if ( is_a($intervalStart, 'DruidFamiliar\DruidTime') )
+        {
+            $this->intervalStart = $intervalStart;
+        }
+        else
+        {
+            throw new RuntimeException('Encountered unexpected start time. Expected either string, DateTime, or DruidTime.');
+        }
     }
 
+    /**
+     * @param string|DateTime|DruidTime $intervalEnd
+     */
     public function setEnd($intervalEnd = "3030-01-01 01:30:00")
     {
-        $endDruidTime =  new DruidTime( new DateTime($intervalEnd) );
-        $this->intervalEnd = $endDruidTime;
+        if ( is_string($intervalEnd ) )
+        {
+            $intervalEnd = new DateTime( $intervalEnd );
+        }
+
+        if ( is_a($intervalEnd, 'DateTime') )
+        {
+            $intervalEnd = new DruidTime( $intervalEnd );
+        }
+
+        if ( is_a($intervalEnd, 'DruidFamiliar\DruidTime') )
+        {
+            $this->intervalEnd = $intervalEnd;
+        }
+        else
+        {
+            throw new RuntimeException('Encountered unexpected end time. Expected either string, DateTime, or DruidTime.');
+        }
     }
 
 
+    /**
+     * @return string
+     * @throws MissingParametersException
+     * @throws UnexpectedTypeException
+     */
     function __toString()
     {
         return $this->getIntervalsString();
     }
 
+    /**
+     * @return string
+     * @throws MissingParametersException
+     * @throws UnexpectedTypeException
+     */
     public function getIntervalsString()
     {
         // Missing params
@@ -79,11 +136,17 @@ class Interval
     }
 
 
+    /**
+     * @return DruidTime
+     */
     public function getStart()
     {
         return $this->intervalStart;
     }
 
+    /**
+     * @return DruidTime
+     */
     public function getEnd()
     {
         return $this->intervalEnd;
