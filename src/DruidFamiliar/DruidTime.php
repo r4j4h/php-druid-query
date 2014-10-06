@@ -68,6 +68,11 @@ class DruidTime
         {
             $this->time = $time;
         }
+        else if ( is_a($time, 'DruidFamiliar\DruidTime') )
+        {
+            /** @var \DruidFamiliar\DruidTime $time */
+            $this->time = $time->getTime();
+        }
         else
         {
             throw new RuntimeException('Encountered unexpected time. Expected either string or DateTime.');
