@@ -6,11 +6,11 @@ use DruidFamiliar\Interfaces\IDruidQueryResponseHandler;
 use Guzzle\Http\Message\Response;
 
 /**
- * Class DoNothingResponseHandler simply returns a response unchanged.
+ * Class JsonFormattingResponseHandler decodes a JSON response and returns the result.
  *
  * @package DruidFamiliar\ResponseHandler
  */
-class DoNothingResponseHandler implements IDruidQueryResponseHandler
+class JsonFormattingResponseHandler implements IDruidQueryResponseHandler
 {
     /**
      * Hook function to handle response from server.
@@ -23,6 +23,7 @@ class DoNothingResponseHandler implements IDruidQueryResponseHandler
      */
     public function handleResponse($response)
     {
+        $response = $response->json();
         return $response;
     }
 }

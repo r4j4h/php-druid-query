@@ -1,0 +1,12 @@
+<phpunit bootstrap="./bootstrap.php" backupGlobals="false">
+    <testsuites>
+        <testsuite name="Business Service Unit Test Suite">
+            <directory>./</directory>
+        </testsuite>
+    </testsuites>
+    <groups>
+        <exclude>
+            <group></group>
+        </exclude>
+    </groups>
+</phpunit>

@@ -2,10 +2,10 @@
 
 
 namespace DruidFamiliar;
+
 use DateTime;
 use DruidFamiliar\Exception\MissingParametersException;
 use DruidFamiliar\Exception\UnexpectedTypeException;
-
 
 /**
  * Class Interval represents Web ISO style date ranges for use in Druid queries.
@@ -14,7 +14,6 @@ use DruidFamiliar\Exception\UnexpectedTypeException;
  */
 class Interval
 {
-
     /**
      * ISO Time
      * @var DateTime
@@ -42,13 +41,13 @@ class Interval
 
     public function setStart($intervalStart = "1970-01-01 01:30:00")
     {
-        $startDateTime = new DateTime($intervalStart);
+        $startDateTime       = new DateTime($intervalStart);
         $this->intervalStart = $startDateTime;
     }
 
     public function setEnd($intervalEnd = "3030-01-01 01:30:00")
     {
-        $endDateTime = new DateTime($intervalEnd);
+        $endDateTime       = new DateTime($intervalEnd);
         $this->intervalEnd = $endDateTime;
     }
 
@@ -62,22 +61,32 @@ class Interval
     {
         // Missing params
         $missingParams = array();
-        if ( !isset( $this->intervalStart ) )   { $missingParams[] = 'intervalStart'; }
-        if ( !isset( $this->intervalEnd ) )     { $missingParams[] = 'intervalEnd'; }
-        if ( count( $missingParams ) > 0 ) { throw new MissingParametersException($missingParams); }
+        if(!isset($this->intervalStart))
+        {
+            $missingParams[] = 'intervalStart';
+        }
+        if(!isset($this->intervalEnd))
+        {
+            $missingParams[] = 'intervalEnd';
+        }
+        if(count($missingParams) > 0)
+        {
+            throw new MissingParametersException($missingParams);
+        }
 
         // Invalid params
-        if ( !$this->intervalStart instanceof DateTime ) {
+        if(!$this->intervalStart instanceof DateTime)
+        {
             throw new UnexpectedTypeException($this->intervalStart, 'DateTime', 'For parameter intervalStart.');
         }
-        if ( !$this->intervalEnd instanceof DateTime ) {
+        if(!$this->intervalEnd instanceof DateTime)
+        {
             throw new UnexpectedTypeException($this->intervalEnd, 'DateTime', 'For parameter intervalEnd.');
         }
 
         // Format
         return $this->intervalStart->format("Y-m-d\TH:i:s\Z") . '/' . $this->intervalEnd->format("Y-m-d\TH:i:s\Z");
     }
-
 
     public function getStart()
     {

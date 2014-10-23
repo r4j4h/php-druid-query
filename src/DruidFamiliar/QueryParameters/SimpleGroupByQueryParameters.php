@@ -5,11 +5,16 @@ namespace DruidFamiliar\QueryParameters;
 use DruidFamiliar\Abstracts\AbstractTaskParameters;
 use DruidFamiliar\Exception\MissingParametersException;
 use DruidFamiliar\Interfaces\IDruidQueryParameters;
+use DruidFamiliar\Interval;
 
 /**
- * Class SimpleGroupByQueryParameters represents parameter values for an indexing task for Druid.
- *
- * @package PhpDruidIngest
+ * Class SimpleGroupByQueryParameters
+ * Represents parameter values for an indexing task for Druid.
+ * @package   DruidFamiliar\QueryParameters
+ * @author    Jasmine Hegman
+ * @version   1.0
+ * @category  WebPT
+ * @copyright Copyright (c) 2014 WebPT, Inc.
  */
 class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDruidQueryParameters
 {
@@ -22,19 +27,9 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
     public $queryType = "groupBy";
 
     /**
-     * ISO Time String of Batch Ingestion Window Start Time
-     *
-     * @var string
+     * @var Interval
      */
-    public $intervalStart;
-
-
-    /**
-     * ISO Time String of Batch Ingestion Window End Time
-     *
-     * @var string
-     */
-    public $intervalEnd;
+    public $intervals;
 
 
     /**
@@ -130,7 +125,7 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
     /**
      * Configure the aggregators for this request.
      *
-     * @param $aggregatorsArray PHP Array of aggregators
+     * @param $aggregatorsArray array PHP Array of aggregators
      */
     public function setAggregators($aggregatorsArray)
     {
@@ -146,7 +141,7 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
     /**
      * Configure the post aggregators for this request.
      *
-     * @param $postAggregatorsArray PHP Array of post aggregators
+     * @param $postAggregatorsArray array PHP Array of post aggregators
      */
     public function setPostAggregators($postAggregatorsArray)
     {
@@ -169,15 +164,15 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
 
         if ( !isset( $this->queryType       ) ) { $missingParams[] = 'queryType';       }
         if ( !isset( $this->dataSource      ) ) { $missingParams[] = 'dataSource';      }
-        if ( !isset( $this->intervalStart   ) ) { $missingParams[] = 'intervalStart';   }
-        if ( !isset( $this->intervalEnd     ) ) { $missingParams[] = 'intervalEnd';     }
+        if ( !isset( $this->intervals       ) ) { $missingParams[] = 'intervals';       }
+
         if ( !isset( $this->granularity     ) ) { $missingParams[] = 'granularity';     }
         if ( !isset( $this->dimensions      ) ) { $missingParams[] = 'dimensions';      }
         if ( !isset( $this->aggregators     ) ) { $missingParams[] = 'aggregators';     }
         if ( !isset( $this->postAggregators ) ) { $missingParams[] = 'postAggregators'; }
 
         if ( count($missingParams) > 0 ) {
-            throw new \DruidFamiliar\Exception\MissingParametersException($missingParams);
+            throw new MissingParametersException($missingParams);
         }
 
 
@@ -189,8 +184,33 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
         if ( $this->dataSource === '' ) { $emptyParams[] = 'dataSource'; }
 
         if ( count($emptyParams) > 0 ) {
-            throw new \DruidFamiliar\Exception\MissingParametersException($missingParams);
+            throw new MissingParametersException($missingParams);
         }
+    }
+
+    /**
+     * @return Interval
+     */
+    public function getIntervals()
+    {
+        return $this->intervals;
+    }
+
+    /**
+     * @param Interval $intervals
+     */
+    public function setIntervals(Interval $intervals)
+    {
+        $this->intervals = $intervals;
+    }
+
+    /**
+     * @param $intervalStart Interval
+     * @param $intervalEnd Interval
+     */
+    public function setIntervalByStartAndEnd($intervalStart, $intervalEnd)
+    {
+        $this->intervals = new Interval($intervalStart, $intervalEnd);
     }
 
 }

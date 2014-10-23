@@ -4,6 +4,7 @@ namespace DruidFamiliar\ExampleGroupByQueries;
 
 use DruidFamiliar\ExampleResponseObjects\ExampleReferralByCompanyResponseObject;
 use DruidFamiliar\Interfaces\IDruidQueryResponseHandler;
+use Guzzle\Http\Message\Response;
 
 /**
  * Class ReferralsByCompanyGroupByResponseHandler attempts to convert a Druid response into a ExampleReferralByCompanyResponseObject.
@@ -18,13 +19,15 @@ class ReferralsByCompanyGroupByResponseHandler implements IDruidQueryResponseHan
      *
      * This hook must return the response, whether changed or not, so that the rest of the system can continue with it.
      *
-     * @param array $response
+     * @param Response $response
      * @return ExampleReferralByCompanyResponseObject
      */
     public function handleResponse($response)
     {
+        $response = $response->json();
+
         if ( empty( $response ) ) {
-            throw new \Exception('Unknown data source');
+            throw new \Exception('Unknown data source.');
         }
 
         $responseArray = array();

@@ -9,13 +9,14 @@ namespace DruidFamiliar\Interfaces;
 interface IDruidQueryExecutor
 {
     /**
-     * Executes a Druid query using the provided query generator, parameters, and response payload handler.
+     * Execute a Druid query using the provided query generator, parameters, and response payload handler.
      *
      * See DruidFamiliar\ResponseHandler\DoNothingResponseHandler.
      *
-     * @param IDruidQueryGenerator $queryGenerator
-     * @param IDruidQueryParameters $params
+     * @param IDruidQueryGenerator       $queryGenerator
+     * @param IDruidQueryParameters      $params
      * @param IDruidQueryResponseHandler $responseHandler
+     *
      * @return mixed
      */
     public function executeQuery(IDruidQueryGenerator $queryGenerator, IDruidQueryParameters $params, IDruidQueryResponseHandler $responseHandler);
