@@ -23,6 +23,7 @@ class SimpleGroupByDruidQueryGenerator implements IDruidQueryGenerator
     "dataSource": "{DATASOURCE}",
     "granularity": "{GRANULARITYSPEC.GRAN}",
     "dimensions": [ "{NON_TIME_DIMENSIONS}" ],
+    "filter": [{FILTERS}],
     "aggregations": [{AGGREGATORS}],
     "postAggregations": [{POSTAGGREGATORS}],
     "intervals": ["{INTERVALS}"]
@@ -59,6 +60,10 @@ QUERYTEMPLATE;
         $queryKeys[] =  '"granularity": "{GRANULARITYSPEC.GRAN}"';
         $queryKeys[] =  '"dimensions": [ "{NON_TIME_DIMENSIONS}" ]';
 
+        if ( count( $params->filters ) > 0 ) {
+            $queryKeys[] =  '"filter": {FILTERS}';
+        }
+
         if ( count( $params->aggregators ) > 0 ) {
             $queryKeys[] =  '"aggregations": [{AGGREGATORS}]';
         }
@@ -80,6 +85,7 @@ QUERYTEMPLATE;
 
         $query = str_replace('{GRANULARITYSPEC.GRAN}',  $params->granularity,                 $query);
         $query = str_replace('{NON_TIME_DIMENSIONS}',   join('","', $params->dimensions),     $query);
+        $query = str_replace('{FILTERS}',               join(",", $params->filters),          $query);
         $query = str_replace('{AGGREGATORS}',           join(",", $params->aggregators),      $query);
         $query = str_replace('{POSTAGGREGATORS}',       join(",", $params->postAggregators),  $query);
 
