@@ -254,4 +254,40 @@ class SimpleGroupByDruidQueryGeneratorTest extends PHPUnit_Framework_TestCase
         $this->assertArrayNotHasKey('postAggregations', $query);
     }
 
+    public function testGenerateQueryHandlesStringGranularities()
+    {
+        $params = $this->getMockSimpleGroupByQueryParameters();
+        $params->granularity = 'DAY';
+
+        $q = new \DruidFamiliar\QueryGenerator\SimpleGroupByDruidQueryGenerator();
+
+        $query = $q->generateQuery($params);
+
+
+        $jsonString = json_decode( $query, true );
+
+        $this->assertArrayHasKey('granularity', $jsonString);
+        $this->assertEquals( 'DAY', $jsonString['granularity'] );
+    }
+
+    public function testGenerateQueryHandlesObjectGranularities()
+    {
+        $params = $this->getMockSimpleGroupByQueryParameters();
+        $params->granularity = array('type'=> "period", "period"=>"P3M");
+
+        $q = new \DruidFamiliar\QueryGenerator\SimpleGroupByDruidQueryGenerator();
+
+        $query = $q->generateQuery($params);
+
+
+        $jsonString = json_decode( $query, true );
+
+        $this->assertArrayHasKey('granularity', $jsonString);
+        $this->assertCount( 2, $jsonString['granularity'] );
+        $this->assertArrayHasKey('type', $jsonString['granularity']);
+        $this->assertArrayHasKey('period', $jsonString['granularity']);
+
+        $this->assertEquals( 'period', $jsonString['granularity']['type'] );
+        $this->assertEquals( 'P3M', $jsonString['granularity']['period'] );
+    }
 }

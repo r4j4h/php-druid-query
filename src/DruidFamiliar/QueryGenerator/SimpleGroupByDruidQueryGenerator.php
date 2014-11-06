@@ -57,7 +57,13 @@ QUERYTEMPLATE;
         // We always have these keys
         $queryKeys[] =  '"queryType": "{QUERYTYPE}"';
         $queryKeys[] =  '"dataSource": "{DATASOURCE}"';
-        $queryKeys[] =  '"granularity": "{GRANULARITYSPEC.GRAN}"';
+
+        if ( is_array( $params->granularity ) && count( $params->granularity ) > 0 ) {
+            $queryKeys[] =  '"granularity": {GRANULARITYSPEC.GRAN}';
+        } else {
+            $queryKeys[] = '"granularity": "{GRANULARITYSPEC.GRAN}"';
+        }
+
         $queryKeys[] =  '"dimensions": [ "{NON_TIME_DIMENSIONS}" ]';
 
         if ( count( $params->filters ) > 0 ) {
@@ -83,7 +89,12 @@ QUERYTEMPLATE;
         $query = str_replace('{INTERVALS}',             $params->intervals,                   $query);
 
 
-        $query = str_replace('{GRANULARITYSPEC.GRAN}',  $params->granularity,                 $query);
+        if ( is_array( $params->granularity ) && count( $params->granularity ) > 0 ) {
+            $query = str_replace('{GRANULARITYSPEC.GRAN}', json_encode( $params->granularity ), $query);
+        } else {
+            $query = str_replace('{GRANULARITYSPEC.GRAN}',  $params->granularity,               $query);
+        }
+
         $query = str_replace('{NON_TIME_DIMENSIONS}',   join('","', $params->dimensions),     $query);
         $query = str_replace('{FILTERS}',               join(",", $params->filters),          $query);
         $query = str_replace('{AGGREGATORS}',           join(",", $params->aggregators),      $query);
