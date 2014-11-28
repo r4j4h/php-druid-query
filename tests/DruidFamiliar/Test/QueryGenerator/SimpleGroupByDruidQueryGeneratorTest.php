@@ -32,6 +32,14 @@ class SimpleGroupByDruidQueryGeneratorTest extends PHPUnit_Framework_TestCase
         $params->dimensions = array('one_dim', 'two_dim');
 
         $params->setFilePath('/another/file/path/to/a/file.bebop');
+
+        $params->setFilters(array(
+            array('type' => 'or', 'fields' => array(
+                array('type' => 'selector', 'dimension' => 'one_dim', 'value' => '10'),
+                array('type' => 'selector', 'dimension' => 'one_dim', 'value' => '11')
+            ))
+        ));
+
         $params->setAggregators(array(
             array('type' => 'count', 'name' => 'count'),
             array('type' => 'longSum', 'name' => 'total_referral_count', 'fieldName' => 'referral_count')
@@ -102,6 +110,36 @@ class SimpleGroupByDruidQueryGeneratorTest extends PHPUnit_Framework_TestCase
         $this->assertEquals( "longSum",                 $secondAgg['type'] );
         $this->assertEquals( "total_referral_count",    $secondAgg['name'] );
         $this->assertEquals( "referral_count",       $secondAgg['fieldName'] );
+    }
+
+    /**
+     * @depends testGenerateQueryReturnsJSONString
+     */
+    public function testGenerateQueryIncludesFilters($jsonString)
+    {
+
+        $query = json_decode( $jsonString, true );
+
+        $this->assertArrayHasKey('filter', $query);
+        $firstFilter = $query['filter'];
+
+        $this->assertEquals( "or",          $firstFilter['type'] );
+        $this->assertArrayHasKey('fields',  $firstFilter );
+        $this->assertCount( 2,              $firstFilter['fields'] );
+
+        $orFilters = $firstFilter['fields'];
+        $this->assertCount( 2, $orFilters );
+
+        $firstOrFilter = $orFilters[0];
+        $secondOrFilter = $orFilters[1];
+
+        $this->assertEquals( "selector",        $firstOrFilter['type'] );
+        $this->assertEquals( "one_dim",       $firstOrFilter['dimension'] );
+        $this->assertEquals( "10",  $firstOrFilter['value'] );
+        $this->assertEquals( "selector",        $secondOrFilter['type'] );
+        $this->assertEquals( "one_dim",       $secondOrFilter['dimension'] );
+        $this->assertEquals( "11",  $secondOrFilter['value'] );
+
     }
 
     /**
@@ -215,5 +253,42 @@ class SimpleGroupByDruidQueryGeneratorTest extends PHPUnit_Framework_TestCase
         $query = json_decode( $query, true );
 
         $this->assertArrayNotHasKey('postAggregations', $query);
+    }
+
+    public function testGenerateQueryHandlesStringGranularities()
+    {
+        $params = $this->getMockSimpleGroupByQueryParameters();
+        $params->granularity = 'DAY';
+
+        $q = new \DruidFamiliar\QueryGenerator\SimpleGroupByDruidQueryGenerator();
+
+        $query = $q->generateQuery($params);
+
+
+        $jsonString = json_decode( $query, true );
+
+        $this->assertArrayHasKey('granularity', $jsonString);
+        $this->assertEquals( 'DAY', $jsonString['granularity'] );
+    }
+
+    public function testGenerateQueryHandlesObjectGranularities()
+    {
+        $params = $this->getMockSimpleGroupByQueryParameters();
+        $params->granularity = array('type'=> "period", "period"=>"P3M");
+
+        $q = new \DruidFamiliar\QueryGenerator\SimpleGroupByDruidQueryGenerator();
+
+        $query = $q->generateQuery($params);
+
+
+        $jsonString = json_decode( $query, true );
+
+        $this->assertArrayHasKey('granularity', $jsonString);
+        $this->assertCount( 2, $jsonString['granularity'] );
+        $this->assertArrayHasKey('type', $jsonString['granularity']);
+        $this->assertArrayHasKey('period', $jsonString['granularity']);
+
+        $this->assertEquals( 'period', $jsonString['granularity']['type'] );
+        $this->assertEquals( 'P3M', $jsonString['granularity']['period'] );
     }
 }

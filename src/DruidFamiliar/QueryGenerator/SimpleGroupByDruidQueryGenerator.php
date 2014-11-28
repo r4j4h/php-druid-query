@@ -41,14 +41,23 @@ class SimpleGroupByDruidQueryGenerator implements IDruidQueryGenerator
         $queryKeys = array();
 
         // We always have these keys
-        $queryKeys[] = '"queryType": "{QUERYTYPE}"';
-        $queryKeys[] = '"dataSource": "{DATASOURCE}"';
-        $queryKeys[] = '"granularity": "{GRANULARITYSPEC.GRAN}"';
-        $queryKeys[] = '"dimensions": [ "{NON_TIME_DIMENSIONS}" ]';
+        $queryKeys[] =  '"queryType": "{QUERYTYPE}"';
+        $queryKeys[] =  '"dataSource": "{DATASOURCE}"';
 
-        if(count($params->aggregators) > 0)
-        {
-            $queryKeys[] = '"aggregations": [{AGGREGATORS}]';
+        if ( is_array( $params->granularity ) && count( $params->granularity ) > 0 ) {
+            $queryKeys[] =  '"granularity": {GRANULARITYSPEC.GRAN}';
+        } else {
+            $queryKeys[] = '"granularity": "{GRANULARITYSPEC.GRAN}"';
+        }
+
+        $queryKeys[] =  '"dimensions": [ "{NON_TIME_DIMENSIONS}" ]';
+
+        if ( count( $params->filters ) > 0 ) {
+            $queryKeys[] =  '"filter": {FILTERS}';
+        }
+
+        if ( count( $params->aggregators ) > 0 ) {
+            $queryKeys[] =  '"aggregations": [{AGGREGATORS}]';
         }
 
         if(count($params->postAggregators) > 0)
@@ -56,22 +65,24 @@ class SimpleGroupByDruidQueryGenerator implements IDruidQueryGenerator
             $queryKeys[] = '"postAggregations": [{POSTAGGREGATORS}]';
         }
 
-        $queryKeys[] = '"intervals": ["{STARTINTERVAL}/{ENDINTERVAL}"]';
+        $queryKeys[] =  '"intervals": ["{INTERVALS}"]';
 
         $query = "{" . join(",\n", $queryKeys) . "}";
 
         $query = str_replace('{QUERYTYPE}', $params->queryType, $query);
 
         $query = str_replace('{DATASOURCE}', $params->dataSource, $query);
-        $query = str_replace('{STARTINTERVAL}', $params->intervalStart, $query);
-        $query = str_replace('{ENDINTERVAL}', $params->intervalEnd, $query);
-
-        $query = str_replace('{DATASOURCE}',            $params->dataSource,                  $query);
-        $query = str_replace('{INTERVALS}',             $params->intervals,                   $query);
+        $query = str_replace('{INTERVALS}', $params->intervals, $query);
 
 
-        $query = str_replace('{GRANULARITYSPEC.GRAN}',  $params->granularity,                 $query);
-        $query = str_replace('{NON_TIME_DIMENSIONS}',   join(",", $params->dimensions),       $query);
+        if ( is_array( $params->granularity ) && count( $params->granularity ) > 0 ) {
+            $query = str_replace('{GRANULARITYSPEC.GRAN}', json_encode( $params->granularity ), $query);
+        } else {
+            $query = str_replace('{GRANULARITYSPEC.GRAN}', $params->granularity, $query);
+        }
+
+        $query = str_replace('{NON_TIME_DIMENSIONS}',   join('","', $params->dimensions),     $query);
+        $query = str_replace('{FILTERS}',               join(",", $params->filters),          $query);
         $query = str_replace('{AGGREGATORS}',           join(",", $params->aggregators),      $query);
         $query = str_replace('{POSTAGGREGATORS}',       join(",", $params->postAggregators),  $query);
 

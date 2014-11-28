@@ -5,6 +5,7 @@ namespace DruidFamiliar\QueryParameters;
 use DruidFamiliar\Abstracts\AbstractTaskParameters;
 use DruidFamiliar\Exception\MissingParametersException;
 use DruidFamiliar\Interfaces\IDruidQueryParameters;
+use DruidFamiliar\DruidTime;
 use DruidFamiliar\Interval;
 
 /**
@@ -53,34 +54,6 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
 
 
     /**
-     * Path for ingestion. Keep in mind the coordinator and historical nodes will need to be able to access this!
-     *
-     * Intended to be set through $this->setFilePath(...).
-     *
-     * @var string
-     */
-    public $baseDir;
-
-
-    /**
-     * Filename for ingestion. Keep in mind the coordinator and historical nodes will need to be able to access this!
-     *
-     * Intended to be set through $this->setFilePath(...).
-     *
-     * @var string
-     */
-    public $filePath;
-
-
-    /**
-     * Format of ingestion.
-     *
-     * @var string
-     */
-    public $format = 'json';
-
-
-    /**
      * The data's time dimension key.
      *
      * @var string
@@ -95,6 +68,14 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
      */
     public $dimensions;
 
+    /**
+     * Array of json encoded strings
+     *
+     * Intended to be set through $this->setFilters(...).
+     *
+     * @var array
+     */
+    public $filters = array();
 
     /**
      * Array of json encoded strings
@@ -131,9 +112,25 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
     {
         $this->aggregators = array();
 
-        foreach( $aggregatorsArray as $key => $val)
+        foreach( $aggregatorsArray as $aggregator)
         {
-            $this->aggregators[] = json_encode( $val );
+            $this->aggregators[] = json_encode( $aggregator );
+        }
+
+    }
+
+    /**
+     * Configure the filters for this request.
+     *
+     * @param $filtersArray PHP Array of aggregators
+     */
+    public function setFilters($filtersArray)
+    {
+        $this->filters = array();
+
+        foreach( $filtersArray as $filter)
+        {
+            $this->filters[] = json_encode( $filter );
         }
 
     }
@@ -147,9 +144,9 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
     {
         $this->postAggregators = array();
 
-        foreach( $postAggregatorsArray as $key => $val)
+        foreach( $postAggregatorsArray as $postAggregator)
         {
-            $this->postAggregators[] = json_encode( $val );
+            $this->postAggregators[] = json_encode( $postAggregator );
         }
 
     }
@@ -159,32 +156,62 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
      */
     public function validate()
     {
+        $this->validateForMissingParameters();
+
+        $this->validateForEmptyParameters();
+    }
+
+    /**
+     * @throws MissingParametersException
+     */
+    protected function validateForMissingParameters()
+    {
         // Validate missing params
         $missingParams = array();
 
-        if ( !isset( $this->queryType       ) ) { $missingParams[] = 'queryType';       }
-        if ( !isset( $this->dataSource      ) ) { $missingParams[] = 'dataSource';      }
-        if ( !isset( $this->intervals       ) ) { $missingParams[] = 'intervals';       }
+        $requiredParams = array(
+            'queryType',
+            'dataSource',
+            'intervals',
+            'granularity',
+            'dimensions',
+            'aggregators',
+            'filters',
+            'postAggregators'
+        );
 
-        if ( !isset( $this->granularity     ) ) { $missingParams[] = 'granularity';     }
-        if ( !isset( $this->dimensions      ) ) { $missingParams[] = 'dimensions';      }
-        if ( !isset( $this->aggregators     ) ) { $missingParams[] = 'aggregators';     }
-        if ( !isset( $this->postAggregators ) ) { $missingParams[] = 'postAggregators'; }
+        foreach ($requiredParams as $requiredParam) {
+            if ( !isset( $this->$requiredParam ) ) {
+                $missingParams[] = $requiredParam;
+            }
+        }
 
         if ( count($missingParams) > 0 ) {
             throw new MissingParametersException($missingParams);
         }
+    }
 
-
-
+    /**
+     * @throws MissingParametersException
+     */
+    protected function validateForEmptyParameters()
+    {
         // Validate empty params
         $emptyParams = array();
 
-        if ( $this->queryType === '' ) { $emptyParams[] = 'queryType'; }
-        if ( $this->dataSource === '' ) { $emptyParams[] = 'dataSource'; }
+        $requiredNonEmptyParams = array(
+            'queryType',
+            'dataSource'
+        );
+
+        foreach ($requiredNonEmptyParams as $requiredNonEmptyParam) {
+            if ( !isset( $this->$requiredNonEmptyParam ) ) {
+                $emptyParams[] = $requiredNonEmptyParam;
+            }
+        }
 
         if ( count($emptyParams) > 0 ) {
-            throw new MissingParametersException($missingParams);
+            throw new MissingParametersException($emptyParams);
         }
     }
 
@@ -205,12 +232,34 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
     }
 
     /**
-     * @param $intervalStart Interval
-     * @param $intervalEnd Interval
+     * @param string|\DateTime|DruidTime $intervalStart
+     * @param string|\DateTime|DruidTime $intervalEnd
      */
     public function setIntervalByStartAndEnd($intervalStart, $intervalEnd)
     {
-        $this->intervals = new Interval($intervalStart, $intervalEnd);
+        $this->setIntervals(new Interval($intervalStart, $intervalEnd));
     }
 
+    /**
+     * Adjusts the datetime to make the interval "exclusive" of the datetime.
+     * e.g., given
+     * startDateTime=2014-06-18T12:30:01Z and
+     * endDateTime=2014-06-18T01:00:00Z
+     * return and Interval containing
+     * startDateTime=2014-06-18T12:30:00Z and
+     * endDateTime=2014-06-18T01:00:01Z
+     *
+     * @param $startDateTime
+     * @param $endDateTime
+     * @return void
+     */
+    public function setIntervalForQueryingUsingExclusiveTimes($startDateTime, $endDateTime)
+    {
+        $adjustedStartDateTime = new \DateTime($startDateTime);
+        $adjustedStartDateTime->sub(new \DateInterval('PT1S'));
+        $adjustedEndDateTime = new \DateTime($endDateTime);
+        $adjustedEndDateTime->add(new \DateInterval('PT1S'));
+
+        $this->setIntervals(new Interval($adjustedStartDateTime, $adjustedEndDateTime));
+    }
 }
