@@ -2,8 +2,18 @@
 
 namespace DruidFamiliar\Exception;
 
-class MissingParametersException extends \Exception {
+use Exception;
 
+/**
+ * Class MissingParametersException
+ * @package   DruidFamiliar\Exception
+ * @author    Jasmine Hegman
+ * @version   1.0
+ * @category  WebPT
+ * @copyright Copyright (c) 2014 WebPT, Inc.
+ */
+class MissingParametersException extends Exception
+{
     /**
      * Array of missing parameter keys
      *
@@ -19,5 +29,4 @@ class MissingParametersException extends \Exception {
         $this->missingParameters = $missingParameters;
         parent::__construct("Missing parameters: " . join(", ", $this->missingParameters), count($this->missingParameters), $previous);
     }
-
-};
+}

@@ -2,4 +2,8 @@
 
 namespace DruidFamiliar\Exception;
 
-class DruidUnavailableException extends \Exception {};
+use Exception;
+
+class DruidUnavailableException extends Exception
+{
+}

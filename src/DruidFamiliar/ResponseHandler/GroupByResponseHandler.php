@@ -3,14 +3,18 @@
 namespace DruidFamiliar\ResponseHandler;
 
 use DruidFamiliar\Interfaces\IDruidQueryResponseHandler;
+use DruidFamiliar\Response\GroupByResponse;
 use Guzzle\Http\Message\Response;
 
 /**
- * Class JsonFormattingResponseHandler decodes a JSON response and returns the result.
- *
- * @package DruidFamiliar\ResponseHandler
+ * Class GroupByResponseHandler
+ * @package   DruidFamiliar\ResponseHandler
+ * @author    Ernesto Spiro Peimbert Andreakis
+ * @version   1.0
+ * @category  WebPT
+ * @copyright Copyright (c) 2014 WebPT, Inc.
  */
-class JsonFormattingResponseHandler implements IDruidQueryResponseHandler
+class GroupByResponseHandler implements IDruidQueryResponseHandler
 {
     /**
      * Hook function to handle response from server.
@@ -24,6 +28,10 @@ class JsonFormattingResponseHandler implements IDruidQueryResponseHandler
     public function handleResponse($response)
     {
         $response = $response->json();
-        return $response;
+
+        $responseObj = new GroupByResponse();
+        $responseObj->setData($response);
+
+        return $responseObj;
     }
 }

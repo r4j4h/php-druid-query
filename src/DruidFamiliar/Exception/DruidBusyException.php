@@ -2,4 +2,8 @@
 
 namespace DruidFamiliar\Exception;
 
-class DruidBusyException extends \Exception {};
+use Exception;
+
+class DruidBusyException extends Exception
+{
+}

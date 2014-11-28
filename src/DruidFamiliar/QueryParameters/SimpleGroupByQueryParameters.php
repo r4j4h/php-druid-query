@@ -9,9 +9,13 @@ use DruidFamiliar\DruidTime;
 use DruidFamiliar\Interval;
 
 /**
- * Class SimpleGroupByQueryParameters represents parameter values for a typical group by Druid query.
- *
- * @package DruidFamiliar
+ * Class SimpleGroupByQueryParameters
+ * Represents parameter values for an indexing task for Druid.
+ * @package   DruidFamiliar\QueryParameters
+ * @author    Jasmine Hegman
+ * @version   1.0
+ * @category  WebPT
+ * @copyright Copyright (c) 2014 WebPT, Inc.
  */
 class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDruidQueryParameters
 {
@@ -102,7 +106,7 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
     /**
      * Configure the aggregators for this request.
      *
-     * @param $aggregatorsArray PHP Array of aggregators
+     * @param $aggregatorsArray array PHP Array of aggregators
      */
     public function setAggregators($aggregatorsArray)
     {
@@ -134,7 +138,7 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
     /**
      * Configure the post aggregators for this request.
      *
-     * @param $postAggregatorsArray PHP Array of post aggregators
+     * @param $postAggregatorsArray array PHP Array of post aggregators
      */
     public function setPostAggregators($postAggregatorsArray)
     {
@@ -183,7 +187,7 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
         }
 
         if ( count($missingParams) > 0 ) {
-            throw new \DruidFamiliar\Exception\MissingParametersException($missingParams);
+            throw new MissingParametersException($missingParams);
         }
     }
 
@@ -207,7 +211,7 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
         }
 
         if ( count($emptyParams) > 0 ) {
-            throw new \DruidFamiliar\Exception\MissingParametersException($emptyParams);
+            throw new MissingParametersException($emptyParams);
         }
     }
 

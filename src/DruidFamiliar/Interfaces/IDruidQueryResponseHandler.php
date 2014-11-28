@@ -1,6 +1,7 @@
 <?php
 
 namespace DruidFamiliar\Interfaces;
+
 use Guzzle\Http\Message\Response;
 
 /**
@@ -10,15 +11,14 @@ use Guzzle\Http\Message\Response;
  */
 interface IDruidQueryResponseHandler
 {
-
     /**
      * Hook function to handle response from server.
      *
      * This hook must return the response, whether changed or not, so that the rest of the system can continue with it.
      *
      * @param Response $response
+     *
      * @return mixed
      */
-    public function handleResponse( $response );
-
+    public function handleResponse($response);
 }

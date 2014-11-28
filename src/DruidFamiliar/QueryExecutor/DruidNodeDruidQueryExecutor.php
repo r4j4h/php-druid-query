@@ -2,13 +2,22 @@
 
 namespace DruidFamiliar\QueryExecutor;
 
-use DruidFamiliar\Exception;
 use DruidFamiliar\Interfaces\IDruidQueryExecutor;
 use DruidFamiliar\Interfaces\IDruidQueryGenerator;
 use DruidFamiliar\Interfaces\IDruidQueryParameters;
 use DruidFamiliar\Interfaces\IDruidQueryResponseHandler;
-use Guzzle\Http\Message\Response;
+use Guzzle\Http\Client;
+use Guzzle\Http\Exception\CurlException;
+use Exception;
 
+/**
+ * Class DruidNodeDruidQueryExecutor
+ * @package   DruidFamiliar\QueryExecutor
+ * @author    Jasmine Hegman
+ * @version   1.0
+ * @category  WebPT
+ * @copyright Copyright (c) 2014 WebPT, Inc.
+ */
 class DruidNodeDruidQueryExecutor implements IDruidQueryExecutor
 {
     /**
@@ -32,17 +41,27 @@ class DruidNodeDruidQueryExecutor implements IDruidQueryExecutor
     /**
      * The protocol the Druid node is listening on. (http or https)
      *
-     * @var
+     * @var int
      */
     protected $protocol;
 
     /**
      * HTTP Method to use
      *
-     * @var
+     * @var string
      */
     protected $httpMethod = 'POST';
 
+    /**
+     * Class constructor
+     * @param        $ip
+     * @param        $port
+     * @param string $endpoint
+     * @param string $protocol
+     * @param string $httpMethod
+     *
+     * @throws \Exception
+     */
     public function __construct($ip, $port, $endpoint = '/druid/v2/', $protocol = 'http', $httpMethod = 'POST') {
         $this->ip = $ip;
         $this->port = $port;
@@ -54,10 +73,9 @@ class DruidNodeDruidQueryExecutor implements IDruidQueryExecutor
     public function getBaseUrl()
     {
         $baseUrl = $this->protocol . '://' . $this->ip . ':' . $this->port;
-        $url = $baseUrl . $this->endpoint;
+        $url     = $baseUrl . $this->endpoint;
         return $url;
     }
-
 
     /**
      * Create a Guzzle Request object using the given JSON parameters
@@ -68,7 +86,7 @@ class DruidNodeDruidQueryExecutor implements IDruidQueryExecutor
      */
     public function createRequest($query)
     {
-        $client = new \Guzzle\Http\Client();
+        $client = new Client();
 
         $method = $this->httpMethod;
         $uri = $this->getBaseUrl();
@@ -93,12 +111,10 @@ class DruidNodeDruidQueryExecutor implements IDruidQueryExecutor
         }
         else
         {
-            throw new \Exception('Unexpected HTTP Method: ' . $method);
+            throw new Exception('Unexpected HTTP Method: ' . $method);
         }
-
         return $request;
     }
-
 
     /**
      * Execute a Druid query using the provided query generator, parameters, and response payload handler.
@@ -124,7 +140,7 @@ class DruidNodeDruidQueryExecutor implements IDruidQueryExecutor
         {
             $response = $request->send();
         }
-        catch (\Guzzle\Http\Exception\CurlException $curlException)
+        catch(CurlException $curlException)
         {
             throw new $curlException;
         }
@@ -159,7 +175,7 @@ class DruidNodeDruidQueryExecutor implements IDruidQueryExecutor
         $method = strtoupper( $method );
 
         if ( !in_array( $method, $allowed_methods ) ) {
-            throw new \Exception('Unsupported HTTP Method: ' . $method . '. Supported methods are: ' . join($allowed_methods, ', '));
+            throw new Exception('Unsupported HTTP Method: ' . $method . '. Supported methods are: ' . join($allowed_methods, ', '));
         }
 
         $this->httpMethod = $method;
@@ -179,8 +195,9 @@ class DruidNodeDruidQueryExecutor implements IDruidQueryExecutor
      * Set the protocol.
      *
      * Supported protocols are: http, https
+     * @param $protocol
      *
-     * @param string $protocol
+     * @throws \Exception
      */
     public function setProtocol($protocol)
     {
@@ -189,7 +206,7 @@ class DruidNodeDruidQueryExecutor implements IDruidQueryExecutor
         $protocol = strtolower( $protocol );
 
         if ( !in_array( $protocol,$allowedProtocols ) ) {
-            throw new \Exception('Unsupported Protocol: ' . $protocol . '. Supported protocols are: ' . join($allowedProtocols, ', '));
+            throw new Exception('Unsupported Protocol: ' . $protocol . '. Supported protocols are: ' . join($allowedProtocols, ', '));
         }
 
         $this->protocol = $protocol;
@@ -242,5 +259,4 @@ class DruidNodeDruidQueryExecutor implements IDruidQueryExecutor
     {
         $this->endpoint = $endpoint;
     }
-
 }

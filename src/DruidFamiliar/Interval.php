@@ -2,11 +2,11 @@
 
 
 namespace DruidFamiliar;
+
 use DateTime;
 use DruidFamiliar\Exception\MissingParametersException;
 use DruidFamiliar\Exception\UnexpectedTypeException;
 use RuntimeException;
-
 
 /**
  * Class Interval represents Web ISO style date ranges for use in Druid queries.
@@ -15,7 +15,6 @@ use RuntimeException;
  */
 class Interval
 {
-
     /**
      * ISO Time
      * @var DruidTime
@@ -119,9 +118,18 @@ class Interval
     {
         // Missing params
         $missingParams = array();
-        if ( !isset( $this->intervalStart ) )   { $missingParams[] = 'intervalStart'; }
-        if ( !isset( $this->intervalEnd ) )     { $missingParams[] = 'intervalEnd'; }
-        if ( count( $missingParams ) > 0 ) { throw new MissingParametersException($missingParams); }
+        if(!isset($this->intervalStart))
+        {
+            $missingParams[] = 'intervalStart';
+        }
+        if(!isset($this->intervalEnd))
+        {
+            $missingParams[] = 'intervalEnd';
+        }
+        if(count($missingParams) > 0)
+        {
+            throw new MissingParametersException($missingParams);
+        }
 
         // Invalid params
         if ( !$this->intervalStart instanceof DruidTime ) {

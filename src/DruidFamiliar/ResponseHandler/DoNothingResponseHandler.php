@@ -12,13 +12,13 @@ use Guzzle\Http\Message\Response;
  */
 class DoNothingResponseHandler implements IDruidQueryResponseHandler
 {
-
     /**
      * Hook function to handle response from server.
      *
      * This hook must return the response, whether changed or not, so that the rest of the system can continue with it.
      *
      * @param Response $response
+     *
      * @return mixed
      */
     public function handleResponse($response)

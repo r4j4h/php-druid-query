@@ -2,4 +2,8 @@
 
 namespace DruidFamiliar\Exception;
 
-class ConnectionLostException extends \Exception {};
+use Exception;
+
+class ConnectionLostException extends Exception
+{
+}
