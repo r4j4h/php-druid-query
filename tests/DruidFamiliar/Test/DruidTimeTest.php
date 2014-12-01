@@ -83,4 +83,17 @@ class DruidTimeTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('2014-01-01T00:20:00Z', $interval->formatTimeForDruid());
     }
 
+    public function testCanSetWithString()
+    {
+        $interval = new DruidTime( '2014-01-01T00:20' );
+
+        $this->assertEquals('2014-01-01T00:20:00Z', $interval->formatTimeForDruid());
+    }
+
+    public function testCanSetWithDateTime()
+    {
+        $interval = new DruidTime( new DateTime( '2014-01-01T00:20' ) );
+
+        $this->assertEquals('2014-01-01T00:20:00Z', $interval->formatTimeForDruid());
+    }
 }
