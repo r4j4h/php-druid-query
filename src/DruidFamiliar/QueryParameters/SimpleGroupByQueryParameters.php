@@ -8,9 +8,9 @@ use DruidFamiliar\Interfaces\IDruidQueryParameters;
 use DruidFamiliar\Interval;
 
 /**
- * Class SimpleGroupByQueryParameters represents parameter values for an indexing task for Druid.
+ * Class SimpleGroupByQueryParameters represents parameter values for a typical group by Druid query.
  *
- * @package PhpDruidIngest
+ * @package DruidFamiliar
  */
 class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDruidQueryParameters
 {
@@ -46,34 +46,6 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
      * @var string
      */
     public $dataSource;
-
-
-    /**
-     * Path for ingestion. Keep in mind the coordinator and historical nodes will need to be able to access this!
-     *
-     * Intended to be set through $this->setFilePath(...).
-     *
-     * @var string
-     */
-    public $baseDir;
-
-
-    /**
-     * Filename for ingestion. Keep in mind the coordinator and historical nodes will need to be able to access this!
-     *
-     * Intended to be set through $this->setFilePath(...).
-     *
-     * @var string
-     */
-    public $filePath;
-
-
-    /**
-     * Format of ingestion.
-     *
-     * @var string
-     */
-    public $format = 'json';
 
 
     /**
