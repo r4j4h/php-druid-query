@@ -63,6 +63,14 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
      */
     public $dimensions;
 
+    /**
+     * Array of json encoded strings
+     *
+     * Intended to be set through $this->setFilters(...).
+     *
+     * @var array
+     */
+    public $filters = array();
 
     /**
      * Array of json encoded strings
@@ -102,6 +110,22 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
         foreach( $aggregatorsArray as $aggregator)
         {
             $this->aggregators[] = json_encode( $aggregator );
+        }
+
+    }
+
+    /**
+     * Configure the filters for this request.
+     *
+     * @param $filtersArray PHP Array of aggregators
+     */
+    public function setFilters($filtersArray)
+    {
+        $this->filters = array();
+
+        foreach( $filtersArray as $filter)
+        {
+            $this->filters[] = json_encode( $filter );
         }
 
     }
@@ -147,6 +171,7 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
             'granularity',
             'dimensions',
             'aggregators',
+            'filters',
             'postAggregators'
         );
 
