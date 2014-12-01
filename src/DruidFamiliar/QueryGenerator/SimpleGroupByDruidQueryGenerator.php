@@ -69,7 +69,7 @@ QUERYTEMPLATE;
             $queryKeys[] =  '"postAggregations": [{POSTAGGREGATORS}]';
         }
 
-        $queryKeys[] =  '"intervals": ["{STARTINTERVAL}/{ENDINTERVAL}"]';
+        $queryKeys[] =  '"intervals": ["{INTERVALS}"]';
 
         $query = "{" . join(",\n", $queryKeys) . "}";
 
