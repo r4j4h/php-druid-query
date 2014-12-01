@@ -81,7 +81,7 @@ QUERYTEMPLATE;
 
 
         $query = str_replace('{GRANULARITYSPEC.GRAN}',  $params->granularity,                 $query);
-        $query = str_replace('{NON_TIME_DIMENSIONS}',   join(",", $params->dimensions),       $query);
+        $query = str_replace('{NON_TIME_DIMENSIONS}',   join('","', $params->dimensions),     $query);
         $query = str_replace('{AGGREGATORS}',           join(",", $params->aggregators),      $query);
         $query = str_replace('{POSTAGGREGATORS}',       join(",", $params->postAggregators),  $query);
 
