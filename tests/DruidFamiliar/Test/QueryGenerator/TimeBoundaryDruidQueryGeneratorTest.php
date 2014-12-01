@@ -16,6 +16,8 @@ class TimeBoundaryDruidQueryGeneratorTest extends PHPUnit_Framework_TestCase
 
         $query = $q->generateQuery($p);
 
+        $query = json_decode( $query, true );
+
         $this->assertArrayHasKey('queryType', $query);
         $this->assertArrayHasKey('dataSource', $query, "Generated query must include required parameters.");
 

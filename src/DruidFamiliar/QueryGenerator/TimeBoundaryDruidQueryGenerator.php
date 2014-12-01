@@ -16,22 +16,27 @@ class TimeBoundaryDruidQueryGenerator implements IDruidQueryGenerator
      * Take parameters and return a valid Druid Query.
      * @param IDruidQueryParameters $params
      *
-     * @return array|string
-     * @throws Exception
-     * @throws MissingParametersException
+     * @param TimeBoundaryQueryParameters $params
+     * @return string Query payload in JSON
      */
     public function generateQuery(IDruidQueryParameters $params)
     {
         /**
          * @var TimeBoundaryQueryParameters $params
          */
-        if(!$params instanceof TimeBoundaryQueryParameters)
-        {
-            throw new Exception('Expected $params to be instanceof TimeBoundaryQueryParameters');
+        if ( !$params instanceof TimeBoundaryQueryParameters ) {
+            throw new \Exception('Expected $params to be instanceof TimeBoundaryQueryParameters');
         }
 
         $params->validate();
 
-        return array('queryType' => 'timeBoundary', "dataSource" => $params->dataSource);
+        $responseObj = array(
+            'queryType' => 'timeBoundary',
+            "dataSource" => $params->dataSource
+        );
+
+        $responseString = json_encode( $responseObj );
+
+        return $responseString;
     }
 }
