@@ -127,9 +127,9 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
     {
         $this->aggregators = array();
 
-        foreach( $aggregatorsArray as $key => $val)
+        foreach( $aggregatorsArray as $aggregator)
         {
-            $this->aggregators[] = json_encode( $val );
+            $this->aggregators[] = json_encode( $aggregator );
         }
 
     }
@@ -143,9 +143,9 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
     {
         $this->postAggregators = array();
 
-        foreach( $postAggregatorsArray as $key => $val)
+        foreach( $postAggregatorsArray as $postAggregator)
         {
-            $this->postAggregators[] = json_encode( $val );
+            $this->postAggregators[] = json_encode( $postAggregator );
         }
 
     }
@@ -155,32 +155,61 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
      */
     public function validate()
     {
+        $this->validateForMissingParameters();
+
+        $this->validateForEmptyParameters();
+    }
+
+    /**
+     * @throws MissingParametersException
+     */
+    protected function validateForMissingParameters()
+    {
         // Validate missing params
         $missingParams = array();
 
-        if ( !isset( $this->queryType       ) ) { $missingParams[] = 'queryType';       }
-        if ( !isset( $this->dataSource      ) ) { $missingParams[] = 'dataSource';      }
-        if ( !isset( $this->intervals       ) ) { $missingParams[] = 'intervals';       }
+        $requiredParams = array(
+            'queryType',
+            'dataSource',
+            'intervals',
+            'granularity',
+            'dimensions',
+            'aggregators',
+            'postAggregators'
+        );
 
-        if ( !isset( $this->granularity     ) ) { $missingParams[] = 'granularity';     }
-        if ( !isset( $this->dimensions      ) ) { $missingParams[] = 'dimensions';      }
-        if ( !isset( $this->aggregators     ) ) { $missingParams[] = 'aggregators';     }
-        if ( !isset( $this->postAggregators ) ) { $missingParams[] = 'postAggregators'; }
+        foreach ($requiredParams as $requiredParam) {
+            if ( !isset( $this->$requiredParam ) ) {
+                $missingParams[] = $requiredParam;
+            }
+        }
 
         if ( count($missingParams) > 0 ) {
             throw new \DruidFamiliar\Exception\MissingParametersException($missingParams);
         }
+    }
 
-
-
+    /**
+     * @throws MissingParametersException
+     */
+    protected function validateForEmptyParameters()
+    {
         // Validate empty params
         $emptyParams = array();
 
-        if ( $this->queryType === '' ) { $emptyParams[] = 'queryType'; }
-        if ( $this->dataSource === '' ) { $emptyParams[] = 'dataSource'; }
+        $requiredNonEmptyParams = array(
+            'queryType',
+            'dataSource'
+        );
+
+        foreach ($requiredNonEmptyParams as $requiredNonEmptyParam) {
+            if ( !isset( $this->$requiredNonEmptyParam ) ) {
+                $emptyParams[] = $requiredNonEmptyParam;
+            }
+        }
 
         if ( count($emptyParams) > 0 ) {
-            throw new \DruidFamiliar\Exception\MissingParametersException($missingParams);
+            throw new \DruidFamiliar\Exception\MissingParametersException($emptyParams);
         }
     }
 

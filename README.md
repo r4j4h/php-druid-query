@@ -1,7 +1,8 @@
 php-druid-query
 ===============
 
-PHP wrapper around querying [Druid](http://druid.io).
+PHP wrapper around executing HTTP requests to [Druid](http://druid.io). Usually this will be for queries, but can be
+used for other purposes (such as [ingestion](https://github.com/r4j4h/php-druid-ingest)).
 
 
 Overview
@@ -11,14 +12,19 @@ The wrapper lives in the namespace `DruidFamiliar`. Druid itself was named in th
 character could have a familiar - a spiritually linked animal companion. This wrapper in a sense lives as a companion to
 Druid, and thus the name.
 
-It's kind of stupid. Feel free to suggest another. I think the repo name should reflect the namespace for clarity,
-it currently is `php-druid-query` while the namespace is `DruidFamiliar`. :/
+I think the repo name should reflect the namespace for clarity, it currently is `php-druid-query` while
+the namespace is `DruidFamiliar`. This would be pretty breaking change and will be saved for the future. If you have
+other suggestions for naming of project or namespaces, feel free to suggest before then.
 
 
 Changelog
 -----------
 
-0.2.x Major refactoring
+0.2.1
+
+- `DruidTime`/`Interval` classes added to make it easier to work with varieties of time inputs to Druid compatible time output.
+
+0.2.0 Major refactoring
 
 - Query and Response Handling separated. All interfaces renamed and redesigned.
   - `IDruidConnection` is now `IDruidQueryExecutor`.
@@ -28,7 +34,8 @@ Changelog
 
 0.1.0 Initial release
 
-Quick sketch for sharing early.
+- Quick sketch for sharing early.
+
 
 Typical Use
 ---------------
@@ -39,7 +46,7 @@ In general, this wrapper's purpose is to streamline the execution of queries by 
 2. Instantiate a query generator object for the desired query.
 3. Instantiate a query parameters object, configured with desired query parameters.
 4. Instantiate a result handler to format the results (otherwise use `DoNothingResponseHandler`)
-5. Combine the connection, query, parameters, and response handler to execute it, getting the result.
+5. Combine the connection, query, parameters, and response handler to execute it, getting the result from the result handler.
 
 Interface wise, this looks like:
 
@@ -47,7 +54,7 @@ Interface wise, this looks like:
 2. Instantiate a `IDruidQueryGenerator`.
 3. Instantiate a `IDruidQueryParameters`, configured with parameters.
 4. Instantiate a `IDruidQueryResponseHandler`.
-5. Run the `IDruidQueryExecutor`'s `executeQuery` function with the `IDruidQuery`, getting the result.
+5. Run the `IDruidQueryExecutor`'s `executeQuery` function with the `IDruidQueryGenerator`, `IDruidQueryParameters`, and the `IDruidQueryResponseHandler`, getting the result from the `IDruidQueryResponseHandler`.
 
 Implementation wise, this can look like:
 
@@ -55,7 +62,7 @@ Implementation wise, this can look like:
 2. Instantiate a `SegmentMetadataDruidQuery`.
 3. Instantiate a `SegmentMetadataDruidQueryParameters`, configured with parameters.
 4. Instantiate a `SegmentMetadataResponseHandler`.
-5. Run the `DruidNodeDruidQueryExecutor`'s `executeQuery` function with the classes spawned in the previous steps, getting the result.
+5. Run the `DruidNodeDruidQueryExecutor`'s `executeQuery` function with the classes spawned in the previous steps, getting the result from `SegmentMetadataResponseHandler`.
 
 
 How to Install
@@ -84,14 +91,25 @@ Once those are run, require Composer's autoloader and you are off to the races, 
 
 1. `require 'vendor/autoload.php';`
 2. `$yay = new \DruidFamiliar\Query\TimeBoundaryDruidQuery('my-cool-data-source');`
-3. Refer to the `Typical Use` section above.
+3. Refer to the [Typical Use](#typical-use) section above.
 
 
 How to Test
 -------------
 
-From the root directory, in a command terminal run: `php vendor/phpunit/phpunit/phpunit tests`.
+Once `composer install` has finished, from the root directory in a command terminal run:
 
+`vendor/bin/phing`
+
+or
+
+`vendor/bin/phpunit tests`
+
+
+Generate Documentation
+-------------
+
+From the root directory, in a command terminal run: `php vendor/bin/phing docs`.
 
 
 Examples
@@ -118,7 +136,7 @@ Please refer to this diagram for an overview of how this works underneath the ho
 
 ![Sequence Diagram](docs/sequence-diagram.png)
 
-(From this [Dynamic LucidChart Source URL](https://www.lucidchart.com/publicSegments/view/540e3dcd-372c-4aa6-a52c-44d80a005fd1/image.png))
+(From this [Dynamic LucidChart Source URL](https://www.lucidchart.com/publicSegments/view/542c92a6-f14c-4520-b004-04920a00caaf/image.png))
 
 In general, to add support for a new query all you need to do is create a new class wherever you want that implements `IDruidQuery`.
 
