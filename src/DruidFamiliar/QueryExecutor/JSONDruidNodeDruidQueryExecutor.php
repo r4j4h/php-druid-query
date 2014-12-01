@@ -13,11 +13,7 @@ use Guzzle\Http\Exception\CurlException;
 
 /**
  * Class JSONDruidNodeDruidQueryExecutor
- * @package   DruidFamiliar\QueryExecutor
- * @author    Jasmine Hegman
- * @version   1.0
- * @category  WebPT
- * @copyright Copyright (c) 2014 WebPT, Inc.
+ * @package DruidFamiliar\QueryExecutor
  */
 class JSONDruidNodeDruidQueryExecutor implements IDruidQueryExecutor
 {

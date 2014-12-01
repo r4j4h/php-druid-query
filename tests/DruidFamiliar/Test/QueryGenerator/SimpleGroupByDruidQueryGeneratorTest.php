@@ -7,14 +7,6 @@ use DruidFamiliar\QueryGenerator\SimpleGroupByDruidQueryGenerator;
 use PHPUnit_Framework_TestCase;
 use DruidFamiliar\Exception\MissingParametersException;
 
-/**
- * Class SimpleGroupByDruidQueryGeneratorTest
- * @package   DruidFamiliar\Test\QueryGenerator
- * @author    Jasmine Hegman
- * @version   1.0
- * @category  WebPT
- * @copyright Copyright (c) 2014 WebPT, Inc.
- */
 class SimpleGroupByDruidQueryGeneratorTest extends PHPUnit_Framework_TestCase
 {
     private $mockDataSourceName = 'my-datasource';
@@ -70,7 +62,7 @@ class SimpleGroupByDruidQueryGeneratorTest extends PHPUnit_Framework_TestCase
     {
         $params = $this->getMockSimpleGroupByQueryParameters();
 
-        $q = new SimpleGroupByDruidQueryGenerator();
+        $q = new \DruidFamiliar\QueryGenerator\SimpleGroupByDruidQueryGenerator();
 
         $query = $q->generateQuery($params);
 
@@ -184,7 +176,7 @@ class SimpleGroupByDruidQueryGeneratorTest extends PHPUnit_Framework_TestCase
             $params = $this->getMockSimpleGroupByQueryParameters();
             $params->dataSource = NULL;
 
-            $q = new SimpleGroupByDruidQueryGenerator();
+            $q = new \DruidFamiliar\QueryGenerator\SimpleGroupByDruidQueryGenerator();
             $query = $q->generateQuery($params);
         } catch (MissingParametersException $e) {
             $this->assertContains('dataSource', $e->missingParameters, "Returned missing parameters: " . join(',', $e->missingParameters));
@@ -200,7 +192,7 @@ class SimpleGroupByDruidQueryGeneratorTest extends PHPUnit_Framework_TestCase
             $params = $this->getMockSimpleGroupByQueryParameters();
             $params->queryType = NULL;
 
-            $q = new SimpleGroupByDruidQueryGenerator($params);
+            $q = new \DruidFamiliar\QueryGenerator\SimpleGroupByDruidQueryGenerator($params);
             $query = $q->generateQuery($params);
         } catch (MissingParametersException $e) {
             $this->assertContains('queryType', $e->missingParameters);
@@ -219,16 +211,17 @@ class SimpleGroupByDruidQueryGeneratorTest extends PHPUnit_Framework_TestCase
         $params = $this->getMockSimpleGroupByQueryParameters();
         $params->intervals = NULL;
 
-        $q = new SimpleGroupByDruidQueryGenerator($params);
+        $q = new \DruidFamiliar\QueryGenerator\SimpleGroupByDruidQueryGenerator($params);
         $q->generateQuery($params);
     }
+
 
     public function testGenerateQueryHandlesNotHavingAggregations()
     {
         $params = $this->getMockSimpleGroupByQueryParameters();
         $params->setAggregators(array());
 
-        $q = new SimpleGroupByDruidQueryGenerator($params);
+        $q = new \DruidFamiliar\QueryGenerator\SimpleGroupByDruidQueryGenerator($params);
 
         $query = $q->generateQuery($params);
 
@@ -239,12 +232,13 @@ class SimpleGroupByDruidQueryGeneratorTest extends PHPUnit_Framework_TestCase
         $this->assertArrayNotHasKey('aggregations', $query);
     }
 
+
     public function testGenerateQueryHandlesNotHavingPostAggregations()
     {
         $params = $this->getMockSimpleGroupByQueryParameters();
         $params->setPostAggregators(array());
 
-        $q = new SimpleGroupByDruidQueryGenerator($params);
+        $q = new \DruidFamiliar\QueryGenerator\SimpleGroupByDruidQueryGenerator($params);
 
         $query = $q->generateQuery($params);
 

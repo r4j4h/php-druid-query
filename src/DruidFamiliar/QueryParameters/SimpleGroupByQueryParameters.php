@@ -9,13 +9,9 @@ use DruidFamiliar\DruidTime;
 use DruidFamiliar\Interval;
 
 /**
- * Class SimpleGroupByQueryParameters
- * Represents parameter values for an indexing task for Druid.
- * @package   DruidFamiliar\QueryParameters
- * @author    Jasmine Hegman
- * @version   1.0
- * @category  WebPT
- * @copyright Copyright (c) 2014 WebPT, Inc.
+ * Class SimpleGroupByQueryParameters represents parameter values for a typical group by Druid query.
+ *
+ * @package DruidFamiliar
  */
 class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDruidQueryParameters
 {
@@ -187,7 +183,7 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
         }
 
         if ( count($missingParams) > 0 ) {
-            throw new MissingParametersException($missingParams);
+            throw new \DruidFamiliar\Exception\MissingParametersException($missingParams);
         }
     }
 
@@ -211,7 +207,7 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
         }
 
         if ( count($emptyParams) > 0 ) {
-            throw new MissingParametersException($emptyParams);
+            throw new \DruidFamiliar\Exception\MissingParametersException($emptyParams);
         }
     }
 

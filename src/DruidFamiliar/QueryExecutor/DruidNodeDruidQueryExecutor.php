@@ -2,22 +2,15 @@
 
 namespace DruidFamiliar\QueryExecutor;
 
+use DruidFamiliar\Exception;
 use DruidFamiliar\Interfaces\IDruidQueryExecutor;
 use DruidFamiliar\Interfaces\IDruidQueryGenerator;
 use DruidFamiliar\Interfaces\IDruidQueryParameters;
 use DruidFamiliar\Interfaces\IDruidQueryResponseHandler;
+use Guzzle\Http\Message\Response;
 use Guzzle\Http\Client;
 use Guzzle\Http\Exception\CurlException;
-use Exception;
 
-/**
- * Class DruidNodeDruidQueryExecutor
- * @package   DruidFamiliar\QueryExecutor
- * @author    Jasmine Hegman
- * @version   1.0
- * @category  WebPT
- * @copyright Copyright (c) 2014 WebPT, Inc.
- */
 class DruidNodeDruidQueryExecutor implements IDruidQueryExecutor
 {
     /**
@@ -52,16 +45,6 @@ class DruidNodeDruidQueryExecutor implements IDruidQueryExecutor
      */
     protected $httpMethod = 'POST';
 
-    /**
-     * Class constructor
-     * @param        $ip
-     * @param        $port
-     * @param string $endpoint
-     * @param string $protocol
-     * @param string $httpMethod
-     *
-     * @throws \Exception
-     */
     public function __construct($ip, $port, $endpoint = '/druid/v2/', $protocol = 'http', $httpMethod = 'POST') {
         $this->ip = $ip;
         $this->port = $port;
@@ -73,7 +56,7 @@ class DruidNodeDruidQueryExecutor implements IDruidQueryExecutor
     public function getBaseUrl()
     {
         $baseUrl = $this->protocol . '://' . $this->ip . ':' . $this->port;
-        $url     = $baseUrl . $this->endpoint;
+        $url = $baseUrl . $this->endpoint;
         return $url;
     }
 
@@ -86,7 +69,7 @@ class DruidNodeDruidQueryExecutor implements IDruidQueryExecutor
      */
     public function createRequest($query)
     {
-        $client = new Client();
+        $client = new \Guzzle\Http\Client();
 
         $method = $this->httpMethod;
         $uri = $this->getBaseUrl();
@@ -113,6 +96,7 @@ class DruidNodeDruidQueryExecutor implements IDruidQueryExecutor
         {
             throw new Exception('Unexpected HTTP Method: ' . $method);
         }
+
         return $request;
     }
 
@@ -140,7 +124,7 @@ class DruidNodeDruidQueryExecutor implements IDruidQueryExecutor
         {
             $response = $request->send();
         }
-        catch(CurlException $curlException)
+        catch (\Guzzle\Http\Exception\CurlException $curlException)
         {
             throw new $curlException;
         }
@@ -195,9 +179,8 @@ class DruidNodeDruidQueryExecutor implements IDruidQueryExecutor
      * Set the protocol.
      *
      * Supported protocols are: http, https
-     * @param $protocol
      *
-     * @throws \Exception
+     * @param string $protocol
      */
     public function setProtocol($protocol)
     {
