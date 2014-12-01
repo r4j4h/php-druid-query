@@ -5,6 +5,7 @@ namespace DruidFamiliar\QueryParameters;
 use DruidFamiliar\Abstracts\AbstractTaskParameters;
 use DruidFamiliar\Exception\MissingParametersException;
 use DruidFamiliar\Interfaces\IDruidQueryParameters;
+use DruidFamiliar\DruidTime;
 use DruidFamiliar\Interval;
 
 /**
@@ -227,11 +228,34 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
     }
 
     /**
-     * @param Interval $intervals
+     * @param string|\DateTime|DruidTime $intervalStart
+     * @param string|\DateTime|DruidTime $intervalEnd
      */
     public function setIntervalByStartAndEnd($intervalStart, $intervalEnd)
     {
-        $this->intervals = new Interval($intervalStart, $intervalEnd);
+        $this->setIntervals(new Interval($intervalStart, $intervalEnd));
     }
 
+    /**
+     * Adjusts the datetime to make the interval "exclusive" of the datetime.
+     * e.g., given
+     * startDateTime=2014-06-18T12:30:01Z and
+     * endDateTime=2014-06-18T01:00:00Z
+     * return and Interval containing
+     * startDateTime=2014-06-18T12:30:00Z and
+     * endDateTime=2014-06-18T01:00:01Z
+     *
+     * @param $startDateTime
+     * @param $endDateTime
+     * @return void
+     */
+    public function setIntervalForQueryingUsingExclusiveTimes($startDateTime, $endDateTime)
+    {
+        $adjustedStartDateTime = new \DateTime($startDateTime);
+        $adjustedStartDateTime->sub(new \DateInterval('PT1S'));
+        $adjustedEndDateTime = new \DateTime($endDateTime);
+        $adjustedEndDateTime->add(new \DateInterval('PT1S'));
+
+        $this->setIntervals(new Interval($adjustedStartDateTime, $adjustedEndDateTime));
+    }
 }
