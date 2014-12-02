@@ -251,11 +251,9 @@ class SimpleGroupByQueryParameters extends AbstractTaskParameters implements IDr
      */
     public function setIntervalForQueryingUsingExclusiveTimes($startDateTime, $endDateTime)
     {
-        $adjustedStartDateTime = new \DateTime($startDateTime);
-        $adjustedStartDateTime->sub(new \DateInterval('PT1S'));
         $adjustedEndDateTime = new \DateTime($endDateTime);
         $adjustedEndDateTime->add(new \DateInterval('PT1S'));
 
-        $this->setIntervals(new Interval($adjustedStartDateTime, $adjustedEndDateTime));
+        $this->setIntervals(new Interval($startDateTime, $adjustedEndDateTime));
     }
 }
