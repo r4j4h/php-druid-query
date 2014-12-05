@@ -68,10 +68,10 @@ Implementation wise, this can look like:
 How to Install
 ---------------
 
-Right now, there is no tagged version.
+Right now, there is no tagged version. To be ready for it when it comes, branch-aliases are in place.
 
-- Stable branch: `~1.0-dev`
-- Cutting edge: `dev-develop`
+- Stable branch: `~1.0@dev`
+- Cutting edge: `~1.1@dev`
 
 
 To install, it is suggested to use [Composer](http://getcomposer.org). If you have it installed, then the following instructions
@@ -80,7 +80,7 @@ in a composer.json should be all you need to get started:
 ```json
 {
     "require": {
-        "r4j4h/php-druid-query": "~1.0-dev"
+        "r4j4h/php-druid-query": "~1.0@dev"
     }
 }
 ```
@@ -165,7 +165,7 @@ Appendix A. Composer.json example that does not rely on Packagist.org:
         }
     ],
     "require": {
-        "r4j4h/php-druid-query": "~1.0-dev"
+        "r4j4h/php-druid-query": "~1.0@dev"
     }
 }
 ```
