@@ -18,6 +18,7 @@ other suggestions for naming of project or namespaces, feel free to suggest befo
 
 
 [Changelog](https://github.com/r4j4h/php-druid-query/releases)
+-----------
 
 
 Typical Use
