@@ -42,7 +42,9 @@ class DruidNodeDruidQueryExecutorTest extends PHPUnit_Framework_TestCase
     {
         $c = new DruidNodeDruidQueryExecutor('1.2.3.4', '1234', '/home/');
         $b = $c->getBaseUrl();
+        $h = array("content-type" => "application/json;charset=utf-8");
         $this->assertEquals('http://1.2.3.4:1234/home/', $b);
+        $this->assertEquals($h, $c->getHeaders());
     }
 
     public function testCreateRequest()
