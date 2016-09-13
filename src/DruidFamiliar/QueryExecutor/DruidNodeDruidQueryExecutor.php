@@ -44,6 +44,14 @@ class DruidNodeDruidQueryExecutor implements IDruidQueryExecutor
      * @var string
      */
     protected $httpMethod = 'POST';
+    
+
+    /**
+     * Headers to send
+     *
+     * @var array
+     */
+    protected $headers = array("content-type" => "application/json;charset=utf-8");
 
     public function __construct($ip, $port, $endpoint = '/druid/v2/', $protocol = 'http', $httpMethod = 'POST') {
         $this->ip = $ip;
@@ -73,7 +81,7 @@ class DruidNodeDruidQueryExecutor implements IDruidQueryExecutor
 
         $method = $this->httpMethod;
         $uri = $this->getBaseUrl();
-        $headers = array("content-type" => "application/json");
+        $headers = $this->getHeaders();
         $options = array();
 
         if ( $method === 'POST' )
@@ -241,5 +249,21 @@ class DruidNodeDruidQueryExecutor implements IDruidQueryExecutor
     public function setEndpoint($endpoint)
     {
         $this->endpoint = $endpoint;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHeaders()
+    {
+        return $this->headers;
+    }
+
+    /**
+     * @param array $headers
+     */
+    public function setHeaders(array $headers)
+    {
+        $this->headers = $headers;
     }
 }
