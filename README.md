@@ -17,24 +17,8 @@ the namespace is `DruidFamiliar`. This would be pretty breaking change and will 
 other suggestions for naming of project or namespaces, feel free to suggest before then.
 
 
-Changelog
+[Changelog](https://github.com/r4j4h/php-druid-query/releases)
 -----------
-
-0.2.1
-
-- `DruidTime`/`Interval` classes added to make it easier to work with varieties of time inputs to Druid compatible time output.
-
-0.2.0 Major refactoring
-
-- Query and Response Handling separated. All interfaces renamed and redesigned.
-  - `IDruidConnection` is now `IDruidQueryExecutor`.
-  - `IDruidQuery` is split into `IDruidQueryGenerator` and `IDruidQueryParameters` and `IDruidQueryResponseHandler`.
-  - `BaseQuery` is no longer needed, many similar classes were deprecated or removed.
-  - `DruidNodeConnection` is now `DruidNodeDruidQueryExecutor`.
-
-0.1.0 Initial release
-
-- Quick sketch for sharing early.
 
 
 Typical Use
